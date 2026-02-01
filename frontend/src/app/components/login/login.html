@@ -1,0 +1,49 @@
+<div class="form-container">
+  <p class="title">Welcome back</p>
+
+  <!-- IMPORTANT : ngSubmit -->
+  <form class="form" (ngSubmit)="onLogin()">
+
+    <input
+      type="email"
+      class="input"
+      placeholder="Email"
+      name="email"
+      [(ngModel)]="loginData.email"
+      required
+    />
+
+    <input
+      type="password"
+      class="input"
+      placeholder="Password"
+      name="password"
+      [(ngModel)]="loginData.password"
+      required
+    />
+
+    <p class="page-link">
+      <span class="page-link-label">Forgot Password?</span>
+    </p>
+
+    <!-- IMPORTANT : type="submit" -->
+    <button class="form-btn" type="submit">
+      Log in
+    </button>
+  </form>
+
+  <p class="sign-up-label">
+    Don't have an account?
+    <span class="sign-up-link">Sign up</span>
+  </p>
+
+  <div class="buttons-container">
+    <div class="apple-login-button">
+      <span>Log in with Apple</span>
+    </div>
+
+    <div class="google-login-button">
+      <span>Log in with Google</span>
+    </div>
+  </div>
+</div>
