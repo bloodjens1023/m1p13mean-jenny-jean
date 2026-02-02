@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { Navbar } from "@/components/navbar/navbar";
 
 @Component({
   selector: 'app-acceuil',
-  imports: [],
+  imports: [Navbar],
+  standalone:true,
   templateUrl: './acceuil.html',
   styleUrl: './acceuil.css',
 })

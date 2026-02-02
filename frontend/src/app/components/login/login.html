@@ -1,50 +1,71 @@
+<main class="flex items-center justify-center w-full px-4 mt-3">
+<div class="w-full max-w-md rounded-lg bg-gray-50 border border-gray-200 p-5 mx-5" >
+    <div class="py-4 flex justify-center">
+        <a href="/"class="border-0 w-10">
+          <img src="https://img.icons8.com/stickers/1200/shop--v2.jpg" alt="shop">
+        </a>
+    </div>
+    <h1 class="mb-4 text-center text-2xl font-semibold">Se connecter</h1>
+    <form  (ngSubmit)="onLogin()">
+        <div class="mb-4">
+            <label for="email" class="mb-1 block text-sm text-gray-400">Adresse e-mail</label>
+            <input type="email" id="email" placeholder="name@example.com" autocomplete="email"
+                [(ngModel)]="loginData.email"
+                required
+                name="email"
+                class="py-2 w-full rounded border border-gray-300 bg-slate-100 px-2 text-center text-gray-400 placeholder-[#7f8c8d] focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+        </div>
+        <div class="mb-4">
+            <label for="password" class="mb-1 block text-sm text-gray-400">Mot de passe</label>
+            <input type="password" id="password" placeholder="Password" autocomplete="new-password"
+              [(ngModel)]="loginData.password"
+              required
+              name="passwword"
+                class="py-2 w-full rounded border border-gray-300 bg-slate-100 px-2 text-center text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+        </div>
+        <div class="mb-2 text-right">
+            <a href="#" class="text-sm text-gray-400 hover:text-indigo-500">Mot de passe oublié?</a>
+        </div>
+        <button type="submit"
+            class="py-2.5 font-medium w-full rounded bg-indigo-500
+             text-white transition-colors duration-300 hover:bg-indigo-600">Se connecter
+            </button>
+    </form>
 
-<div class="form-container">
-  <p class="title">Welcome back</p>
 
-  <!-- IMPORTANT : ngSubmit -->
-  <form class="form" (ngSubmit)="onLogin()">
+    <div class="relative my-8 text-center">
+        <span class="relative z-10 bg-gray-100 px-3 text-gray-400">Ou continuer avec</span>
+        <div class="absolute top-1/2 left-0 h-px w-2/5 -translate-y-1/2 transform bg-gray-300"></div>
+        <div class="absolute top-1/2 right-0 h-px w-2/5 -translate-y-1/2 transform bg-gray-300"></div>
+    </div>
 
-    <input
-      type="email"
-      class="input"
-      placeholder="Email"
-      name="email"
-      [(ngModel)]="loginData.email"
-      required
-    />
 
-    <input
-      type="password"
-      class="input"
-      placeholder="Password"
-      name="password"
-      [(ngModel)]="loginData.password"
-      required
-    />
-
-    <p class="page-link">
-      <span class="page-link-label">Forgot Password?</span>
-    </p>
-
-    <!-- IMPORTANT : type="submit" -->
-    <button class="form-btn" type="submit">
-      Log in
+    <button type="button"
+        class="mt-2 flex py-2 w-full items-center justify-center gap-2 rounded bg-gray-800 text-gray-300 hover:bg-gray-900">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20">
+            <path fill="#FFC107"
+                d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917">
+            </path>
+            <path fill="#FF3D00"
+                d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691">
+            </path>
+            <path fill="#4CAF50"
+                d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.9 11.9 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44">
+            </path>
+            <path fill="#1976D2"
+                d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917">
+            </path>
+        </svg>
+        Google
     </button>
-  </form>
 
-  <p class="sign-up-label">
-    Don't have an account?
-    <span class="sign-up-link">Sign up</span>
-  </p>
+    <div class="mb-2 text-right mt-2">
 
-  <div class="buttons-container">
-    <div class="apple-login-button">
-      <span>Log in with Apple</span>
+            <a href="#" class="text-sm text-gray-400 hover:text-indigo-500"> cliquez ici pour s'inscrire</a>
     </div>
-
-    <div class="google-login-button">
-      <span>Log in with Google</span>
-    </div>
-  </div>
+    <p class="mt-8 text-center text-sm text-gray-400">
+        En cliquant sur Se connecter, vous acceptez nos
+        <a href="#" class="underline">conditions d’utilisation</a> et <a href="#" class="underline">notre politique de confidentialité</a>.
+    </p>
 </div>
+</main>

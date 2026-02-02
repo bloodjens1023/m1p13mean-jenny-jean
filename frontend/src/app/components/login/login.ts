@@ -2,7 +2,8 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
-import { ToastrService } from 'ngx-toastr';
+import { toast } from 'ngx-sonner';
+
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,6 @@ export class Login {
     email: '',
     password: ''
   };
-  toastr = inject(ToastrService);
 
   constructor(private authService: AuthService) {}
 
@@ -30,11 +30,15 @@ export class Login {
         console.log('Réponse backend :', res);
         console.log('Token :', res.token);
         console.log('User :', res.user);
-        this.toastr.success("connexion réussite !");
+
+      toast.success('Connexion réussite', {
+      description: 'Vous êtes maintenant connecté.'})
+
       },
       error: (err) => {
         console.error('Erreur login :', err.error?.message || err);
-        this.toastr.error(err.error?.message||'Erreur lors de la connexion');
+        toast.error('Connexion impossible', {
+        description: err.error?.message || 'Une erreur est survenue lors de la connexion.'})
       }
     });
   }
