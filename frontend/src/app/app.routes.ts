@@ -6,5 +6,5 @@ import { Acceuil } from './pages/acceuil/acceuil';
 export const routes: Routes = [
     {path: 'login', component: Login},
     {path: 'acceuil', component: Acceuil},
-  { path: '', redirectTo: 'acceuil', pathMatch: 'full' }
+  { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
