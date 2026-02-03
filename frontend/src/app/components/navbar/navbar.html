@@ -47,7 +47,7 @@
       <button class="absolute -top-2 -right-3 text-xs text-white bg-indigo-500 w-4.5 h-4.5 rounded-full">3</button>
     </div>
 
-    <a class="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full" routerLink="/login">
+    <a *ngIf="!auth.user()" class="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full" routerLink="/login">
       Login
     </a>
     <div *ngIf="auth.user() as user">
