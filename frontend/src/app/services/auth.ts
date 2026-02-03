@@ -1,6 +1,12 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { Router } from '@angular/router';
+interface User {
+  id: string;
+  role: string;
+  email?: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +14,46 @@ import { Observable } from 'rxjs';
 export class AuthService {
 
   private apiUrl = 'http://localhost:3000/api/auth';
+<<<<<<< HEAD
   router: any;
+=======
+  router = inject(Router);
+>>>>>>> upstream/main
 
-  constructor(private http: HttpClient) {}
+
+  user = signal<User | null>(null);
+
+  constructor(private http: HttpClient) {
+    this.loadUserFromToken();
+  }
 
   login(loginData: { email: string; password: string }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, loginData);
+    return this.http
+      .post<any>(`${this.apiUrl}/login`, loginData)
+      .pipe(
+        tap(response => {
+          localStorage.setItem('token', response.token);
+          this.loadUserFromToken();
+        })
+      );
+  }
+
+  private loadUserFromToken() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+
+    this.user.set({
+      id: payload.id,
+      role: payload.role
+    });
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.user.set(null);
+    this.router.navigate(['/login']);
   }
   logout() {
     localStorage.removeItem('token');

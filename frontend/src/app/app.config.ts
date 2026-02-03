@@ -1,18 +1,13 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
-import { provideToastr } from 'ngx-toastr';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
-import { routes } from './app.routes';
+import { routes } from './app.routes';import { provideZard } from '@/shared/core/provider/providezard';
+import { authInterceptor } from './auth-interceptor';
+
 
 export const appConfig: ApplicationConfig = {
- providers: [provideZoneChangeDetection({ eventCoalescing: true }),
-provideRouter(routes),provideHttpClient(), provideToastr({
-      timeOut: 5000,
-      positionClass: 'toast-bottom-right',
-      preventDuplicates: true,
-      progressAnimation: 'increasing',
-      progressBar: true
-    })]
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }),
+provideRouter(routes),provideHttpClient( withInterceptors([authInterceptor])),
+    provideZard(),]
 };
-
