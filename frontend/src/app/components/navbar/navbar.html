@@ -50,5 +50,16 @@
     <a class="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full" routerLink="/login">
       Login
     </a>
+    <div *ngIf="auth.user() as user">
+      <button (click)="logout()" class="cursor-pointer px-8 py-2 bg-red-500 hover:bg-red-600 transition text-white rounded-full">
+        Logout
+      </button>
+      </div>
+
   </div>
 </nav>
+
+<div *ngIf="auth.user() as user">
+  <p>ID: {{ user.id }}</p>
+  <p>Role: {{ user.role }}</p>
+</div>

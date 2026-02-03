@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { AuthService } from '@/services/auth';
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from "@angular/router";
 
 @Component({
@@ -6,12 +8,15 @@ import { RouterLink } from "@angular/router";
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css']
   ,
-  imports: [RouterLink]
+  imports: [RouterLink,CommonModule]
 })
 export class Navbar{
   mobileMenuOpen = false;
-
+  auth = inject(AuthService);
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+  logout(){
+    this.auth.logout();
   }
 }
