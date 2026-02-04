@@ -7,11 +7,11 @@ import { Observable } from 'rxjs';
 })
 
 export class BoutiqueService {
- private apiUrl = 'http://localhost:5000/commande';
+ private apiUrl = 'http://localhost:3000/api/boutiques';
 
  constructor(private http: HttpClient) {}
  getBoutique(): Observable<any> {
- return this.http.get(this.apiUrl);
+ return this.http.get(`${this.apiUrl}/liste`);
  }
  addBoutique(commande: any): Observable<any> {
  return this.http.post(this.apiUrl, commande);
