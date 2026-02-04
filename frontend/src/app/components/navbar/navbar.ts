@@ -14,6 +14,7 @@ export class Navbar{
   mobileMenuOpen = false;
   auth = inject(AuthService);
   toggleMobileMenu() {
+
     this.mobileMenuOpen = !this.mobileMenuOpen;
   }
   logout(){

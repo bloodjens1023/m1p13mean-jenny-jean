@@ -1,18 +1,17 @@
-import { Component, inject } from '@angular/core';
+import { AuthService } from '@/services/auth';
 import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router'; // <-- importer RouterModule et Router
-import { AuthService } from '../../services/auth';
+import { Router, RouterModule } from '@angular/router';
 import { toast } from 'ngx-sonner';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule], // <-- ajouter RouterModule
-  templateUrl: './login.html',
-  styleUrls: ['./login.css']
+  selector: 'app-admin',
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: './admin.html',
+  styleUrl: './admin.css',
 })
-export class Login {
+export class Admin {
   showModal = false;
   message = "";
   loginData = {
@@ -30,15 +29,26 @@ export class Login {
 
     this.authService.login(this.loginData).subscribe({
       next: (res) => {
-        console.log('Réponse backend :', res);
-        console.log('Token :', res.token);
-        console.log('User :', res.user);
-
-        toast.success('Connexion réussite', {
+        if (res.user.role !== 'ADMIN') {
+          toast.error('Accès refusé', {
+            description: 'Vous n\'avez pas les droits administrateur.'
+          });
+          return;
+        }else{
+          // console.log('Réponse backend :', res);
+          console.log('Token :', res.token);
+          toast.success('Connexion réussite', {
           description: 'Vous êtes maintenant connecté.'
-        });
+          });
 
-        this.router.navigate(['/user/acceuil']);
+
+          this.router.navigate(['/admin/dashboard']);
+
+        }
+
+
+
+
       },
       error: (err) => {
         console.error('Erreur login :', err.error?.message || err);

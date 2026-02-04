@@ -46,6 +46,18 @@ export class AuthService {
     });
   }
 
+  isAuthenticated(): boolean {
+    const token = this.user() ? localStorage.getItem('token') : null;
+    return !!token;
+
+  }
+  getCurrentUserRole(): 'admin' | 'user' | 'boutique' | null {
+    const user = this.user()?.role.toLowerCase() as 'admin' | 'user' | 'boutique' | null;
+    return user || null;
+  }
+
+
+
   logout() {
     localStorage.removeItem('token');
     this.user.set(null);

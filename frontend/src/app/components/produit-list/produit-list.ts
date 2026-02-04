@@ -11,7 +11,7 @@ import { Router, RouterLink } from '@angular/router';
 export class ProduitList {
   produit : any[] = [];
   router = inject(Router);
-   constructor(private produitService: ProduitService) {}
+  constructor(private produitService: ProduitService) {}
 
   ngOnInit(){
       this.lister();
