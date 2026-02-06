@@ -1,5 +1,6 @@
 import { BoutiqueService } from '@/services/boutique';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,17 +11,23 @@ import Swal from 'sweetalert2';
   selector: 'app-boutique-list',
   imports: [CommonModule],
 =======
+=======
+>>>>>>> Stashed changes
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-boutique-list',
   imports: [],
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   templateUrl: './boutique-list.html',
   styleUrl: './boutique-list.css',
 })
 export class BoutiqueList {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
   boutiques: any[] = [];
@@ -87,6 +94,8 @@ boutique_detail(id: string){
 
 }
 =======
+=======
+>>>>>>> Stashed changes
   boutique : any[] = [];
   router = inject(Router);
    constructor(private boutiqueService: BoutiqueService) {}
@@ -112,4 +121,7 @@ boutique_detail(id: string){
 }
 
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes

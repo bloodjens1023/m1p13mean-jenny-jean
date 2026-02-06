@@ -2,6 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BoutiqueList } from './boutique-list';
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+import { RouterLink } from '@angular/router';
+>>>>>>> Stashed changes
 =======
 import { RouterLink } from '@angular/router';
 >>>>>>> Stashed changes
@@ -13,7 +17,11 @@ describe('BoutiqueList', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       imports: [BoutiqueList]
+=======
+      imports: [BoutiqueList,RouterLink]
+>>>>>>> Stashed changes
 =======
       imports: [BoutiqueList,RouterLink]
 >>>>>>> Stashed changes

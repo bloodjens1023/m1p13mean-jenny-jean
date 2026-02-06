@@ -13,6 +13,7 @@ import { BoutiqueDetail } from './components/boutique-detail/boutique-detail';
 
 export const routes: Routes = [
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     { path: '', redirectTo: 'user', pathMatch: 'full' },
     {path: 'login', component: Login},
     {path: 'admin', component: AdminLogin},
@@ -42,11 +43,16 @@ export const routes: Routes = [
     ]
   },
 =======
+=======
+>>>>>>> Stashed changes
   {path:'insertUser',component:User},
     {path: 'login', component: Login},
     {path: 'acceuil', component: Acceuil},
     {path: 'acceuilUser', component: AcceuilUser},
     {path: 'produit/:id', component: ProduitInfo},
   { path: '', redirectTo: 'insertUser', pathMatch: 'full' }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 ];
