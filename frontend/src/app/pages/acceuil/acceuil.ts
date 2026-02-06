@@ -11,5 +11,5 @@ import { Footer } from "@/components/footer/footer";
   styleUrl: './acceuil.css',
 })
 export class Acceuil {
-
+    
 }

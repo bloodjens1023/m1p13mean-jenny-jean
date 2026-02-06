@@ -1,4 +1,5 @@
 import { BoutiqueService } from '@/services/boutique';
+<<<<<<< Updated upstream
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,10 +9,19 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-boutique-list',
   imports: [CommonModule],
+=======
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+
+@Component({
+  selector: 'app-boutique-list',
+  imports: [],
+>>>>>>> Stashed changes
   templateUrl: './boutique-list.html',
   styleUrl: './boutique-list.css',
 })
 export class BoutiqueList {
+<<<<<<< Updated upstream
 
   boutiques: any[] = [];
   router = inject(Router);
@@ -76,3 +86,30 @@ boutique_detail(id: string){
   }
 
 }
+=======
+  boutique : any[] = [];
+  router = inject(Router);
+   constructor(private boutiqueService: BoutiqueService) {}
+
+  ngOnInit(){
+      this.lister();
+  }
+  lister(){
+      this.boutiqueService.getBoutique().subscribe({
+         next: (res) => {
+            this.boutique = res;
+            console.log('Boutiques récupérés :', this.boutique);
+         },
+         error: (err) => {
+            console.error('Erreur lors de la récupération des Boutiques :', err);
+         }
+      });
+  }
+  boutique_clique(id: string){
+    console.log("boutique cliqué avec l'ID :", id);
+    this.router.navigate(['/boutique', id]);
+  }
+}
+
+
+>>>>>>> Stashed changes

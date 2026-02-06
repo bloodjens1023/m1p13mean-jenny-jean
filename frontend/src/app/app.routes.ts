@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { Login } from './components/login/login';
+import { User } from "@/components/login-client/login-client";
 import { Acceuil } from './pages/acceuil/acceuil';
+import { AcceuilUser } from './pages/acceuilUser/acceuilUser';
 import { ProduitInfo } from './pages/produit-info/produit-info';
 import { AdminLogin } from './pages/admin-login/admin-login';
 import { DashboardAdmin } from './pages/dashboard-admin/dashboard-admin';
@@ -10,6 +12,7 @@ import { BoutiqueDetail } from './components/boutique-detail/boutique-detail';
 
 
 export const routes: Routes = [
+<<<<<<< Updated upstream
     { path: '', redirectTo: 'user', pathMatch: 'full' },
     {path: 'login', component: Login},
     {path: 'admin', component: AdminLogin},
@@ -38,4 +41,12 @@ export const routes: Routes = [
        {path: 'boutique/detail/:id', component: BoutiqueDetail},
     ]
   },
+=======
+  {path:'insertUser',component:User},
+    {path: 'login', component: Login},
+    {path: 'acceuil', component: Acceuil},
+    {path: 'acceuilUser', component: AcceuilUser},
+    {path: 'produit/:id', component: ProduitInfo},
+  { path: '', redirectTo: 'insertUser', pathMatch: 'full' }
+>>>>>>> Stashed changes
 ];

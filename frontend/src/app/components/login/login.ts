@@ -7,7 +7,6 @@ import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [CommonModule, FormsModule, RouterModule], // <-- ajouter RouterModule
   templateUrl: './login.html',
   styleUrls: ['./login.css']
