@@ -2,13 +2,12 @@ import { AuthService } from '@/services/auth';
 import { BoutiqueService } from '@/services/boutique';
 import { UserService } from '@/services/user';
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, OnChanges, SimpleChanges } from '@angular/core';
 import { BoutiqueList } from "../boutique-list/boutique-list";
-
+import { NavbarAdmin } from "../navbar-admin/navbar-admin";
 @Component({
   selector: 'app-stat',
-  imports: [RouterLink, CommonModule, BoutiqueList],
+  imports: [CommonModule, BoutiqueList, NavbarAdmin],
   templateUrl: './stat.html',
   styleUrl: './stat.css',
 })
@@ -19,12 +18,18 @@ export class Stat {
   user_total: number = 0;
   user: any[] = [];
   auth = inject(AuthService);
-  constructor(private boutiqueService: BoutiqueService,private userService: UserService) {}
+  constructor(private boutiqueService: BoutiqueService,private userService: UserService) {
+    setInterval(() => {
+    this.generer();
+  }, 500);
+  }
 
   ngOnInit() {
     this.generer();
     // this.nbClientActif();
   }
+
+
 
 
 
@@ -40,7 +45,7 @@ export class Stat {
     this.boutiqueService.getBoutique().subscribe({
          next: (res) => {
             this.boutiques = res;
-            console.log('Produits récupérés :', this.boutiques);
+            // console.log('Produits récupérés :', this.boutiques);
             this.boutique_actif = this.boutiques.filter(b => b.active).length;
             this.boutique_total = this.boutiques.length;
          },

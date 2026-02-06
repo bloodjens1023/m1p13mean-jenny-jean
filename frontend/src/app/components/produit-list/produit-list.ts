@@ -29,7 +29,7 @@ export class ProduitList {
   }
   produit_clique(id: string){
     console.log("Produit cliqué avec l'ID :", id);
-    this.router.navigate(['/produit', id]);
+    this.router.navigate(['/user/produit', id]);
   }
 
 

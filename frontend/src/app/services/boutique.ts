@@ -13,11 +13,16 @@ export class BoutiqueService {
  getBoutique(): Observable<any> {
  return this.http.get(`${this.apiUrl}/liste`);
  }
- addBoutique(commande: any): Observable<any> {
- return this.http.post(this.apiUrl, commande);
+  getBoutiqueById(id: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/liste/${id}`);}
+ addBoutique(boutique: any): Observable<any> {
+ return this.http.post(this.apiUrl, boutique);
  }
- updateBoutique(id: string, commande: any): Observable<any> {
- return this.http.put(`${this.apiUrl}/${id}`, commande);
+ updateBoutique(id: string, boutique: any): Observable<any> {
+ return this.http.put(`${this.apiUrl}/${id}/update`, boutique);
+}
+  activeBoutique(id: string,): Observable<any> {
+ return this.http.patch(`${this.apiUrl}/${id}/activation`,{});
  }
  deleteBoutique(id: string): Observable<any> {
  return this.http.delete(`${this.apiUrl}/${id}`);

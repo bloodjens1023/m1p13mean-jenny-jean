@@ -5,10 +5,12 @@ import { ProduitInfo } from './pages/produit-info/produit-info';
 import { AdminLogin } from './pages/admin-login/admin-login';
 import { DashboardAdmin } from './pages/dashboard-admin/dashboard-admin';
 import { RoleGuard } from './guards/role-guard';
+import { BoutiqueUpdate } from './components/boutique-update/boutique-update';
+import { BoutiqueDetail } from './components/boutique-detail/boutique-detail';
 
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'acceuil', pathMatch: 'full' },
+    { path: '', redirectTo: 'user', pathMatch: 'full' },
     {path: 'login', component: Login},
     {path: 'admin', component: AdminLogin},
 
@@ -32,6 +34,8 @@ export const routes: Routes = [
     children: [
        //path a changer a la fin
        {path: 'dashboard', component: DashboardAdmin},
+       {path: 'boutique/update/:id', component: BoutiqueUpdate},
+       {path: 'boutique/detail/:id', component: BoutiqueDetail},
     ]
   },
 ];

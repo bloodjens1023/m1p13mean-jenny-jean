@@ -1,13 +1,7 @@
 <div class="flex min-h-screen bg-gray-100">
-  <!-- Sidebar -->
+<!-- Sidebar -->
   <aside class="w-64 bg-white shadow-md">
-    <div class="p-6 font-bold text-indigo-500 text-2xl">Administrateur</div>
-    <nav class="mt-8">
-      <a href="#" class="block py-3 px-6 text-gray-700 hover:text-indigo-500">Dashboard</a>
-      <a href="#" class="block py-3 px-6 text-gray-700 hover:text-indigo-500">Users</a>
-      <a href="#" class="block py-3 px-6 text-gray-700 hover:text-indigo-500">Analytics</a>
-      <a href="#" class="block py-3 px-6 text-gray-700 hover:text-indigo-500">Settings</a>
-    </nav>
+    <app-navbar-admin/>
   </aside>
 
   <!-- Main Content -->
@@ -17,9 +11,10 @@
       <h1 class="text-xl font-bold text-indigo-500">Dashboard</h1>
       <div class="flex items-center gap-4">
         <input type="text" placeholder="Search..." class="px-4 py-2 border rounded-lg">
-        <div class="w-10 h-10 rounded-full border-2 text-indigo-500 flex items-center justify-center font-bold">A</div>
+        <div class=" cursor-pointer w-10 h-10 rounded-full border-2 text-indigo-500 flex items-center justify-center font-bold">A</div>
       </div>
     </header>
+
 
     <!-- Content -->
     <main class="p-6 space-y-6">
@@ -34,11 +29,13 @@
   </div>
   <div class="bg-white p-6 rounded-lg shadow-md">
     <p class="text-sm text-gray-500 text-center">nombre de boutique inactif</p>
-    <h2 class="text-3xl font-bold text-dark mt-2 text-center">{{ boutique_total -boutique_actif}}</h2>
+    <h2 class="text-3xl font-bold text-dark mt-2 text-center">{{ boutique_total - boutique_actif}}</h2>
   </div>
 
 </div>
-<app-boutique-list/>
+<app-boutique-list />
+
+
 
 
 
