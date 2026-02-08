@@ -28,11 +28,6 @@ export class Stat {
     this.generer();
     // this.nbClientActif();
   }
-
-
-
-
-
   generer(){
 
     this.nbBoutiquesActif();

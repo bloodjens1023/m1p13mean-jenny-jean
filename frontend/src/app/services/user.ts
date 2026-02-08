@@ -7,8 +7,7 @@ import { Observable } from 'rxjs';
 })
 
 export class UserService {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
  private apiUrl = 'http://localhost:3000/api/user';
 
  constructor(private http: HttpClient) {}
@@ -16,19 +15,8 @@ export class UserService {
   return this.http.get<any>(`${this.apiUrl}/liste`)}
  addUser(user: any): Observable<any> {
  return this.http.post(this.apiUrl, user);
-=======
-=======
->>>>>>> Stashed changes
- private apiUrl = 'http://localhost:3000/api/auth';
-
- constructor(private http: HttpClient) {}
- getUser(): Observable<any> {
-    return this.http.get(this.apiUrl);
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
  }
+
  insertUser(user: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/insertUser`, user);
 }
