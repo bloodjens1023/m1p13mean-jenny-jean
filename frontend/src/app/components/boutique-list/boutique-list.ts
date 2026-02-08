@@ -1,14 +1,14 @@
 import { BoutiqueService } from '@/services/boutique';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { toast } from 'ngx-sonner';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-boutique-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterLink],
   templateUrl: './boutique-list.html',
   styleUrl: './boutique-list.css',
 })

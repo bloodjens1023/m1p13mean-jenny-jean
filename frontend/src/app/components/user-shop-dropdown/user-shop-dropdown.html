@@ -1,0 +1,75 @@
+<div class="relative w-full max-w-md">
+  <!-- Bouton déclencheur -->
+  <button
+    id="shopDropdown"
+    (click)="toggleDropdown()"
+    class="flex items-center justify-between w-full p-4 bg-white border-2 border-gray-200
+           rounded-2xl shadow-sm hover:shadow-md focus:ring-4 focus:ring-blue-100
+           focus:border-blue-500 transition-all duration-300 text-left font-semibold">
+
+    <!-- Icône + Texte -->
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-linear-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
+        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="text-gray-900">{{ selectedShopUser?.nom || 'Sélectionner un utilisateur SHOP' }}</div>
+        <div class="text-sm text-gray-500">{{ selectedShopUser?.email || 'Aucun sélectionné' }}</div>
+      </div>
+    </div>
+
+    <!-- Flèche -->
+    <svg class="w-5 h-5 text-gray-400 transform transition-transform"
+         [class.rotate-180]="dropdownOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+    </svg>
+  </button>
+
+  <!-- Dropdown Liste -->
+  <div class="absolute z-50 w-full mt-2 origin-top-right rounded-2xl shadow-2xl border border-gray-200
+              bg-white {{ dropdownOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0' }}
+              transition-all duration-200 ease-in-out"
+       [class.hidden]="!dropdownOpen">
+
+    <!-- Liste utilisateurs SHOP -->
+    <div class="py-2 max-h-96 overflow-y-auto">
+      <div *ngFor="let user of shopUsers; trackBy: trackByUserId"
+           class="px-6 py-4 hover:bg-blue-50 cursor-pointer border-b border-gray-50 last:border-b-0
+                  transition-colors duration-200 group"
+           (click)="selectUser(user); toggleDropdown()">
+
+        <!-- Avatar + Infos -->
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-linear-to-r from-indigo-500 to-blue-600
+                      rounded-xl flex items-center justify-center text-white font-semibold text-lg
+                      {{ user.status === 'SHOP' ? 'shadow-lg shadow-indigo-500/25' : '' }}">
+            {{ user.nom?.charAt(0)?.toUpperCase() }}
+          </div>
+
+          <div class="flex-1 min-w-0">
+            <div class="font-semibold text-gray-900 group-hover:text-blue-700 truncate">
+              {{ user.nom }}
+            </div>
+            <div class="text-sm text-gray-500 truncate">{{ user.email }}</div>
+          </div>
+
+          <!-- Badge SHOP -->
+          <div class="px-3 py-1 bg-linear-to-r from-emerald-500 to-green-600
+                      text-white text-xs font-bold rounded-full shadow-md">
+            SHOP
+          </div>
+        </div>
+      </div>
+
+      <!-- Vide -->
+      <div *ngIf="shopUsers.length === 0" class="px-6 py-12 text-center text-gray-500">
+        <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+        </svg>
+        Aucun utilisateur SHOP
+      </div>
+    </div>
+  </div>
+</div>

@@ -16,7 +16,7 @@ export class BoutiqueService {
   getBoutiqueById(id: string): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/liste/${id}`);}
  addBoutique(boutique: any): Observable<any> {
- return this.http.post(this.apiUrl, boutique);
+ return this.http.post(`${this.apiUrl}/create`, boutique);
  }
  updateBoutique(id: string, boutique: any): Observable<any> {
  return this.http.put(`${this.apiUrl}/${id}/update`, boutique);
