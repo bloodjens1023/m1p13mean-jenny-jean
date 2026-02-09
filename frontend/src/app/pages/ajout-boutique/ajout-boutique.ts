@@ -5,20 +5,22 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toast } from 'ngx-sonner';
-import { NavbarAdmin } from "../navbar-admin/navbar-admin";
-
+import { NavbarAdmin } from "../../components/navbar-admin/navbar-admin"
+import { UserDropdownComponent } from "@/components/user-shop-dropdown/user-shop-dropdown";
 @Component({
-  selector: 'app-boutique-update',
+  selector: 'app-ajout-boutique',
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule, RouterLink,
-    NavbarAdmin
+    NavbarAdmin,
+    UserDropdownComponent
 ],
-  templateUrl: './boutique-update.html',
-  styleUrl: './boutique-update.css',
+  templateUrl: './ajout-boutique.html',
+  styleUrl: './ajout-boutique.css',
 })
-export class BoutiqueUpdate implements OnInit {
+export class AjoutBoutique {
+  IdShop: string = '';
   boutiqueForm!: FormGroup;
 
   boutique : any[] = [];
@@ -33,35 +35,13 @@ export class BoutiqueUpdate implements OnInit {
       nom: ['', [Validators.required, Validators.minLength(3)]],
       code: ['', [Validators.minLength(3)]],
       description: [''],
+      shopID:[''],
       loyerMensuel: [0, [Validators.min(0)]],
       tauxCommission: [0, [Validators.min(0), Validators.max(100)]],
       active: [false]
     });
   }
 
-
-
-  ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id')!;
-    this.loadBoutique();
-  }
-
-  loadBoutique() {
-    this.boutiqueService.getBoutiqueById(this.id).subscribe({
-      next: (boutique) =>{
-        this.boutique = [boutique];
-        this.boutiqueForm.patchValue({
-          nom: boutique.nom,
-          code: boutique.code,
-          description: boutique.description,
-          loyerMensuel: boutique.loyerMensuel,
-          tauxCommission: boutique.tauxCommission,
-          active: boutique.active
-        });
-      } ,
-      error: (err) => console.error('Erreur:', err)
-    })
-  }
 
 
 
@@ -71,7 +51,7 @@ export class BoutiqueUpdate implements OnInit {
 
 
 
-      this.boutiqueService.updateBoutique(this.id, this.boutiqueForm.value).subscribe({
+      this.boutiqueService.addBoutique(this.boutiqueForm.value).subscribe({
         next: () => {
           toast.success('Connexion réussite', {
                     description: 'Boutique modifiée avec succès !'
@@ -87,5 +67,10 @@ export class BoutiqueUpdate implements OnInit {
         }
       });
     }
+  }
+  OnshopSelection(user: any) {
+    this.IdShop = user._id;
+    this.boutiqueForm.patchValue({ owner: this.IdShop });
+    console.log('ID de la boutique sélectionnée:', this.IdShop);
   }
 }
