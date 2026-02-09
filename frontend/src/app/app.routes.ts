@@ -13,21 +13,21 @@ import { BoutiqueDetail } from './components/boutique-detail/boutique-detail';
 
 export const routes: Routes = [
 
-    { path: '', redirectTo: 'user', pathMatch: 'full' },
-    {path: 'login', component: Login},
-    {path: 'admin', component: AdminLogin},
+  { path: '', redirectTo: 'user', pathMatch: 'full' },
+  {path: 'login', component: Login},
+  {path: 'admin', component: AdminLogin},
 
 
 
-     {
+  {
     path: 'user',
     canActivate: [RoleGuard],
     data: { roles: ['user'] },
     children: [
-       //path a changer a la fin
-       { path: '', redirectTo: 'acceuil', pathMatch: 'full' },
-       {path: 'acceuil', component: Acceuil},
-       {path: 'produit/:id', component: ProduitInfo},
+      //path a changer a la fin
+      { path: '', redirectTo: 'acceuil', pathMatch: 'full' },
+      {path: 'acceuil', component: Acceuil},
+      {path: 'produit/:id', component: ProduitInfo},
     ]
   },
   {
@@ -41,11 +41,11 @@ export const routes: Routes = [
        {path: 'boutique/detail/:id', component: BoutiqueDetail},
     ]
   },
-    {path:'insertUser',component:User},
-    {path: 'login', component: Login},
-    {path: 'acceuil', component: Acceuil},
-    {path: 'acceuilUser', component: AcceuilUser},
-    {path: 'produit/:id', component: ProduitInfo},
-  { path: '', redirectTo: 'insertUser', pathMatch: 'full' }
+    // {path:'insertUser',component:User},
+  //   {path: 'login', component: Login},
+  //   {path: 'acceuil', component: Acceuil},
+  //   {path: 'acceuilUser', component: AcceuilUser},
+  //   {path: 'produit/:id', component: ProduitInfo},
+  // { path: '', redirectTo: 'insertUser', pathMatch: 'full' },
 
 ];
