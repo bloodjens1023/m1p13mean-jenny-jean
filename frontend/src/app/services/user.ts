@@ -13,6 +13,11 @@ export class UserService {
  constructor(private http: HttpClient) {}
   getUserShop(): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/selectShop`)}
+  getAllUser(): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/selectAllUser`)}
+  activeUser(id: string,): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/activation`,{});
+  }
  addUser(user: any): Observable<any> {
  return this.http.post(this.apiUrl, user);
  }

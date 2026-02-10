@@ -1,0 +1,28 @@
+<div class="flex min-h-screen bg-gray-100 ">
+<!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-md hidden sm:flex ">
+    <app-navbar-admin/>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col ">
+    <!-- Top Navbar -->
+    <header class="bg-white shadow-md p-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-indigo-500">Dashboard User</h1>
+      <div class=" items-center gap-4 hidden sm:flex ">
+        <input type="text" placeholder="Search..." class="px-4 py-2 border rounded-lg">
+        <div class=" cursor-pointer w-10 h-10 rounded-full border-2 text-indigo-500 flex items-center justify-center font-bold">A</div>
+      </div>
+    </header>
+
+
+    <!-- Content -->
+    <main class="p-6 space-y-6">
+
+<app-user-list/>
+
+
+
+
+
+
