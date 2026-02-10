@@ -1,10 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BoutiqueList } from './boutique-list';
+import { BoutiqueUser } from './boutique-user';
 
-describe('BoutiqueList', () => {
-  let component: BoutiqueList;
-  let fixture: ComponentFixture<BoutiqueList>;
+//import { RouterLink } from '@angular/router';
+
+//import { RouterLink } from '@angular/router';
+
+
+describe('BoutiqueUser', () => {
+  let component: BoutiqueUser;
+  let fixture: ComponentFixture<BoutiqueUser>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -12,7 +17,7 @@ describe('BoutiqueList', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BoutiqueList);
+    fixture = TestBed.createComponent(BoutiqueUser);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

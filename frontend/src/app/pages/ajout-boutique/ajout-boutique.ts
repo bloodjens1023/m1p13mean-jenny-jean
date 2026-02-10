@@ -3,7 +3,7 @@ import { BoutiqueService } from '@/services/boutique';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { toast } from 'ngx-sonner';
 import { NavbarAdmin } from "../../components/navbar-admin/navbar-admin"
 import { UserDropdownComponent } from "@/components/user-shop-dropdown/user-shop-dropdown";
@@ -12,7 +12,7 @@ import { UserDropdownComponent } from "@/components/user-shop-dropdown/user-shop
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule, RouterLink,
+    FormsModule,
     NavbarAdmin,
     UserDropdownComponent
 ],

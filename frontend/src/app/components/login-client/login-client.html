@@ -41,10 +41,20 @@
               <option value="SHOP">Propriétaire de boutique</option>
             </select>
           </div>
-        <button type="submit"
-            class="py-2.5 font-medium w-full rounded bg-indigo-500
-             text-white transition-colors duration-300 hover:bg-indigo-600">Enregistrer
-        </button>
+          <div class="flex flex-col sm:flex-row gap-4 pt-8">
+          <button routerLink="/login"
+            type="button"
+            class="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-4 px-8
+                  rounded-2xl font-semibold shadow-lg transition-all duration-300
+                  text-center">
+              ← Retour
+          </button>
+          <button type="submit"
+              class="py-2.5 font-medium w-full rounded bg-indigo-500
+              text-white transition-colors duration-300 hover:bg-indigo-600">Enregistrer
+          </button>
+      </div>
+        
     </form>
 </div>
 </main>
