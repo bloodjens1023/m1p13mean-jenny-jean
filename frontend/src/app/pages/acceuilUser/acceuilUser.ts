@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { Navbar } from "@/components/navbar/navbar";
 import { Footer } from "@/components/footer/footer";
-import { ProduitList } from '@/components/produit-list/produit-list';
+//import { BoutiqueList } from '@/components/boutique-list/boutique-list';
+import { BoutiqueUser } from '@/components/boutique-user/boutique-user';
 
 @Component({
   selector: 'app-acceuilUser',
-  imports: [Navbar,ProduitList, Footer],
+  imports: [Navbar,BoutiqueUser, Footer],
   standalone:true,
   templateUrl: './acceuilUser.html',
   styleUrl: './acceuilUser.css',
 })
-export class AcceuilUser {
-    
+export class AcceuilUser {   
 }

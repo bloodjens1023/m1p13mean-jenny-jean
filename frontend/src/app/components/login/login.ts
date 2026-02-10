@@ -37,7 +37,7 @@ export class Login {
           description: 'Vous êtes maintenant connecté.'
         });
 
-        this.router.navigate(['/user/acceuil']);
+        this.router.navigate(['/user/acceuil-user']);
       },
       error: (err) => {
         console.error('Erreur login :', err.error?.message || err);
