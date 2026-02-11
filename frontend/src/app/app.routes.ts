@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { Login } from './components/login/login';
 import { User } from "@/components/login-client/login-client";
-import { Acceuil } from './pages/acceuil/acceuil';
+//import { Acceuil } from './pages/acceuil/acceuil';
 import { AcceuilUser } from './pages/acceuilUser/acceuilUser';
 import { ProduitInfo } from './pages/produit-info/produit-info';
 import { AdminLogin } from './pages/admin-login/admin-login';
@@ -10,13 +10,14 @@ import { RoleGuard } from './guards/role-guard';
 import { BoutiqueUpdate } from './components/boutique-update/boutique-update';
 import { BoutiqueDetail } from './components/boutique-detail/boutique-detail';
 import { AjoutBoutique } from './pages/ajout-boutique/ajout-boutique';
+import { Acceuil1 } from './pages/acceuil1/acceuil1';
 
 
 export const routes: Routes = [
 
-  { path: '', redirectTo: 'user', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {path: 'login', component: Login},
-  {path: 'admin', component: AdminLogin},
+  //{path: 'admin', component: AdminLogin},
 
   { path: 'login', component: Login },
   { path: 'insert-user', component: User },
@@ -28,7 +29,7 @@ export const routes: Routes = [
     data: { roles: ['user'] },
     children: [
       { path: '', redirectTo: 'acceuil', pathMatch: 'full' },
-      { path: 'acceuil', component: Acceuil },
+     // { path: 'acceuil', component: Acceuil },
       { path: 'acceuil1/:idBoutique', component: Acceuil1 },
       { path: 'acceuil-user', component: AcceuilUser },
       { path: 'produit/:id', component: ProduitInfo },
@@ -39,21 +40,12 @@ export const routes: Routes = [
     path: 'admin',
     canActivate: [RoleGuard],
     data: { roles: ['admin'] },
-    children: [
-<<<<<<< HEAD
-      
+    children: [      
       { path: 'dashboard', component: DashboardAdmin },
       { path: 'boutique/add', component: AjoutBoutique },
       { path: 'boutique/update/:id', component: BoutiqueUpdate },
       { path: 'boutique/detail/:id', component: BoutiqueDetail },
-=======
-       //path a changer a la fin
-       {path: 'dashboard', component: DashboardAdmin},
-       {path: 'boutique/add', component: AjoutBoutique},
 
-       {path: 'boutique/update/:id', component: BoutiqueUpdate},
-       {path: 'boutique/detail/:id', component: BoutiqueDetail},
->>>>>>> f151c230c5c66a5b7984420cdee5731329e516ca
     ]
   },
 ];
