@@ -19,6 +19,7 @@ export const routes: Routes = [
 
   { path: 'login', component: Login },
   { path: 'insert-user', component: User },
+  { path: 'login-admin', component: AdminLogin },
 
   {
     path: 'user',
@@ -38,7 +39,7 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
     data: { roles: ['admin'] },
     children: [
-      { path: 'login-admin', component: AdminLogin },
+      
       { path: 'dashboard', component: DashboardAdmin },
       { path: 'boutique/add', component: AjoutBoutique },
       { path: 'boutique/update/:id', component: BoutiqueUpdate },
