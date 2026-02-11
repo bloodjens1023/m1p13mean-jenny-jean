@@ -14,11 +14,12 @@ import { toast } from 'ngx-sonner';
 export class User {
   showModal = false;
   message = "";
-
+  passconfirm = "";
   newUser = {
     name: '',
     email: '',
     password: '',
+
     role: 'USER'
   };
   // injecter le router
@@ -27,7 +28,13 @@ export class User {
   constructor(private userService: UserService) {}
 
   onInsertUser() {
-    this.userService.insertUser(this.newUser).subscribe({
+    if (this.newUser.password !== this.passconfirm) {
+      toast.error('Erreur de confirmation', {
+        description: 'Les mots de passe ne correspondent pas.'
+      });
+      return;
+    }else{
+       this.userService.insertUser(this.newUser).subscribe({
       next: () => {
         toast.success('Utilisateur créé avec succès');
 
@@ -41,10 +48,12 @@ export class User {
       },
       error: (err) => {
         toast.error('Erreur création utilisateur', {
-          description: err.error?.message
+          description: err.error?.message||"veuillez vérifier les champs saisis"
         });
       }
     });
+    }
+
   }
 }
 
