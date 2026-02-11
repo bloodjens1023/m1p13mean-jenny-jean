@@ -4,6 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 interface User {
   id: string;
+  name: string;
   role: string;
   email?: string;
 }
@@ -42,6 +43,8 @@ export class AuthService {
 
     this.user.set({
       id: payload.id,
+
+      name: payload.name,
       role: payload.role
     });
   }

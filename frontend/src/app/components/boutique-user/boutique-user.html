@@ -1,35 +1,128 @@
-<!-- source: https://github.com/mfg888/Responsive-Tailwind-CSS-Grid/blob/main/index.html -->
+<section id="Projects" class="w-full py-16 px-4 sm:px-6 lg:px-8 bg-white">
 
-<div class="text-center p-10">
-  <h1 class="font-bold text-3xl mb-4">Voir boutiques</h1>
-</div>
+  <div class="max-w-7xl mx-auto mb-12">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div>
+        <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight">
+          Boutiques Populaires
+        </h2>
+        <p class="mt-2 text-lg text-gray-600">
+          {{ boutiques.length }} résultats trouvés
+        </p>
+      </div>
+      <div class="flex items-center space-x-4 text-sm text-gray-500">
+        <span class="flex items-center">
+          <i class="fas fa-th-large mr-1"></i>
+          Grille
+        </span>
+        <span class="flex items-center cursor-pointer hover:text-orange-600">
+          <i class="fas fa-list mr-1"></i>
+          Liste
+        </span>
+        <span>Trier par: <span class="font-medium text-orange-600 cursor-pointer hover:underline">Pertinence</span></span>
+      </div>
+    </div>
 
-<section id="Projects"
-  class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
-  @for (boutique of boutiques; track boutique._id) {
-  <div
-  (click)="boutique_clique(boutique._id)"
-  class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl "
-  >
-      <a >
-          <img src=""
-                  alt="Boutique" class="h-80 w-72 object-cover rounded-t-xl cursor-pointer" />
-          <div class="px-4 py-3 w-72">
-              <!-- <span class="text-gray-400 mr-3 uppercase text-xs">{{boutique.owner.name}}</span> -->
-              <p class="text-lg font-bold text-black truncate block capitalize">{{boutique.nom}}
-                <p class="text-lg font-semibold text-black cursor-auto my-3">{{boutique.code}}</p>
-                <div class="flex items-center">
-                <p class="text-lg font-semibold text-black cursor-auto my-3">{{boutique.description}}</p>
-                  <div class="ml-auto cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                          fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
-                                  d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                      </svg></div>
-              </div>
+    <!-- Filtre rapide -->
+    <!-- <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-8">
+      <div class="flex flex-wrap items-center gap-4 text-sm">
+        <span class="text-gray-700 font-medium">Filtrer par:</span>
+        <div *ngFor="let cat of categories"
+             class="px-3 py-1 bg-white border border-gray-300 rounded-md hover:border-orange-400 hover:text-orange-700 cursor-pointer transition-colors">
+          {{ cat }}
+        </div>
+        <div class="text-orange-600 font-medium ml-auto hidden sm:block">
+          Voir plus de filtres <i class="fas fa-chevron-down ml-1"></i>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+  <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 lg:gap-8">
+
+    @for (boutique of boutiques; track boutique._id) {
+      <div
+        (click)="boutique_clique(boutique._id)"
+        class="group bg-white border border-gray-200 hover:border-green-800 hover:shadow-lg rounded-lg overflow-hidden transition-all duration-200 cursor-pointer"
+      >
+
+        <div class="relative h-64 lg:h-72 overflow-hidden bg-gray-100">
+          <img
+            [src]="boutique.imageUrl || 'assets/default.jpg'"
+            [alt]="boutique.nom"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            loading="lazy"
+          />
+
+          <div class="absolute top-2 left-2">
+            <span class="bg-orange-50 text-orange-800 text-xs font-bold px-2 py-1 rounded-full flex items-center">
+              <i class="fas fa-bolt mr-1"></i>
+              {{ boutique.category }} Ici le catégorie
+            </span>
           </div>
-      </a>
+
+          <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <button class="w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all">
+              <i class="fas fa-heart text-gray-400 hover:text-red-500 text-sm"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Content Amazon Style -->
+        <div class="p-4 lg:p-5">
+          <!-- Titre -->
+          <h3 class="text-base lg:text-lg font-medium text-gray-900 mb-2 line-clamp-2 leading-tight hover:text-orange-600 transition-colors group-hover:font-semibold">
+            {{ boutique.nom }}
+          </h3>
+
+          <!-- Meta infos -->
+          <div class="space-y-1 mb-3">
+            <div class="flex items-center text-sm text-gray-500">
+              <i class="fas fa-barcode text-xs mr-1"></i>
+              Code: <span class="font-mono ml-1">{{ boutique.code }}</span>
+            </div>
+            <p class="text-sm text-gray-600 line-clamp-2 leading-relaxed">
+              {{ boutique.description }}
+            </p>
+          </div>
+
+          <!-- Ratings & Reviews Amazon Style -->
+          <div class="flex items-center mb-3">
+            <div class="flex text-sm text-orange-500 mr-2">
+              ★★★★☆
+              <span class="text-gray-400 ml-1">4.2</span>
+            </div>
+            <span class="text-xs text-gray-500">124 avis</span>
+          </div>
+
+
+
+          <!-- Action Buttons Amazon -->
+          <div class="flex items-center space-x-2 pt-3 border-t border-gray-100">
+            <button
+              class="flex-1 bg-[#1D7874]  hover:bg-[#285f5c]  text-white text-sm font-bold py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2"
+            >
+              <i class="fas fa-shopping-bag"></i>
+              <span>Voir les produits</span>
+            </button>
+            <button class="p-2 text-gray-400 hover:text-green-800 hover:bg-orange-50 rounded-lg transition-all">
+              <i class="fas fa-expand-arrows-alt text-lg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Loading Skeleton si nécessaire -->
+    @if (!boutiques || boutiques.length === 0) {
+      <div class="col-span-full text-center py-20">
+        <i class="fas fa-store text-6xl text-gray-300 mb-4"></i>
+        <p class="text-xl text-gray-500">Aucune boutique trouvée</p>
+        <p class="text-gray-400 mt-1">Essayez de modifier vos critères de recherche</p>
+      </div>
+    }
   </div>
-}
-</section>
 
 
 

@@ -1,8 +1,21 @@
-<!-- source: https://github.com/mfg888/Responsive-Tailwind-CSS-Grid/blob/main/index.html -->
-
 <div class="text-center p-10">
-    <h1 class="font-bold text-3xl mb-4">Les produits les plus vendus</h1>
+  <!-- État LOADING -->
+  <div *ngIf="isLoading" class="animate-pulse space-y-4">
+    <!-- Titre skeleton -->
+    <div class="h-12 w-96 bg-gray-200 rounded-lg mx-auto mb-4"></div>
+    <!-- Sous-titre skeleton -->
+    <div class="h-6 w-64 bg-gray-200 rounded mx-auto"></div>
+  </div>
+
+  <!-- État DONNÉES CHARGÉES -->
+  <div *ngIf="!isLoading && boutique?.[0]?.nom">
+    <h1 class="font-bold text-3xl mb-4">{{ boutique?.[0].nom }}</h1>
+    <p class="text-gray-600">{{ boutique?.[0].description || '' }}</p>
+  </div>
 </div>
+
+
+
 
 
 <section id="Projects"

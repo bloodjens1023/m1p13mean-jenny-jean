@@ -11,28 +11,26 @@ import { BoutiqueUpdate } from './components/boutique-update/boutique-update';
 import { BoutiqueDetail } from './components/boutique-detail/boutique-detail';
 import { AjoutBoutique } from './pages/ajout-boutique/ajout-boutique';
 import { Acceuil1 } from './pages/acceuil1/acceuil1';
+import { Panier } from './components/panier/panier';
 
 
 export const routes: Routes = [
 
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'acceuil-user', pathMatch: 'full' },
   {path: 'login', component: Login},
-  //{path: 'admin', component: AdminLogin},
-
-  { path: 'login', component: Login },
   { path: 'insert-user', component: User },
   { path: 'login-admin', component: AdminLogin },
-
+  { path: 'acceuil-user', component: AcceuilUser },
   {
     path: 'user',
     canActivate: [RoleGuard],
     data: { roles: ['user'] },
     children: [
       { path: '', redirectTo: 'acceuil', pathMatch: 'full' },
-     // { path: 'acceuil', component: Acceuil },
       { path: 'acceuil1/:idBoutique', component: Acceuil1 },
       { path: 'acceuil-user', component: AcceuilUser },
       { path: 'produit/:id', component: ProduitInfo },
+      {path:'panier', component: Panier}
     ]
   },
 
@@ -40,7 +38,7 @@ export const routes: Routes = [
     path: 'admin',
     canActivate: [RoleGuard],
     data: { roles: ['admin'] },
-    children: [      
+    children: [
       { path: 'dashboard', component: DashboardAdmin },
       { path: 'boutique/add', component: AjoutBoutique },
       { path: 'boutique/update/:id', component: BoutiqueUpdate },

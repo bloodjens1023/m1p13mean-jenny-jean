@@ -15,6 +15,7 @@ export class UserService {
   return this.http.get<any>(`${this.apiUrl}/selectShop`)}
   getAllUser(): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/selectAllUser`)}
+
   activeUser(id: string,): Observable<any> {
     return this.http.patch(`${this.apiUrl}/${id}/activation`,{});
   }
