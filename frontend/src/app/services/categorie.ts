@@ -13,4 +13,7 @@ export class CategorieService {
  getCategorie(): Observable<any> {
  return this.http.get(`${this.apiUrl}/cat`);
  }
+ getCategorieById(): Observable<any> {
+ return this.http.get(`${this.apiUrl}/selectCat`);
+ }
 }

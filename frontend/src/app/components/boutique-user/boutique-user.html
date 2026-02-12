@@ -49,27 +49,58 @@
 
         <div class="relative h-64 lg:h-72 overflow-hidden bg-gray-100">
           <img
-            [src]="boutique.imageUrl || 'assets/default.jpg'"
+            [src]="boutique.imageUrl ||  'https://placehold.co/400x300/6B7280/F9FAFB?text=🛍️+BOUTIQUE'"
             [alt]="boutique.nom"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
           />
-
-          <div class="absolute top-2 left-2">
-            <span class="bg-orange-50 text-orange-800 text-xs font-bold px-2 py-1 rounded-full flex items-center">
-              <i class="fas fa-bolt mr-1"></i>
-              {{ boutique.category }} Ici le catégorie
-            </span>
-          </div>
-
+          @for (categorie of categorie; track categorie._id) {
+               @if (categorie._id === boutique.categorie) {
+                <div class="absolute top-2 left-2">
+                  <span ngi class="bg-orange-50 text-orange-800 text-xs font-bold px-2 py-1 rounded-full flex items-center">
+                    <i class="fas fa-bolt mr-1"></i>
+                    {{ categorie.nomCategorie}}
+                  </span>
+                </div>
+                }
+          }
           <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <button class="w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all">
-              <i class="fas fa-heart text-gray-400 hover:text-red-500 text-sm"></i>
+              <svg width="30px" height="30px" viewBox="0 0 48 48" version="1" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 48 48">
+                <rect x="5" y="19" fill="#CFD8DC" width="38" height="19"/>
+                <rect x="5" y="38" fill="#B0BEC5" width="38" height="4"/>
+                <rect x="27" y="24" fill="#455A64" width="12" height="18"/>
+                <rect x="9" y="24" fill="#E3F2FD" width="14" height="11"/>
+                <rect x="10" y="25" fill="#1E88E5" width="12" height="9"/>
+                <path fill="#90A4AE" d="M36.5,33.5c-0.3,0-0.5,0.2-0.5,0.5v2c0,0.3,0.2,0.5,0.5,0.5S37,36.3,37,36v-2C37,33.7,36.8,33.5,36.5,33.5z"/>
+                <g fill="#558B2F">
+                    <circle cx="24" cy="19" r="3"/>
+                    <circle cx="36" cy="19" r="3"/>
+                    <circle cx="12" cy="19" r="3"/>
+                </g>
+                <path fill="#7CB342" d="M40,6H8C6.9,6,6,6.9,6,8v3h36V8C42,6.9,41.1,6,40,6z"/>
+                <rect x="21" y="11" fill="#7CB342" width="6" height="8"/>
+                <polygon fill="#7CB342" points="37,11 32,11 33,19 39,19"/>
+                <polygon fill="#7CB342" points="11,11 16,11 15,19 9,19"/>
+                <g fill="#FFA000">
+                    <circle cx="30" cy="19" r="3"/>
+                    <path d="M45,19c0,1.7-1.3,3-3,3s-3-1.3-3-3s1.3-3,3-3L45,19z"/>
+                    <circle cx="18" cy="19" r="3"/>
+                    <path d="M3,19c0,1.7,1.3,3,3,3s3-1.3,3-3s-1.3-3-3-3L3,19z"/>
+                </g>
+                <g fill="#FFC107">
+                    <polygon points="32,11 27,11 27,19 33,19"/>
+                    <polygon points="42,11 37,11 39,19 45,19"/>
+                    <polygon points="16,11 21,11 21,19 15,19"/>
+                    <polygon points="6,11 11,11 9,19 3,19"/>
+                </g>
+            </svg>
+
             </button>
           </div>
         </div>
 
-        <!-- Content Amazon Style -->
+
         <div class="p-4 lg:p-5">
           <!-- Titre -->
           <h3 class="text-base lg:text-lg font-medium text-gray-900 mb-2 line-clamp-2 leading-tight hover:text-orange-600 transition-colors group-hover:font-semibold">
@@ -87,7 +118,7 @@
             </p>
           </div>
 
-          <!-- Ratings & Reviews Amazon Style -->
+
           <div class="flex items-center mb-3">
             <div class="flex text-sm text-orange-500 mr-2">
               ★★★★☆
@@ -98,7 +129,7 @@
 
 
 
-          <!-- Action Buttons Amazon -->
+
           <div class="flex items-center space-x-2 pt-3 border-t border-gray-100">
             <button
               class="flex-1 bg-[#1D7874]  hover:bg-[#285f5c]  text-white text-sm font-bold py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center space-x-2"
@@ -114,7 +145,7 @@
       </div>
     }
 
-    <!-- Loading Skeleton si nécessaire -->
+
     @if (!boutiques || boutiques.length === 0) {
       <div class="col-span-full text-center py-20">
         <i class="fas fa-store text-6xl text-gray-300 mb-4"></i>

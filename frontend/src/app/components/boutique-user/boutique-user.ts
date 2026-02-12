@@ -1,4 +1,5 @@
 import { BoutiqueService } from '@/services/boutique';
+import { CategorieService } from '@/services/categorie';
 import { ProduitService } from '@/services/produit';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
@@ -16,10 +17,12 @@ import Swal from 'sweetalert2';
 export class BoutiqueUser {
 
   boutiques: any[] = [];
+  categorie: any[] = [];
 
   private router = inject(Router);
 
-  constructor(private boutiqueService: BoutiqueService, private produitService: ProduitService) {}
+  constructor(private boutiqueService: BoutiqueService, private produitService: ProduitService,
+     private categorieService : CategorieService) {}
 
   ngOnInit(): void {
     this.boutiqueDetail();
@@ -34,6 +37,14 @@ export class BoutiqueUser {
         console.error('Erreur lors de la récupération des boutiques :', err);
       }
     });
+    this.categorieService.getCategorie().subscribe({
+      next: (res: any[])=>{
+        this.categorie = res;
+      },
+        error: (err) => {
+        console.error('Erreur lors de la récupération des boutiques :', err);
+      }
+    })
   }
   boutique_clique(id: string): void {
     console.log("Boutique cliquée avec l'ID :", id);
@@ -49,25 +60,6 @@ export class BoutiqueUser {
         });
       },
       error: (err) => console.error('Erreur:', err)
-    });
-  }
-
-  confirmToggle(boutique: any): void {
-    Swal.fire({
-      title: 'Confirmation',
-      text: boutique.active
-        ? 'Voulez-vous désactiver cette boutique ?'
-        : 'Voulez-vous activer cette boutique ?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Oui',
-      cancelButtonText: 'Annuler',
-      confirmButtonColor: '#16a34a',
-      cancelButtonColor: '#dc2626'
-    }).then((result: any) => {
-      if (result.isConfirmed) {
-        this.activeProduit(boutique._id);
-      }
     });
   }
 

@@ -1,3 +1,4 @@
+
 import { ProduitService } from '@/services/produit';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
@@ -8,31 +9,34 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './produit-list.html',
   styleUrl: './produit-list.css',
 })
-export class ProduitList {
-  produit : any[] = [];
-  router = inject(Router);
-  constructor(private produitService: ProduitService) {}
 
-  ngOnInit(){
-      this.lister();
+export class ProduitList {
+
+  produits: any[] = [];
+
+  constructor(
+    private produitService: ProduitService,
+
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    this.lister();
   }
-  lister(){
-      this.produitService.getProduit().subscribe({
-         next: (res) => {
-            this.produit = res;
-            console.log('Produits récupérés :', this.produit);
-         },
-         error: (err) => {
-            console.error('Erreur lors de la récupération des produits :', err);
-         }
-      });
+
+  lister() {
+    this.produitService.getProduit().subscribe({
+      next: (res) => {
+        this.produits = res;
+      }
+    });
   }
-  produit_clique(id: string){
-    console.log("Produit cliqué avec l'ID :", id);
+
+
+
+  produit_clique(id: string) {
     this.router.navigate(['/user/produit', id]);
   }
-
-
 }
 
 

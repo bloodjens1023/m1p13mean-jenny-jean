@@ -1,21 +1,25 @@
 <!-- source: https://github.com/mfg888/Responsive-Tailwind-CSS-Grid/blob/main/index.html -->
 
 <div class="text-center p-10">
-    <h1 class="font-bold text-3xl mb-4">Les produits populaire de la boutique {{produit[0]}}</h1>
+    <h1 class="font-bold text-3xl mb-4">Les produits populaire de la boutique {{produits[0]}}</h1>
 </div>
 
 
 <section id="Projects"
     class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
 
-  @for (produit of produit; track produit._id) {
+  @for (produit of produits; track produit._id) {
     <div
      (click)="produit_clique(produit._id)"
     class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl "
     >
         <a >
-            <img src="{{produit.image}}"
-                    alt="Product" class="h-80 w-72 object-cover rounded-t-xl cursor-pointer" />
+
+          <img src="https://via.placeholder.com/400x300/4F46E5/FFFFFF?text=🛍️"
+              alt="Product"
+              class="h-80 w-72 object-cover rounded-t-xl cursor-pointer" />
+
+
             <div class="px-4 py-3 w-72">
                 <span class="text-gray-400 mr-3 uppercase text-xs">{{produit.boutiqueId.nom}}</span>
                 <p class="text-lg font-bold text-black truncate block capitalize">{{produit.nom}}</p>
@@ -23,7 +27,7 @@
                     <p class="text-lg font-semibold text-black cursor-auto my-3">{{produit.prix}} MGA</p>
                     <!-- <p class="text-lg font-semibold text-black cursor-auto my-3">{{produit.description}}</p> -->
 
-                    <div class="ml-auto cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                    <div  class="ml-auto cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                             fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
                                 d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />

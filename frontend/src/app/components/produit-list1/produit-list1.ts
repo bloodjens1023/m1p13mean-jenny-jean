@@ -3,6 +3,8 @@ import { Router, ActivatedRoute} from '@angular/router';
 import { Component, inject, OnInit } from '@angular/core';
 import { BoutiqueService } from '@/services/boutique';
 import { CommonModule } from '@angular/common';
+import { CartService } from '@/services/cart';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-produit-list1',
@@ -20,7 +22,9 @@ export class ProduitList1 implements  OnInit  {
   isLoading = true;
 
 
-  constructor(private produitService: ProduitService, private boutiqueService: BoutiqueService) {}
+  constructor(private produitService: ProduitService,
+    private boutiqueService: BoutiqueService,
+        private cartService: CartService,) {}
 
   ngOnInit(){
       this.route.paramMap.subscribe(params => {
@@ -35,7 +39,19 @@ export class ProduitList1 implements  OnInit  {
       this.boutique_proprietaire()
       this.isLoading = false;
   }
-
+   ajouterAuPanier(prod: any) {
+    this.cartService.ajouterProduit({
+      produit: prod._id,
+      nom: prod.nom,
+      prix: prod.prix,
+      quantite: 1,
+      stock:prod.stock,
+      image: prod.image
+    });
+     toast.success('Produit Ajouter', {
+              description: 'Cette produit a été ajouté avec success.'
+            });
+  }
   lister() {
     const idBoutique = this.idBoutique;
 

@@ -1,4 +1,5 @@
 import { AuthService } from '@/services/auth';
+import { CartService } from '@/services/cart';
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, inject } from '@angular/core';
 import { RouterLink } from "@angular/router";
@@ -15,6 +16,15 @@ export class Navbar{
   auth = inject(AuthService);
   showUserMenu = false;
   userMenuOpen = false;
+  nombreArticles = 0;
+
+  constructor(private cartService: CartService) {}
+
+  ngOnInit() {
+    this.cartService.panier$.subscribe(panier => {
+      this.nombreArticles = panier.reduce((acc, p) => acc + p.quantite, 0);
+    });
+  }
   toggleUserMenu() {
     this.showUserMenu = !this.showUserMenu;
   }
@@ -30,7 +40,9 @@ export class Navbar{
     this.mobileMenuOpen = !this.mobileMenuOpen;
   }
   logout(){
+    this.cartService.viderPanier();
     this.auth.logout();
   }
+
 
 }
