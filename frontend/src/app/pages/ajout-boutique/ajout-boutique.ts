@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { toast } from 'ngx-sonner';
 import { NavbarAdmin } from "../../components/navbar-admin/navbar-admin"
 import { UserDropdownComponent } from "@/components/user-shop-dropdown/user-shop-dropdown";
+import { DropdownCatComponent } from "@/components/dropdown-categorie/dropdown-categorie";
 @Component({
   selector: 'app-ajout-boutique',
   imports: [
@@ -14,13 +15,15 @@ import { UserDropdownComponent } from "@/components/user-shop-dropdown/user-shop
     ReactiveFormsModule,
     FormsModule,
     NavbarAdmin,
-    UserDropdownComponent
+    UserDropdownComponent,
+    DropdownCatComponent
 ],
   templateUrl: './ajout-boutique.html',
   styleUrl: './ajout-boutique.css',
 })
 export class AjoutBoutique {
   IdShop: string = '';
+  categorieId: string='';
   boutiqueForm!: FormGroup;
 
   boutique : any[] = [];
@@ -35,6 +38,7 @@ export class AjoutBoutique {
       nom: ['', [Validators.required, Validators.minLength(3)]],
       code: ['', [Validators.minLength(3)]],
       description: [''],
+      categorieId:[''],
       shopID:[''],
       loyerMensuel: [0, [Validators.min(0)]],
       tauxCommission: [0, [Validators.min(0), Validators.max(100)]],
@@ -72,5 +76,10 @@ export class AjoutBoutique {
     this.IdShop = user._id;
     this.boutiqueForm.patchValue({ owner: this.IdShop });
     console.log('ID de la boutique sélectionnée:', this.IdShop);
+  }
+  OncategorieSelection(categorie: any) {
+    this.categorieId = categorie._id;
+    this.boutiqueForm.patchValue({ categorie: this.categorieId });
+    console.log('ID de la boutique sélectionnée:', this.categorieId);
   }
 }

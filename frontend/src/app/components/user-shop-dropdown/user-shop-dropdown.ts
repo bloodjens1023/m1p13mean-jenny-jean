@@ -53,4 +53,3 @@ export class UserDropdownComponent implements OnInit {
     return user._id;
   }
 }
-
