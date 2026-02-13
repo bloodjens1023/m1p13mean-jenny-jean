@@ -22,8 +22,8 @@ import { DropdownCatComponent } from "@/components/dropdown-categorie/dropdown-c
   styleUrl: './ajout-boutique.css',
 })
 export class AjoutBoutique {
-  IdShop: string = '';
-  categorieId: string='';
+  owner: string = '';
+  categorie: string='';
   boutiqueForm!: FormGroup;
 
   boutique : any[] = [];
@@ -38,19 +38,20 @@ export class AjoutBoutique {
       nom: ['', [Validators.required, Validators.minLength(3)]],
       code: ['', [Validators.minLength(3)]],
       description: [''],
-      categorieId:[''],
-      shopID:[''],
+      categorie:[''],
+      owner:[''],
       loyerMensuel: [0, [Validators.min(0)]],
       tauxCommission: [0, [Validators.min(0), Validators.max(100)]],
       active: [false]
     });
   }
-
-
-
-
-
    onSubmit() {
+
+    this.boutiqueForm.patchValue({
+      owner: this.owner,
+      categorie: this.categorie
+    });
+    console.log("FORM VALUE :", this.boutiqueForm.value);
     if (this.boutiqueForm.valid) {
 
 
@@ -73,13 +74,9 @@ export class AjoutBoutique {
     }
   }
   OnshopSelection(user: any) {
-    this.IdShop = user._id;
-    this.boutiqueForm.patchValue({ owner: this.IdShop });
-    console.log('ID de la boutique sélectionnée:', this.IdShop);
+    this.owner = user._id;
   }
   OncategorieSelection(categorie: any) {
-    this.categorieId = categorie._id;
-    this.boutiqueForm.patchValue({ categorie: this.categorieId });
-    console.log('ID de la boutique sélectionnée:', this.categorieId);
+    this.categorie = categorie._id;
   }
 }
