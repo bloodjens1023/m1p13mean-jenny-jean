@@ -1,4 +1,4 @@
-<h1>{{auth.user}}</h1>
+<h1>{{ auth.user() }}</h1>
 <div class="container mx-auto mt-10">
   <div class="sm:flex shadow-md my-10">
     <div class="  w-full  sm:w-3/4 bg-white px-10 py-10">
@@ -78,6 +78,58 @@
           <span>Prix Total</span>
           <span >{{total | number}} MGA</span>
         </div>
+        <!-- MODE DE LIVRAISON -->
+<div class="border-t mt-8 pt-6">
+
+  <h2 class="font-semibold text-lg mb-4">Mode de livraison</h2>
+
+  <!-- Choix -->
+  <div class="space-y-2">
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input
+        type="radio"
+        name="modeLivraison"
+        value="retrait"
+        [(ngModel)]="modeLivraison"
+        (change)="changerModeLivraison()"
+      />
+      <span>Récupération (Akoor)</span>
+    </label>
+
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input
+        type="radio"
+        name="modeLivraison"
+        value="livraison"
+        [(ngModel)]="modeLivraison"
+        (change)="changerModeLivraison()"
+      />
+      <span>Livraison à domicile</span>
+    </label>
+  </div>
+
+  <!-- CAS RETRAIT -->
+  <div *ngIf="modeLivraison === 'retrait'" class="mt-4 p-3 bg-gray-100 rounded">
+    <p class="text-sm font-semibold">Adresse de récupération</p>
+    <p class="text-sm text-gray-700">Akoor</p>
+  </div>
+
+  <!-- CAS LIVRAISON -->
+  <div *ngIf="modeLivraison === 'livraison'" class="mt-4">
+    <p class="text-sm font-semibold mb-2">
+      Sélectionnez votre lieu de livraison
+    </p>
+
+    <!-- Carte -->
+    <div id="map" class="w-full rounded" style="height: 250px;"></div>
+
+    <p *ngIf="adresseLivraison" class="text-xs mt-2 text-green-600">
+      📍 {{ adresseLivraison }}
+    </p>
+  </div>
+
+</div>
+
         <button (click)="commander()" class=" bg-[#1D7874] font-semibold hover:bg-[#11524e] py-3 text-sm text-white uppercase w-full">
               Passer à la caisse
             </button>
