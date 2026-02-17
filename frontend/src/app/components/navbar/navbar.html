@@ -19,27 +19,26 @@
       </a>
 
 
-      <div class="flex-1 max-w-xl mx-4 hidden sm:flex">
+      <div class="flex-1 max-w-xl mx-4 hidden sm:flex" >
         <div class="flex w-full h-12 rounded-lg shadow-lg border border-gray-300 hover:shadow-xl transition-all duration-200 focus-within:shadow-2xl focus-within:border-orange-400">
 
 
-          <select class="h-full px-4 py-2 border-r border-gray-200 text-sm bg-gray-50 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-orange-400">
+          <select name="categorie" [(ngModel)]="categorie1" (change)="onSearch()" class="h-full px-4 py-2 border-r border-gray-200 text-sm bg-gray-50 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-orange-400">
             <option>Toutes</option>
-            <option>Smartphones</option>
-            <option>Électronique</option>
-            <option>Vêtements</option>
-            <option>Maison</option>
+            <option *ngFor="let cat of categorie" [value]="cat._id"> {{ cat.nomCategorie }}</option>
           </select>
 
           <!-- Input recherche -->
           <input
             type="text"
+            name="q"
+            [(ngModel)]="q"
             placeholder="Rechercher boutiques, produits..."
             class="flex-1 px-6 py-3 bg-white text-base placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-orange-400"
           />
 
 
-          <button
+          <button (click)="onSearch()"
             class="bg-[#1D7874] hover:bg-[#4a8582]  px-6 py-3 rounded-r-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center"
           >
             <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

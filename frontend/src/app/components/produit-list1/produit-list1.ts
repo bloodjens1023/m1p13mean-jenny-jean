@@ -5,6 +5,7 @@ import { BoutiqueService } from '@/services/boutique';
 import { CommonModule } from '@angular/common';
 import { CartService } from '@/services/cart';
 import { toast } from 'ngx-sonner';
+import { RechercheService } from '@/services/recherche';
 
 @Component({
   selector: 'app-produit-list1',
@@ -24,9 +25,13 @@ export class ProduitList1 implements  OnInit  {
 
   constructor(private produitService: ProduitService,
     private boutiqueService: BoutiqueService,
-        private cartService: CartService,) {}
+        private cartService: CartService,
+        private rechercheService: RechercheService) {}
 
   ngOnInit(){
+      this.rechercheService.produits$.subscribe(data => {
+        this.produit = data;
+      });
       this.route.paramMap.subscribe(params => {
         this.idBoutique = params.get('idBoutique')!;
 

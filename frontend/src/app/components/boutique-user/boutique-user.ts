@@ -2,10 +2,11 @@ import { BoutiqueService } from '@/services/boutique';
 import { CategorieService } from '@/services/categorie';
 import { ProduitService } from '@/services/produit';
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject,OnInit  } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { toast } from 'ngx-sonner';
 import Swal from 'sweetalert2';
+import { RechercheService } from '@/services/recherche';
 
 @Component({
   selector: 'app-boutique-user',
@@ -14,7 +15,7 @@ import Swal from 'sweetalert2';
   templateUrl: './boutique-user.html',
   styleUrl: './boutique-user.css',
 })
-export class BoutiqueUser {
+export class BoutiqueUser implements OnInit  {
 
   boutiques: any[] = [];
   categorie: any[] = [];
@@ -22,9 +23,13 @@ export class BoutiqueUser {
   private router = inject(Router);
 
   constructor(private boutiqueService: BoutiqueService, private produitService: ProduitService,
-     private categorieService : CategorieService) {}
+     private categorieService : CategorieService, private rechercheService: RechercheService
+     ) {}
 
   ngOnInit(): void {
+    this.rechercheService.boutiques$.subscribe(data => {
+      this.boutiques = data;
+    });
     this.boutiqueDetail();
   }
 
