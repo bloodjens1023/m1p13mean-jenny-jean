@@ -12,6 +12,7 @@ import { BoutiqueDetail } from './components/boutique-detail/boutique-detail';
 import { AjoutBoutique } from './pages/ajout-boutique/ajout-boutique';
 import { Acceuil1 } from './pages/acceuil1/acceuil1';
 import { Panier } from './components/panier/panier';
+import {AdminUser} from './pages/admin-user/admin-user'; 
 
 
 export const routes: Routes = [
@@ -43,6 +44,7 @@ export const routes: Routes = [
       { path: 'boutique/add', component: AjoutBoutique },
       { path: 'boutique/update/:id', component: BoutiqueUpdate },
       { path: 'boutique/detail/:id', component: BoutiqueDetail },
+      { path: 'utilisateur', component: AdminUser },
 
     ]
   },

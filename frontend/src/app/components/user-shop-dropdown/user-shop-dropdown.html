@@ -1,6 +1,7 @@
 <div class="relative w-full max-w-md">
   <!-- Bouton déclencheur -->
   <button
+    type="button"
     id="shopDropdown"
     (click)="toggleDropdown()"
     class="flex items-center justify-between w-full p-4 bg-white border-2 border-gray-200
@@ -38,7 +39,7 @@
       <div *ngFor="let user of shopUsers; trackBy: trackByUserId"
            class="px-6 py-4 hover:bg-blue-50 cursor-pointer border-b border-gray-50 last:border-b-0
                   transition-colors duration-200 group"
-           (click)="selectUser(user); toggleDropdown()">
+           (click)="selectUser(user); toggleDropdown(); $event.stopPropagation()">
 
         <!-- Avatar + Infos -->
         <div class="flex items-center gap-4">

@@ -56,6 +56,18 @@
                         transition-all duration-300"
                  placeholder="SAMSUNG001">
         </div>
+      <div>
+        <app-user-shop-dropdown
+          [selectedUserId]="boutiqueForm.get('owner')?.value"
+          (shopSelection)="boutiqueForm.patchValue({ owner: $event._id })">
+        </app-user-shop-dropdown>
+      </div>
+      <div>
+        <app-dropdown-categorie
+          [selectedCategorieId]="boutiqueForm.get('categorie')?.value"
+          (categorieSelected)="boutiqueForm.patchValue({ categorie: $event._id })">
+        </app-dropdown-categorie>
+      </div>
 
         <!-- 3. Description -->
         <div>

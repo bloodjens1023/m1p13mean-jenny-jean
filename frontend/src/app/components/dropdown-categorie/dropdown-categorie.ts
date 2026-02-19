@@ -1,10 +1,11 @@
 import { CategorieService } from '@/services/categorie';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, OnChanges, Output ,Input,SimpleChanges} from '@angular/core';
 import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-dropdown-categorie',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './dropdown-categorie.html',
   styleUrl: './dropdown-categorie.css',
@@ -12,6 +13,14 @@ import { EventEmitter } from '@angular/core';
 
 
 export class DropdownCatComponent implements OnInit {
+
+  private _selectedCategorieId!: string;
+
+  @Input()
+  set selectedCategorieId(value: string) {
+    this._selectedCategorieId = value;
+    this.syncSelectedCategorie();
+  }
 
   @Output() categorieSelected = new EventEmitter<any>();
 
@@ -24,11 +33,19 @@ export class DropdownCatComponent implements OnInit {
   ngOnInit() {
     this.loadCategorie();
   }
+  private syncSelectedCategorie() {
+    if (!this._selectedCategorieId || !this.categorie.length) return;
+
+    this.selectedCategorie =
+      this.categorie.find(c => c._id === this._selectedCategorieId) || null;
+  }
+
 
   loadCategorie() {
     this.categorieService.getCategorie().subscribe({
       next: (categories) => {
         this.categorie = categories;
+        this.syncSelectedCategorie();
       }
     });
   }
@@ -38,8 +55,8 @@ export class DropdownCatComponent implements OnInit {
   }
 
   selectCat(categorie: any) {
-    this.selectedCategorie = categorie;
-    console.log('Categorie sélectionnée:', categorie._id);
+      this.selectedCategorie = categorie;
+      console.log('Categorie sélectionnée:', categorie._id);
 
     this.categorieSelected.emit(categorie); 
   }
