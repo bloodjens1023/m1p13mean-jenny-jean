@@ -13,32 +13,38 @@ export class RoleGuard implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-  const requiredRoles = route.data['roles'] as string[] || []; // <-- par défaut tableau vide
+    const requiredRoles = route.data['roles'] as string[] || [];
 
-  if (!this.authService.isAuthenticated()) {
-    this.router.navigate(['/login']);
-    return false;
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+      return false;
+    }
+
+    const userRole = this.authService.getCurrentUserRole()?.toLowerCase() || '';
+
+    if (requiredRoles.length > 0 && !requiredRoles.map(r => r.toLowerCase()).includes(userRole)) {
+      this.redirectByRole(userRole);
+      return false;
+    }
+
+    return true;
   }
 
-  const userRole = this.authService.getCurrentUserRole() || '';
-
-  // Vérifie si le rôle est dans la liste (évite erreur si tableau vide)
-  if (!requiredRoles.includes(userRole)) {
-    // Redirection selon rôle
-    switch(userRole.toLowerCase()) {  // Toujours lowercase pour sécurité
-      case 'user':
-        this.router.navigate(['/user/acceuil-user']);
+  private redirectByRole(role: string): void {
+    switch (role) {
+      case 'admin':
+        this.router.navigate(['/admin/dashboard']);
         break;
-      case 'boutique':
-        this.router.navigate(['/boutique/dashboard']);
+      case 'shop':
+        this.router.navigate(['/shop/dashboard']);
+        break;
+      case 'user':
+        this.router.navigate(['/']);
         break;
       default:
-        this.router.navigate(['/admin/dashboard']);
+        this.router.navigate(['/login']);
+        break;
     }
-    return false;
   }
-
-  return true;
-}
 
 }

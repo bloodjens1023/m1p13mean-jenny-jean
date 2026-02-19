@@ -1,0 +1,166 @@
+<div class="dashboard-shell">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </div>
+      <span class="brand-name">{{ boutiqueNom }}</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Commandes
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        Produits
+      </a>
+      <a class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analytiques
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">A</div>
+        <div>
+          <span class="user-name">Admin</span>
+          <span class="user-role">Gérant</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Vue d'ensemble</h1>
+        <span class="page-date">{{ today | date:'EEEE d MMMM yyyy' }}</span>
+      </div>
+      <div class="topbar-right">
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Rechercher…" [(ngModel)]="searchTerm">
+        </div>
+        <button class="notif-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Nombre de vente</span>
+          <div class="kpi-icon kpi-icon-sales "><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        </div>
+        <div class="kpi-value text-center">{{ nombreVentes}}</div>
+
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Commandes</span>
+          <div class="kpi-icon kpi-icon-orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+        </div>
+        <div class="kpi-value text-center ">{{ nbCommande }}</div>
+
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label">Produits en Stock</span>
+          <div class="kpi-icon kpi-icon-stock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg></div>
+        </div>
+        <div class="kpi-value text-center"> 10  </div>
+        <!-- (static attente api) -->
+
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-label ">Chiffre d'Affaire Mensuel</span>
+          <div class="kpi-icon kpi-icon-avg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.98 1.61h9.72a2 2 0 001.98-1.61L23 6H6"/></svg></div>
+        </div>
+        <div class="kpi-value text-center">{{ caMensuel  }} AR</div>
+
+      </div>
+    </div>
+
+    <div class="bottom-grid">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Dernières Commandes</h3>
+            <p class="card-subtitle">{{ commandes.length }} commandes récentes</p>
+          </div>
+          <div class="card-actions">
+            <button class="btn-ghost">Voir tout</button>
+            <button class="btn-export">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export
+            </button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="orders-table">
+            <thead>
+              <tr><th>Commande</th><th>Produit</th><th>Qté</th><th>Total</th><th>Date</th><th>Statut</th></tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of commandes" class="table-row">
+                <td><span class="order-id">#{{ c.id }}</span></td>
+                <td>
+                  <div class="product-cell">
+                    <div class="product-thumb">{{ c.produit[0] }}</div>
+                    <span>{{ c.produit }}</span>
+                  </div>
+                </td>
+                <td><span class="qty-badge">{{ c.quantite }}</span></td>
+                <td><strong>{{ c.total | currency:'AR ' }}</strong></td>
+                <td class="date-cell">{{ c.date | date:'dd MMM yyyy' }}</td>
+                <td>
+                  <span class="status-badge"
+                    [class.status-livree]="c.statut === 'Livrée'"
+                    [class.status-en-cours]="c.statut === 'En cours'"
+                    [class.status-annulee]="c.statut === 'Annulée'">
+                    {{ c.statut }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Top Produits</h3>
+            <p class="card-subtitle">Par volume de ventes</p>
+          </div>
+        </div>
+        <div class="top-list">
+          <div class="top-item" *ngFor="let p of topProduits; let i = index">
+            <div class="top-rank">{{ i + 1 }}</div>
+            <div class="top-info">
+              <span class="top-name">{{ p.nom }}</span>
+              <div class="top-bar-wrap">
+                <div class="top-bar" [style.width.%]="p.pourcentage"></div>
+              </div>
+            </div>
+            <span class="top-value">{{ p.ventes }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>

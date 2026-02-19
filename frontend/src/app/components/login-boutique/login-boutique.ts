@@ -6,12 +6,12 @@ import { AuthService } from '../../services/auth';
 import { toast } from 'ngx-sonner';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-login-boutique',
   imports: [CommonModule, FormsModule, RouterModule], // <-- ajouter RouterModule
-  templateUrl: './login.html',
-  styleUrls: ['./login.css']
+  templateUrl: './login-boutique.html',
+  styleUrls: ['./login-boutique.css']
 })
-export class Login {
+export class LoginBoutique {
   showModal = false;
   message = "";
   loginData = {
@@ -33,7 +33,7 @@ export class Login {
         console.log('Réponse backend :', res);
         console.log('Token :', res.token);
         console.log('User :', res.user.role);
-        if(res.user.role === "ADMIN" || res.user.role === "SHOP"){
+        if(res.user.role === "USER" || res.user.role === "AMDIN"){
           toast.error('Erreur de Connexion', {
             description: 'Connexion impossible.'
           });
@@ -42,7 +42,7 @@ export class Login {
            toast.success('Connexion réussite', {
               description: 'Vous êtes maintenant connecté.'
             });
-            this.router.navigate(['/user/acceuil-user']);
+            this.router.navigate(['/shop/']);
         }
       },
       error: (err) => {

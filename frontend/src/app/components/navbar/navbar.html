@@ -90,7 +90,7 @@
 
 
         <div class="flex items-center space-x-1 group relative">
-          <div *ngIf="auth.user(); else loginButtons" class="relative">
+          <div *ngIf="auth.getCurrentUserRole()==='user' && auth.isAuthenticated(); else loginButtons" class="relative">
 
 
       <div

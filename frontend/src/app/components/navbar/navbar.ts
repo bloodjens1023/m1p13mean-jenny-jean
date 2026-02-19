@@ -39,6 +39,7 @@ export class Navbar{
 
 
   toggleUserMenus() {
+
     this.userMenuOpen = !this.userMenuOpen;
   }
 
@@ -58,7 +59,7 @@ export class Navbar{
       }
     });
   }
-  
+
   onSearch() {
     console.log('Recherche:', {
       q: this.q,
@@ -68,6 +69,6 @@ export class Navbar{
       this.q || '',
       this.categorie1 || 'Toutes')
   }
-  
+
 
 }
