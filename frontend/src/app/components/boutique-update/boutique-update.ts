@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toast } from 'ngx-sonner';
 import { NavbarAdmin } from "../navbar-admin/navbar-admin";
+import { UserDropdownComponent } from "@/components/user-shop-dropdown/user-shop-dropdown";
+import { DropdownCatComponent } from "@/components/dropdown-categorie/dropdown-categorie";
 
 @Component({
   selector: 'app-boutique-update',
@@ -13,14 +15,15 @@ import { NavbarAdmin } from "../navbar-admin/navbar-admin";
     CommonModule,
     ReactiveFormsModule,
     FormsModule, RouterLink,
-    NavbarAdmin
+    NavbarAdmin,
+    UserDropdownComponent,
+    DropdownCatComponent
 ],
   templateUrl: './boutique-update.html',
   styleUrl: './boutique-update.css',
 })
 export class BoutiqueUpdate implements OnInit {
   boutiqueForm!: FormGroup;
-
   boutique : any[] = [];
   id!: string;
   constructor(
@@ -33,6 +36,8 @@ export class BoutiqueUpdate implements OnInit {
       nom: ['', [Validators.required, Validators.minLength(3)]],
       code: ['', [Validators.minLength(3)]],
       description: [''],
+      owner:['',[Validators.required]],
+      categorie:['',[Validators.required]],
       loyerMensuel: [0, [Validators.min(0)]],
       tauxCommission: [0, [Validators.min(0), Validators.max(100)]],
       active: [false]
@@ -44,6 +49,7 @@ export class BoutiqueUpdate implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id')!;
     this.loadBoutique();
+    
   }
 
   loadBoutique() {
@@ -53,6 +59,8 @@ export class BoutiqueUpdate implements OnInit {
         this.boutiqueForm.patchValue({
           nom: boutique.nom,
           code: boutique.code,
+          owner: boutique.owner?._id || boutique.owner,
+          categorie: boutique.categorie?._id || boutique.categorie,
           description: boutique.description,
           loyerMensuel: boutique.loyerMensuel,
           tauxCommission: boutique.tauxCommission,
@@ -63,29 +71,41 @@ export class BoutiqueUpdate implements OnInit {
     })
   }
 
+  onSubmit() {
 
-
-
-   onSubmit() {
-    if (this.boutiqueForm.valid) {
-
-
-
-      this.boutiqueService.updateBoutique(this.id, this.boutiqueForm.value).subscribe({
-        next: () => {
-          toast.success('Connexion réussite', {
-                    description: 'Boutique modifiée avec succès !'
-                  });
-          this.router.navigate(['/admin/dashboard'], {
-            state: { message: 'success' }
-          });
-        },
-        error: (err) => {
-           toast.error('Erreur', {
-                    description:'Eviter de donner un même code a 2 boutiques differents.'
-                  });
-        }
+    if (!this.boutiqueForm.get('owner')?.value ||
+        !this.boutiqueForm.get('categorie')?.value) {
+  
+      toast.error('Erreur', {
+        description: 'Veuillez sélectionner un owner et une catégorie'
       });
+      return;
     }
+  
+    if (this.boutiqueForm.invalid) return;
+  
+    this.boutiqueService.updateBoutique(this.id, this.boutiqueForm.value).subscribe({
+      next: () => {
+        toast.success('Succès', {
+          description: 'Boutique modifiée avec succès'
+        });
+        this.router.navigate(['/admin/dashboard']);
+      },
+      error: () => {
+        toast.error('Erreur', {
+          description: 'Code déjà utilisé par une autre boutique'
+        });
+      }
+    });
+  }
+  
+  onOwnerChange(user: any) {
+    if (!user?._id) return;
+    this.boutiqueForm.patchValue({ owner: user._id });
+  }
+  
+  onCategorieChange(categorie: any) {
+    if (!categorie?._id) return;
+    this.boutiqueForm.patchValue({ categorie: categorie._id });
   }
 }

@@ -35,7 +35,9 @@ export class UserList {
         console.error('Erreur lors de la récupération des boutiques :', err);
       }
     });
+   
   }
+  
 
   user_clique(id: string): void {
     console.log("Boutique cliquée avec l'ID :", id);
