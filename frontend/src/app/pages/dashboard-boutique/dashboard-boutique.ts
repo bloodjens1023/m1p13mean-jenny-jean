@@ -3,6 +3,7 @@ import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BoutiqueDashboardService, DashboardStats, ProduitPlusVendu } from '@/services/dashboard-boutique';
 import { AuthService } from '@/services/auth';
+import { BoutiqueService } from '@/services/boutique';
 
 @Component({
   selector: 'app-dashboard-boutique',
@@ -31,18 +32,33 @@ export class DashboardBoutique implements OnInit {
 
   constructor(
     private dashboardService: BoutiqueDashboardService,
-    private authService: AuthService
+    private authService: AuthService,
+    private boutiqueService: BoutiqueService
   ) {}
 
   ngOnInit(): void {
-    const boutiqueId = this.authService.user()?.id;
-    if (boutiqueId) {
-      this.loadStats(boutiqueId);
-    } else {
-      this.error = true;
-      this.loading = false;
+    const owner = this.authService.user()?.id;
+  
+    if (!owner) {
+      console.error('Owner non trouvé');
+      return;
     }
+  
+    this.boutiqueService.getBoutiqueUser(owner).subscribe({
+      next: (boutiques) => {
+        if (boutiques && boutiques.length > 0) {
+          const boutiqueId = boutiques[0]._id;
+          this.loadStats(boutiqueId);
+        } else {
+          console.warn('Aucune boutique trouvée pour cet owner');
+        }
+      },
+      error: (err) => {
+        console.error('Erreur récupération boutique', err);
+      }
+    });
   }
+  
 
   loadStats(boutiqueId: string): void {
     this.loading = true;
