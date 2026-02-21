@@ -31,14 +31,12 @@ export class Panier {
   total: number = 0;
   id_User?: string;
 
-  // 🚚 LIVRAISON
   modeLivraison: 'retrait' | 'livraison' = 'retrait';
   adresseLivraison: AdresseLivraison = {
     adresseTexte: 'Akoor'
   };
   dateLivraison: Date = new Date();
 
-  // 🗺️ Carte
   map: any;
   marker: any;
   longitude: any;
@@ -60,9 +58,6 @@ export class Panier {
     });
   }
 
-  // ----------------------------
-  // PANIER
-  // ----------------------------
   modifierQuantite(id: string, event: any) {
     const quantite = Number(event.target.value);
     this.cartService.modifierQuantite(id, quantite);
@@ -76,9 +71,6 @@ export class Panier {
     return stock > 0 ? Array.from({ length: stock }, (_, i) => i + 1) : [];
   }
 
-  // ----------------------------
-  // LIVRAISON
-  // ----------------------------
   changerModeLivraison() {
     if (this.modeLivraison === 'retrait') {
       this.adresseLivraison = {
@@ -109,7 +101,6 @@ export class Panier {
       const lat = e.latlng.lat;
       const lng = e.latlng.lng;
     
-      // 🔥 Reverse Geocoding OpenStreetMap
       const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`;
     
       try {
@@ -123,7 +114,6 @@ export class Panier {
     
         const address = data.address || {};
     
-        // priorité : quartier → suburb → city → state
         const nomLieu =
           address.suburb ||
           address.neighbourhood ||
@@ -153,9 +143,6 @@ export class Panier {
     
   }
 
-  // ----------------------------
-  // COMMANDE
-  // ----------------------------
   commander() {
     if (!this.id_User) {
       alert('Vous devez être connecté pour passer une commande');

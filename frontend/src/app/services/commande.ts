@@ -22,4 +22,7 @@ export class CommandeService {
   passerCommande(commande: Commande): Observable<any> {
     return this.http.post(`${this.apiUrl}/ajouter`, commande);
   }
+  historiqueCommandes(acheteur: string): Observable<any>{
+    return this.http.get(`${this.apiUrl}/historique/${acheteur}`);
+  }
 }

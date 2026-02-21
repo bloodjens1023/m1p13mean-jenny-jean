@@ -23,7 +23,7 @@ export class BoutiqueService {
  updateBoutique(id: string, boutique: any): Observable<any> {
  return this.http.put(`${this.apiUrl}/${id}/update`, boutique);
 }
-  activeBoutique(id: string,): Observable<any> {
+ activeBoutique(id: string,): Observable<any> {
  return this.http.patch(`${this.apiUrl}/${id}/activation`,{});
  }
  deleteBoutique(id: string): Observable<any> {

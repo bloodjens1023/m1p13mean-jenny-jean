@@ -15,7 +15,8 @@ import {AdminUser} from './pages/admin-user/admin-user';
 import { DashboardBoutique } from './pages/dashboard-boutique/dashboard-boutique';
 import { LoginBoutique } from './components/login-boutique/login-boutique';
 import { SignBoutique } from './components/sign-boutique/sign-boutique';
-import { HomeRedirect } from './components/home-redirect/home-redirect';  // ← nouveau
+import { HistoriqueCommande } from './components/historique-commande/historique-commande';
+import { HomeRedirect } from './components/home-redirect/home-redirect';  
 
 
 export const routes: Routes = [
@@ -44,6 +45,7 @@ export const routes: Routes = [
       { path: 'acceuil-user',            component: AcceuilUser  },
       { path: 'produit/:id',             component: ProduitInfo  },
       { path: 'panier',                  component: Panier       },
+      { path: 'historique-commande', component: HistoriqueCommande},
     ]
   },
 
