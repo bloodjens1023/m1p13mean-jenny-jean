@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BoutiqueDashboardService, DashboardStats, ProduitPlusVendu } from '@/services/dashboard-boutique';
 import { AuthService } from '@/services/auth';
 import { BoutiqueService } from '@/services/boutique';
+import { RouterLink } from "@angular/router";
+import { NavShop } from "@/components/nav-shop/nav-shop";
 
 @Component({
   selector: 'app-dashboard-boutique',
   standalone: true,
-  imports: [CommonModule, FormsModule, CurrencyPipe, DatePipe],
+  imports: [CommonModule, FormsModule, CurrencyPipe, DatePipe, NavShop],
   templateUrl: './dashboard-boutique.html',
   styleUrl: './dashboard-boutique.css',
 })
+
 export class DashboardBoutique implements OnInit {
 
   // ── Infos générales ─────────────────────────────────────
@@ -30,6 +33,12 @@ export class DashboardBoutique implements OnInit {
   // ── Top produits ─────────────────────────────────────────
   topProduits: { nom: string; ventes: number; pourcentage: number }[] = [];
 
+
+  //recuperation owner
+  auth = inject(AuthService);
+
+
+
   constructor(
     private dashboardService: BoutiqueDashboardService,
     private authService: AuthService,
@@ -38,16 +47,19 @@ export class DashboardBoutique implements OnInit {
 
   ngOnInit(): void {
     const owner = this.authService.user()?.id;
-  
     if (!owner) {
       console.error('Owner non trouvé');
       return;
     }
-  
-    this.boutiqueService.getBoutiqueUser(owner).subscribe({
+
+    this.boutiqueService.getBoutiqueByIdOwner(owner).subscribe({
+
       next: (boutiques) => {
         if (boutiques && boutiques.length > 0) {
           const boutiqueId = boutiques[0]._id;
+
+
+
           this.loadStats(boutiqueId);
         } else {
           console.warn('Aucune boutique trouvée pour cet owner');
@@ -58,9 +70,10 @@ export class DashboardBoutique implements OnInit {
       }
     });
   }
-  
+
 
   loadStats(boutiqueId: string): void {
+    console.log(boutiqueId)
     this.loading = true;
     this.error   = false;
 

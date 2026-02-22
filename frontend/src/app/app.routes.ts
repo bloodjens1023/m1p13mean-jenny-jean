@@ -16,7 +16,8 @@ import { DashboardBoutique } from './pages/dashboard-boutique/dashboard-boutique
 import { LoginBoutique } from './components/login-boutique/login-boutique';
 import { SignBoutique } from './components/sign-boutique/sign-boutique';
 import { HistoriqueCommande } from './components/historique-commande/historique-commande';
-import { HomeRedirect } from './components/home-redirect/home-redirect';  
+import { HomeRedirect } from './components/home-redirect/home-redirect';
+import { AjoutProduit } from './pages/ajout-produit/ajout-produit';
 
 
 export const routes: Routes = [
@@ -57,6 +58,7 @@ export const routes: Routes = [
     children: [
       { path: '',          redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardBoutique },
+      { path: 'produit', component: AjoutProduit },
     ]
   },
 

@@ -15,7 +15,12 @@ export class BoutiqueService {
  }
   getBoutiqueById(id: string): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/liste/${id}`);}
-  getBoutiqueUser(owner: string): Observable<any> {
+  getBoutiqueByIdOwner(id: string): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/user/${id}`);}
+
+
+
+  getBoutiqueUser(owner: String): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/user/${owner}`);}
  addBoutique(boutique: any): Observable<any> {
  return this.http.post(`${this.apiUrl}/create`, boutique);

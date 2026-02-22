@@ -7,6 +7,7 @@ interface User {
   name: string;
   role: string;
   email?: string;
+  owner : String;
 }
 
 @Injectable({
@@ -40,12 +41,12 @@ export class AuthService {
     if (!token) return;
 
     const payload = JSON.parse(atob(token.split('.')[1]));
-
+    console.log(payload)
     this.user.set({
       id: payload.id,
-
       name: payload.name,
-      role: payload.role
+      role: payload.role,
+      owner : payload.owner || ""
     });
   }
 
