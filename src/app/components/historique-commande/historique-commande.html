@@ -6,6 +6,7 @@
         <h3 class="card-title">Dernières Commandes</h3>
         <p class="card-subtitle">{{ commandes.length }} commandes récentes</p>
       </div>
+      
       <div class="card-actions">
         <button class="btn-ghost">Voir tout</button>
       </div>
@@ -13,15 +14,17 @@
     <div class="table-wrap">
       <table class="orders-table">
         <thead>
-          <tr><th>Commande</th><th>Produit</th><th>Qté</th><th>Total</th><th>Date</th><th>Statut</th></tr>
+          <tr><th>Commande</th><th>Produit</th><th>Quantité</th><th>Total</th><th>Date</th><th>Statut</th></tr>
         </thead>
         <tbody>
           <tr *ngFor="let c of commandes" class="table-row">
             <td><span class="order-id">#{{ c._id.slice(-4) }}</span></td>
             <td>
               <div class="product-cell">
-                <div class="product-thumb">{{ c.produits[0]?.produit?.nom }}</div>
-                <span>{{ c.produits[0]?.produit?.nom.charAt(0) }}</span>
+                <div class="product-thumb">{{ c.produits[0]?.produit?.nom?.charAt(0) }}</div>
+                <span class="product-name">
+                  {{ nomsProduits(c) }}
+                </span>
               </div>
             </td>
             <td><span class="qty-badge">{{ c.produits[0]?.quantite }}</span></td>
@@ -29,14 +32,21 @@
             <td class="date-cell">{{ c.createdAt | date:'dd MMM yyyy' }}</td>
             <td>
               <span class="status-badge"
-                [class.status-livree]="c.statut === 'Livrée'"
-                [class.status-en-cours]="c.statut === 'En cours'"
+                [class.status-livree]="c.statut === 'Confirmée'"
+                [class.status-en-cours]="c.statut === 'En attente'"
                 [class.status-annulee]="c.statut === 'Annulée'">
                 {{ c.statut }}
               </span>
+            </td>
+            <td>
+              <button class="order-action-btn"
+                      (click)="imprimerFacture(c._id)">
+                🧾 Facture
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+</div>

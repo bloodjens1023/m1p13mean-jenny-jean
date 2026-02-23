@@ -25,5 +25,9 @@ export class CommandeService {
   }
   historiqueCommandes(acheteur: string): Observable<any>{
     return this.http.get(`${this.apiUrl}/historique/${acheteur}`);
+
+  }
+  imprimerFacture(commandeId: string) {
+    return `http://localhost:3000/api/commande/${commandeId}/facture`;
   }
 }
