@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '@/utils/environment';
 
 @Injectable({
  providedIn: 'root'
@@ -8,7 +9,7 @@ import { Observable } from 'rxjs';
 
 export class UserService {
 
- private apiUrl = 'http://localhost:3000/api/auth';
+ private apiUrl = `${environment.apiUrl}/api/auth`;
 
  constructor(private http: HttpClient) {}
   getUserShop(): Observable<any> {

@@ -1,10 +1,11 @@
+import { environment } from '@/utils/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class RechercheService {
-  private apiUrl = 'http://localhost:3000/api/recherche/recherche';
+  private apiUrl = `${environment.apiUrl}/api/recherche/recherche`;
 
   private boutiquesSubject = new BehaviorSubject<any[]>([]);
   boutiques$ = this.boutiquesSubject.asObservable();

@@ -78,13 +78,17 @@ export class AjoutProduit implements OnInit {
   }
 
   ngOnInit(): void {
-    this.produitsFiltres = [...this.produits];
-    const owner = this.authService.user()?.id;
-    if (!owner) {
-      console.error('Owner non trouvé');
-      return;
-    }
 
+
+    this.generer();
+  }
+  generer(){
+      this.produitsFiltres = [...this.produits];
+      const owner = this.authService.user()?.id;
+      if (!owner) {
+        console.error('Owner non trouvé');
+        return;
+      }
     this.boutiqueService.getBoutiqueByIdOwner(owner).subscribe({
 
       next: (boutiques) => {
@@ -103,7 +107,6 @@ export class AjoutProduit implements OnInit {
       }
     });
   }
-
 
   // ============ MODAL AJOUT / MODIFICATION ============
 
@@ -156,6 +159,7 @@ export class AjoutProduit implements OnInit {
   // ============ SUPPRESSION ============
 
   confirmerSuppression(produit: Produit): void {
+    console.log(produit._id)
     this.produitASupprimer = produit;
     this.modalSuppressionOuvert = true;
   }
@@ -167,16 +171,24 @@ export class AjoutProduit implements OnInit {
 
   supprimerProduit(): void {
     if (this.produitASupprimer) {
-      this.produits = this.produits.filter(p => p._id !== this.produitASupprimer!._id);
       // TODO: appel API DELETE /produits/:id
-    }
+        this.produitService.deleteProduit(this.produitASupprimer._id.toString()).subscribe({
+        next: (data) => {
+          console.log('supprimer produit');
+          this.generer();
+        },
+        error: (err) => {
+          console.error('Erreur lors du chargement des produits', err);
+        }
+      });
+      }
     this.annulerSuppression();
   }
 
   // ============ EXPORT ============
 
   exporterProduits(): void {
-    const headers = ['ID', 'Nom', 'Référence', 'Catégorie', 'Prix (AR)', 'Stock'];
+    const headers = ['ID', 'Nom', 'Prix (AR)', 'Stock'];
     const rows = this.produitsFiltres.map(p =>
       [p._id, p.nom, p.prix, p.stock].join(',')
     );
