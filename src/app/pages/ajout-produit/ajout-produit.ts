@@ -82,31 +82,45 @@ export class AjoutProduit implements OnInit {
 
     this.generer();
   }
-  generer(){
-      this.produitsFiltres = [...this.produits];
-      const owner = this.authService.user()?.id;
-      if (!owner) {
-        console.error('Owner non trouvé');
-        return;
-      }
-    this.boutiqueService.getBoutiqueByIdOwner(owner).subscribe({
+  generer(): void {
 
-      next: (boutiques) => {
-        if (boutiques && boutiques.length > 0) {
-          const boutiqueId = boutiques[0]._id;
+  // Copie des produits
+  this.produitsFiltres = [...this.produits];
 
+  const owner = this.authService.user()?.id;
 
-
-          this.loadProduits(boutiqueId);
-        } else {
-          console.warn('Aucune boutique trouvée pour cet owner');
-        }
-      },
-      error: (err) => {
-        console.error('Erreur récupération boutique', err);
-      }
-    });
+  if (!owner) {
+    console.error('Owner non trouvé');
+    return;
   }
+
+  this.boutiqueService.getBoutiqueByIdOwner(owner).subscribe({
+
+    next: (response: any) => {
+
+      console.log('Réponse API boutique :', response);
+
+      // ⚠️ Si le backend renvoie { boutiques: [...] }
+      const boutiques = Array.isArray(response) ? response : response?.boutiques;
+
+      if (boutiques && boutiques.length > 0) {
+
+        const boutiqueId = boutiques[0]._id;
+        console.log('Boutique ID:', boutiqueId);
+
+        this.loadProduits(boutiqueId);
+
+      } else {
+        console.warn('Aucune boutique trouvée pour cet owner');
+      }
+    },
+
+    error: (error) => {
+      console.error('Erreur API boutique :', error);
+    }
+
+  });
+}
 
   // ============ MODAL AJOUT / MODIFICATION ============
 
