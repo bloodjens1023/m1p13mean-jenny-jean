@@ -22,7 +22,7 @@ export class ProduitService {
     return this.http.get<any>(`${this.apiUrl}/prod/${idBoutique}`);}
 
  addProduit(produit: any): Observable<any> {
- return this.http.post(`${this.apiUrl}/creer`, produit);
+ return this.http.post(`${this.apiUrl}/create`, produit);
  }
  updateProduit(id: string, produit: any): Observable<any> {
  return this.http.put(`${this.apiUrl}/${id}`, produit);

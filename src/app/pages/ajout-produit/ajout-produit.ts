@@ -28,6 +28,7 @@ export interface Produit {
 })
 
 
+
 export class AjoutProduit implements OnInit {
   constructor (private produitService: ProduitService,
     private authService : AuthService,
@@ -41,10 +42,28 @@ export class AjoutProduit implements OnInit {
   modalSuppressionOuvert = false;
   modeEdition = false;
   produitASupprimer: Produit | null = null;
+  selectedFile!: File;
+  imagePreview: string | ArrayBuffer | null = null;
 
   // Formulaire
   produitForm: Partial<Produit> = {};
 
+
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    this.selectedFile = file;
+
+    // Preview
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
   // Couleurs auto pour les avatars
   private couleurs = ['#6366f1', '#f59e0b', '#10b981', '#ef4444', '#3b82f6', '#8b5cf6', '#ec4899'];
 
@@ -153,17 +172,23 @@ export class AjoutProduit implements OnInit {
       // TODO: appel API PUT /produits/:id
     } else {
       // Ajout
-      const nouveauProduit: Produit = {
-        _id: Date.now(),
-        nom: this.produitForm.nom!,
-        prix: this.produitForm.prix!,
-        stock: this.produitForm.stock!,
-        description: this.produitForm.description,
-        image: this.produitForm.image,
-        couleur: this.couleurs[Math.floor(Math.random() * this.couleurs.length)]
-      };
-      this.produits.push(nouveauProduit);
-      // TODO: appel API POST /produits
+      const formData = new FormData();
+      formData.append('nom', this.produitForm.nom!);
+      formData.append('prix', this.produitForm.prix!.toString());
+      formData.append('stock', this.produitForm.stock!.toString());
+      if (this.produitForm.description) formData.append('description', this.produitForm.description);
+      if (this.produitForm.couleur) formData.append('couleur', this.produitForm.couleur);
+
+      if (this.selectedFile) {
+        formData.append('image', this.selectedFile);
+      }
+
+      this.produitService.addProduit(formData).subscribe({
+        next: () => {
+          this.fermerModal();
+        },
+        error: err => console.error(err)
+      });
     }
 
 
