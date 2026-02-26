@@ -60,51 +60,8 @@
     </div>
 
     <div class="bottom-grid">
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <h3 class="card-title">Dernières Commandes</h3>
-            <p class="card-subtitle">{{ commandes.length }} commandes récentes</p>
-          </div>
-          <div class="card-actions">
-            <button class="btn-ghost">Voir tout</button>
-            <button class="btn-export">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Export
-            </button>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table class="orders-table">
-            <thead>
-              <tr><th>Commande</th><th>Produit</th><th>Qté</th><th>Total</th><th>Date</th><th>Statut</th></tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let c of commandes" class="table-row">
-                <td><span class="order-id">#{{ c.id }}</span></td>
-                <td>
-                  <div class="product-cell">
-                    <div class="product-thumb">{{ c.produit[0] }}</div>
-                    <span>{{ c.produit }}</span>
-                  </div>
-                </td>
-                <td><span class="qty-badge">{{ c.quantite }}</span></td>
-                <td><strong>{{ c.total | currency:'AR ' }}</strong></td>
-                <td class="date-cell">{{ c.date | date:'dd MMM yyyy' }}</td>
-                <td>
-                  <span class="status-badge"
-                    [class.status-livree]="c.statut === 'Livrée'"
-                    [class.status-en-cours]="c.statut === 'En cours'"
-                    [class.status-annulee]="c.statut === 'Annulée'">
-                    {{ c.statut }}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
+      
+      <app-commande/>
       <div class="card">
         <div class="card-header">
           <div>

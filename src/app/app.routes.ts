@@ -16,6 +16,7 @@ import { DashboardBoutique } from './pages/dashboard-boutique/dashboard-boutique
 import { LoginBoutique } from './components/login-boutique/login-boutique';
 import { SignBoutique } from './components/sign-boutique/sign-boutique';
 import { HistoriqueCommande } from './components/historique-commande/historique-commande';
+import { Commandess } from './components/commande/commande';
 import { HomeRedirect } from './components/home-redirect/home-redirect';
 import { AjoutProduit } from './pages/ajout-produit/ajout-produit';
 
@@ -31,6 +32,7 @@ export const routes: Routes = [
   { path: 'login-shop',  component: LoginBoutique },
   { path: 'sign-shop',   component: SignBoutique  },
   { path: 'insert-user', component: User         },
+  { path: 'commande', component: Commandess         },
 
   // ── Public ───────────────────────────────────────────────
   { path: 'acceuil-user', component: AcceuilUser },

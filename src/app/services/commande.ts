@@ -27,7 +27,18 @@ export class CommandeService {
     return this.http.get(`${this.apiUrl}/historique/${acheteur}`);
 
   }
+  commandesParBoutique(idBoutique: string): Observable<any>{
+    return this.http.get(`${this.apiUrl}/boutique/${idBoutique}`);
+
+  }
   imprimerFacture(commandeId: string) {
     return `http://localhost:3000/api/commande/${commandeId}/facture`;
   }
+  modifierStatutCommande(id: string, statut: string): Observable<any> {
+    return this.http.put(
+      `${this.apiUrl}/statut/${id}`,
+      { statut }  
+    );
+  }
 }
+ 
