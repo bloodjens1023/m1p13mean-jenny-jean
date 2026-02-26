@@ -33,12 +33,13 @@
             type="text"
             name="q"
             [(ngModel)]="q"
+            (input)="onSearch()"
             placeholder="Rechercher boutiques, produits..."
             class="flex-1 px-6 py-3 bg-white text-base placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-orange-400"
           />
 
 
-          <button (click)="onSearch()"
+          <button
             class="bg-[#1D7874] hover:bg-[#4a8582]  px-6 py-3 rounded-r-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center"
           >
             <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

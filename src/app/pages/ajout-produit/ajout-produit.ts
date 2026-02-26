@@ -17,8 +17,8 @@ export interface Produit {
   prix: number;
   stock: number;
   description?: string;
-  image?: string;
-  couleur?: string;
+  image?: File;
+  couleur : string;
 }
 @Component({
   selector: 'app-ajout-produit',
@@ -42,9 +42,9 @@ export class AjoutProduit implements OnInit {
   modalSuppressionOuvert = false;
   modeEdition = false;
   produitASupprimer: Produit | null = null;
-  selectedFile!: File;
+ selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
-
+  boutiqueId: string = ""
   // Formulaire
   produitForm: Partial<Produit> = {};
 
@@ -69,6 +69,7 @@ export class AjoutProduit implements OnInit {
 
   // Données (à remplacer par appels API)
   loadProduits(id : string) {
+
     this.produitService.getProduitByIDBoutique(id).subscribe({
       next: (data) => {
         this.produits = data;
@@ -124,10 +125,10 @@ export class AjoutProduit implements OnInit {
 
       if (boutiques && boutiques.length > 0) {
 
-        const boutiqueId = boutiques[0]._id;
-        console.log('Boutique ID:', boutiqueId);
+        this.boutiqueId = boutiques[0]._id;
+        console.log('Boutique ID:', this.boutiqueId);
 
-        this.loadProduits(boutiqueId);
+        this.loadProduits(this.boutiqueId);
 
       } else {
         console.warn('Aucune boutique trouvée pour cet owner');
@@ -165,17 +166,51 @@ export class AjoutProduit implements OnInit {
 
     if (this.modeEdition) {
       // Modification
-      const index = this.produits.findIndex(p => p._id === this.produitForm._id);
-      if (index !== -1) {
-        this.produits[index] = { ...this.produits[index], ...this.produitForm } as Produit;
-      }
-      // TODO: appel API PUT /produits/:id
+
+
+      if (!this.produitForm._id) {
+    console.error('ID manquant');
+    return;
+  }
+
+  // Créer FormData au lieu d'envoyer l'objet brut
+  const formData = new FormData();
+
+  // Ajouter les champs texte
+  formData.append('nom', this.produitForm.nom || '');
+  formData.append('prix', String(this.produitForm.prix || 0));
+  formData.append('stock', String(this.produitForm.stock || 0));
+  formData.append('description', this.produitForm.description || '');
+  // ... autres champs
+
+  // Ajouter l'image SI sélectionnée
+  if (this.selectedFile) {
+    formData.append('image', this.selectedFile, this.selectedFile.name);
+  }
+
+  // Envoyer FormData au lieu de produitForm
+  this.produitService.updateProduit(
+    this.produitForm._id.toString(),
+    formData
+  ).subscribe({
+    next: (updatedProduit) => {
+      const index = this.produits.findIndex(p => p._id === updatedProduit._id);
+      if (index !== -1) this.produits[index] = updatedProduit;
+
+      this.produitForm = {} as Produit;
+      this.selectedFile = null;
+    },
+    error: (err) => {
+      console.error('Erreur mise à jour produit', err);
+    }
+  });
     } else {
       // Ajout
       const formData = new FormData();
       formData.append('nom', this.produitForm.nom!);
       formData.append('prix', this.produitForm.prix!.toString());
       formData.append('stock', this.produitForm.stock!.toString());
+      formData.append('boutiqueId', this.boutiqueId);
       if (this.produitForm.description) formData.append('description', this.produitForm.description);
       if (this.produitForm.couleur) formData.append('couleur', this.produitForm.couleur);
 

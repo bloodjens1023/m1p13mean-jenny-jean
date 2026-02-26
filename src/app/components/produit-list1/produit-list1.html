@@ -52,9 +52,28 @@
             </div>
         </a>
     </div>
-  }
-</section>
 
+  }
+
+</section>
+@if (produit.length <=0){
+  <div class="w-full flex flex-col items-center justify-center py-16 text-center">
+        <!-- From Uiverse.io by vinodjangid07 -->
+    <div class="loader">
+      <div class="book">
+        <div class="page"></div>
+        <div class="page page2"></div>
+      </div>
+    </div>
+      <p class="text-lg font-semibold text-gray-700">
+      Aucun produit trouvé
+    </p>
+
+    <p class="text-sm text-gray-500 mt-2">
+      Essayez de modifier votre recherche ou filtre.
+    </p>
+  </div>
+   }
 
 
 
