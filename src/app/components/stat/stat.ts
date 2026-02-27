@@ -18,10 +18,14 @@ export class Stat {
   user_total: number = 0;
   user: any[] = [];
   auth = inject(AuthService);
+  isOpen: boolean = false;
   constructor(private boutiqueService: BoutiqueService,private userService: UserService) {
     setInterval(() => {
     this.generer();
   }, 500);
+  }
+  toggleMenu() {
+    this.isOpen = !this.isOpen;
   }
 
   ngOnInit() {

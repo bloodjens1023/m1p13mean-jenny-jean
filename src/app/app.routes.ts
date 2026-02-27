@@ -18,12 +18,15 @@ import { SignBoutique } from './components/sign-boutique/sign-boutique';
 import { HistoriqueCommande } from './components/historique-commande/historique-commande';
 import { HomeRedirect } from './components/home-redirect/home-redirect';
 import { AjoutProduit } from './pages/ajout-produit/ajout-produit';
+import { AdminFinanceComponent } from './components/finance/finance';
+import { AdminInfo } from './components/admin-info/admin-info';
 
 
 export const routes: Routes = [
 
   // ── Page d'accueil : redirige selon le rôle ──────────────
   { path: '', component: HomeRedirect },
+
 
   // ── Auth ─────────────────────────────────────────────────
   { path: 'login',       component: Login       },
@@ -78,6 +81,9 @@ export const routes: Routes = [
       { path: 'boutique/add',         component: AjoutBoutique   },
       { path: 'boutique/update/:id',  component: BoutiqueUpdate  },
       { path: 'boutique/detail/:id',  component: BoutiqueDetail  },
+
+      { path: 'finance', component: AdminFinanceComponent },
+      { path: 'info', component: AdminInfo }
     ]
   },
 

@@ -1,0 +1,150 @@
+<div class="flex h-screen bg-gray-100">
+
+  <!-- Sidebar -->
+<aside class="fixed top-0 left-0 h-screen w-64 bg-white shadow-md hidden sm:flex z-40">
+  <app-navbar-admin></app-navbar-admin>
+</aside>
+
+  <!-- Zone droite -->
+  <div class="flex-1 flex flex-col">
+
+    <!-- HEADER FIXED -->
+    <header class="fixed top-0 left-0 sm:left-64 right-0 h-16 bg-white shadow-md flex justify-between items-center px-6 z-50">
+
+      <h1 class="text-xl font-bold text-indigo-500">
+        Dashboard / Gestion Financière
+      </h1>
+
+      <!-- Zone Admin -->
+      <div class="relative" (clickOutside)="isOpen = false">
+
+        <!-- Bouton -->
+        <button
+          (click)="toggleMenu()"
+          class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition">
+
+          <div class="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold">
+            A
+          </div>
+
+        </button>
+
+        <!-- Dropdown -->
+        <div *ngIf="isOpen"
+            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50">
+
+          <button
+            class="w-full text-left px-4 py-2 hover:bg-gray-100 transition">
+            Paramètres
+          </button>
+
+          <button
+            (click)="logout()"
+            class="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 transition">
+            Déconnexion
+          </button>
+
+        </div>
+
+      </div>
+
+    </header>
+
+    <!-- CONTENU -->
+    <main class="mt-16 sm:ml-64 p-6">
+          <!-- Card principale -->
+      <div class="bg-white rounded-xl shadow-md p-6 space-y-8">
+
+        <!-- SECTION PROFIL -->
+        <div>
+          <h3 class="text-lg font-semibold mb-4 text-gray-700">
+            Informations du Profil
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <input type="text"
+                  placeholder="Nom complet"
+                  class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none">
+
+            <input type="email"
+                  placeholder="Email"
+                  class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none">
+
+            <input type="text"
+                  placeholder="Téléphone"
+                  class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none">
+
+            <input type="text"
+                  placeholder="Nom utilisateur"
+                  class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none">
+
+          </div>
+        </div>
+
+        <!-- SECTION MOT DE PASSE -->
+        <div>
+          <h3 class="text-lg font-semibold mb-4 text-gray-700">
+            Sécurité
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <input type="password"
+                  placeholder="Mot de passe actuel"
+                  class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none">
+
+            <input type="password"
+                  placeholder="Nouveau mot de passe"
+                  class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none">
+
+          </div>
+        </div>
+
+        <!-- SECTION PARAMÈTRES GÉNÉRAUX -->
+        <div>
+          <h3 class="text-lg font-semibold mb-4 text-gray-700">
+            Paramètres Généraux
+          </h3>
+
+          <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
+
+            <span class="text-gray-600">Activer les notifications email</span>
+
+            <input type="checkbox"
+                  class="w-5 h-5 text-indigo-600">
+          </div>
+
+        </div>
+
+        <!-- BOUTON -->
+        <div class="flex justify-end">
+          <button class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2 rounded-lg transition">
+            Enregistrer les modifications
+          </button>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
