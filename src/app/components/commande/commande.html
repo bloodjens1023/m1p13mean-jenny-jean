@@ -1,0 +1,67 @@
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <h3 class="card-title">Dernières Commandes</h3>
+        <p class="card-subtitle" > {{ commandes.length }}  commandes récentes</p>
+      </div>
+      
+      <div class="card-actions">
+        <button class="btn-ghost">Voir tout</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="orders-table">
+        <thead>
+          <tr><th>Commande</th><th>Produit</th><th>Quantité</th><th>Total</th><th>Date</th><th>Statut</th><th>changer statut</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of commandes" class="table-row">
+            <td><span class="order-id">#{{ c._id.slice(-4) }}</span></td>
+            <td>
+              <div class="product-cell">
+                <div class="product-thumb">{{ c.produits[0]?.produit?.nom?.charAt(0) }}</div>
+                <span class="product-name">
+                  {{ nomsProduits(c) }}
+                </span>
+              </div>
+            </td>
+            <td><span class="qty-badge">{{ c.produits[0]?.quantite }}</span></td>
+            <td><strong>{{ c.total | number }}AR</strong></td>
+            <td class="date-cell">{{ c.createdAt | date:'dd MMM yyyy' }}</td>
+            <td>
+              <span class="status-badge"
+                [class.status-livree]="c.statut === 'Confirmée'"
+                [class.status-en-cours]="c.statut === 'En attente'"
+                [class.status-annulee]="c.statut === 'Annulée'"
+                [class.status-livree]="c.statut === 'livrée'">
+                {{ c.statut }}
+              </span>
+            </td>
+           
+            <td class="p-4  font-bold text-center" *ngIf="c.statut === 'En attente'">
+              <button (click)="confirmToggle(c)" class="bg-green-700  text-white py-2 px-5 rounded-lg shadow hover:bg-green-800">
+              <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13.5 16.5854C13.5 17.4138 12.8284 18.0854 12 18.0854C11.1716 18.0854 10.5 17.4138 10.5 16.5854C10.5 15.7569 11.1716 15.0854 12 15.0854C12.8284 15.0854 13.5 15.7569 13.5 16.5854Z" fill="#FFFFFF"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.33367 10C6.20971 9.64407 6.09518 9.27081 5.99836 8.88671C5.69532 7.68444 5.54485 6.29432 5.89748 4.97439C6.26228 3.60888 7.14664 2.39739 8.74323 1.59523C10.3398 0.793061 11.8397 0.806642 13.153 1.32902C14.4225 1.83396 15.448 2.78443 16.2317 3.7452C16.4302 3.98851 16.6166 4.23669 16.7907 4.48449C17.0806 4.89706 16.9784 5.45918 16.5823 5.7713C16.112 6.14195 15.4266 6.01135 15.0768 5.52533C14.9514 5.35112 14.8197 5.17831 14.6819 5.0094C14.0088 4.18414 13.2423 3.51693 12.4138 3.18741C11.6292 2.87533 10.7252 2.83767 9.64112 3.38234C8.55703 3.92702 8.04765 4.6748 7.82971 5.49059C7.5996 6.35195 7.6774 7.36518 7.93771 8.39788C8.07953 8.96054 8.26936 9.50489 8.47135 10H18C19.6569 10 21 11.3431 21 13V20C21 21.6569 19.6569 23 18 23H6C4.34315 23 3 21.6569 3 20V13C3 11.3431 4.34315 10 6 10H6.33367ZM19 13C19 12.4477 18.5523 12 18 12H6C5.44772 12 5 12.4477 5 13V20C5 20.5523 5.44772 21 6 21H18C18.5523 21 19 20.5523 19 20V13Z" fill="#FFFFFF"/>
+    </svg>
+              </button>
+            </td>
+            <td class="p-4  font-bold text-center" *ngIf="c.statut === 'Confirmée'">
+              <button (click)="confirmToggle(c)" class="bg-red-400 text-white py-2 px-5 rounded-lg shadow hover:bg-red-500">
+                <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 14.5V16.5M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10.0288" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </td>
+            <td>
+              <button class="order-action-btn"
+                      (click)="imprimerFacture(c._id)">
+                🧾 Facture
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

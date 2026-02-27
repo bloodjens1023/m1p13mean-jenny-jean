@@ -6,11 +6,12 @@ import { AuthService } from '@/services/auth';
 import { BoutiqueService } from '@/services/boutique';
 import { RouterLink } from "@angular/router";
 import { NavShop } from "@/components/nav-shop/nav-shop";
+import { Commandess } from "@/components/commande/commande";
 
 @Component({
   selector: 'app-dashboard-boutique',
   standalone: true,
-  imports: [CommonModule, FormsModule, CurrencyPipe, DatePipe, NavShop],
+  imports: [CommonModule, FormsModule, DatePipe, NavShop,Commandess],
   templateUrl: './dashboard-boutique.html',
   styleUrl: './dashboard-boutique.css',
 })
