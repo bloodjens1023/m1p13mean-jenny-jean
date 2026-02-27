@@ -1,0 +1,316 @@
+<div class="flex h-screen bg-gray-100">
+
+  <!-- Sidebar -->
+  <aside class="fixed top-0 left-0 h-screen w-64 bg-white shadow-md hidden sm:flex z-40">
+    <app-navbar-admin></app-navbar-admin>
+  </aside>
+
+  <!-- Zone droite -->
+  <div class="flex-1 flex flex-col">
+
+    <!-- HEADER FIXED -->
+    <header class="fixed top-0 left-0 sm:left-64 right-0 h-16 bg-white shadow-md flex justify-between items-center px-6 z-50">
+
+      <h1 class="text-xl font-bold text-indigo-500">
+        Dashboard / Performance Boutiques
+      </h1>
+
+      <!-- Zone Admin -->
+      <div class="relative" (clickOutside)="isOpen = false">
+        <button
+          (click)="toggleMenu()"
+          class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition">
+          <div class="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold">A</div>
+        </button>
+
+        <div *ngIf="isOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50">
+          <button class="w-full text-left px-4 py-2 hover:bg-gray-100 transition">Paramètres</button>
+          <button (click)="logout()" class="w-full text-left px-4 py-2 hover:bg-red-50 text-red-600 transition">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENU -->
+    <main class="mt-16 sm:ml-64 p-6">
+
+      <!-- ── FILTRE ───────────────────────────────────────────── -->
+      <div class="flex flex-col md:flex-row gap-4 items-center pb-5">
+        <input
+          type="month"
+          [(ngModel)]="moisSelectionne"
+          name="moisSelectionne"
+          class="px-4 py-2 border rounded-lg my-2" />
+
+        <button
+          (click)="chargerPerformance()"
+          class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2 rounded-lg transition">
+          Voir Performance
+        </button>
+      </div>
+
+      <!-- ── KPI CARDS ───────────────────────────────────────── -->
+      <div *ngIf="performanceData" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+
+        <!-- Total Chiffre d'Affaire -->
+        <div class="bg-white rounded-xl shadow p-5 border-t-4 border-indigo-500">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm text-gray-500 font-medium">Chiffre d'Affaire</p>
+            <div class="w-9 h-9 rounded-lg bg-indigo-50 flex items-center justify-center">
+              <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+              </svg>
+            </div>
+          </div>
+          <h2 class="text-2xl font-bold text-indigo-600">{{ totalChiffre | number }} Ar</h2>
+          <p class="text-xs text-gray-400 mt-1">{{ performanceData.totalBoutiques }} boutiques</p>
+        </div>
+
+        <!-- Total Charges -->
+        <div class="bg-white rounded-xl shadow p-5 border-t-4 border-red-400">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm text-gray-500 font-medium">Total Charges</p>
+            <div class="w-9 h-9 rounded-lg bg-red-50 flex items-center justify-center">
+              <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/>
+              </svg>
+            </div>
+          </div>
+          <h2 class="text-2xl font-bold text-red-500">{{ totalCharges | number }} Ar</h2>
+          <p class="text-xs text-gray-400 mt-1">Dépenses cumulées</p>
+        </div>
+
+        <!-- Bénéfice Net -->
+        <div class="bg-white rounded-xl shadow p-5"
+             [ngClass]="totalProfit >= 0 ? 'border-t-4 border-emerald-500' : 'border-t-4 border-rose-500'">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm text-gray-500 font-medium">Bénéfice Net</p>
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center"
+                 [ngClass]="totalProfit >= 0 ? 'bg-emerald-50' : 'bg-rose-50'">
+              <svg class="w-5 h-5" [ngClass]="totalProfit >= 0 ? 'text-emerald-500' : 'text-rose-500'"
+                   fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <h2 class="text-2xl font-bold" [ngClass]="totalProfit >= 0 ? 'text-emerald-600' : 'text-rose-600'">
+            {{ totalProfit >= 0 ? '+' : '' }}{{ totalProfit | number }} Ar
+          </h2>
+          <p class="text-xs text-gray-400 mt-1">Résultat consolidé</p>
+        </div>
+
+        <!-- Statut boutiques -->
+        <div class="bg-white rounded-xl shadow p-5 border-t-4 border-amber-400">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm text-gray-500 font-medium">Boutiques</p>
+            <div class="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+              </svg>
+            </div>
+          </div>
+          <h2 class="text-2xl font-bold text-amber-500">{{ performanceData.totalBoutiques }}</h2>
+          <div class="flex items-center gap-3 mt-1">
+            <span class="text-xs text-emerald-600 font-medium">▲ {{ countProfit }} profit</span>
+            <span class="text-xs text-rose-500 font-medium">▼ {{ countPerte }} perte</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── CHART + BEST BOUTIQUE ───────────────────────────── -->
+      <div *ngIf="performanceData" class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+
+        <!-- Chart -->
+        <div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+              <span class="w-2 h-6 bg-indigo-500 rounded-full"></span>
+              Vue d'ensemble — {{ performanceData.mois }}
+            </h3>
+            <span class="text-xs text-gray-400 bg-gray-100 px-3 py-1 rounded-full font-mono">
+              CA · Charges · Profit
+            </span>
+          </div>
+          <div style="height: 300px;">
+            <canvas baseChart
+              [data]="barChartData"
+              [options]="barChartOptions"
+              type="bar">
+            </canvas>
+          </div>
+        </div>
+
+        <!-- Résumé latéral -->
+        <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 flex flex-col gap-4">
+          <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+            <span class="w-2 h-6 bg-emerald-500 rounded-full"></span>
+            Résumé Mensuel
+          </h3>
+
+          <div class="flex flex-col gap-3">
+            <div class="flex justify-between items-center p-3 bg-indigo-50 rounded-lg">
+              <span class="text-sm text-gray-600">Chiffre d'Affaire</span>
+              <span class="font-bold text-indigo-600 text-sm">{{ totalChiffre | number }} Ar</span>
+            </div>
+            <div class="flex justify-between items-center p-3 bg-red-50 rounded-lg">
+              <span class="text-sm text-gray-600">Charges totales</span>
+              <span class="font-bold text-red-500 text-sm">{{ totalCharges | number }} Ar</span>
+            </div>
+            <div class="flex justify-between items-center p-3 rounded-lg"
+                 [ngClass]="totalProfit >= 0 ? 'bg-emerald-50' : 'bg-rose-50'">
+              <span class="text-sm text-gray-600">Profit net</span>
+              <span class="font-bold text-sm" [ngClass]="totalProfit >= 0 ? 'text-emerald-600' : 'text-rose-600'">
+                {{ totalProfit >= 0 ? '+' : '' }}{{ totalProfit | number }} Ar
+              </span>
+            </div>
+          </div>
+
+          <!-- Meilleure / Pire boutique -->
+          <div class="border-t border-gray-100 pt-4 flex flex-col gap-3">
+            <div *ngIf="bestBoutique">
+              <p class="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">🏆 Meilleure</p>
+              <p class="font-semibold text-gray-800 text-sm">{{ bestBoutique.boutique }}</p>
+              <p class="text-emerald-600 font-bold text-sm">{{ bestBoutique.profit | number }} Ar</p>
+            </div>
+            <div *ngIf="worstBoutique">
+              <p class="text-xs text-gray-400 font-mono uppercase tracking-wider mb-1">⚠️ À surveiller</p>
+              <p class="font-semibold text-gray-800 text-sm">{{ worstBoutique.boutique }}</p>
+              <p class="text-rose-500 font-bold text-sm">{{ worstBoutique.profit | number }} Ar</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TABLE PERFORMANCES ──────────────────────────────── -->
+      <div *ngIf="performanceData?.performances?.length" class="mt-2 animate-fade-in">
+
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+            <span class="w-2 h-8 bg-indigo-500 rounded-full"></span>
+            Détail par Boutique
+            <span class="text-sm font-normal text-gray-500 bg-indigo-100 px-3 py-1 rounded-full">
+              {{ performanceData.performances.length }} boutique(s)
+            </span>
+          </h3>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-gradient-to-r from-indigo-500 to-violet-600 text-white">
+                  <th class="p-4 font-semibold text-sm uppercase tracking-wider">Boutique</th>
+                  <th class="p-4 font-semibold text-sm uppercase tracking-wider text-right">Chiffre d'Affaire</th>
+                  <th class="p-4 font-semibold text-sm uppercase tracking-wider text-right">Charges</th>
+                  <th class="p-4 font-semibold text-sm uppercase tracking-wider text-right">Profit Net</th>
+                  <th class="p-4 font-semibold text-sm uppercase tracking-wider text-center">Performance</th>
+                  <th class="p-4 font-semibold text-sm uppercase tracking-wider text-center">Statut</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr *ngFor="let p of performanceData.performances; let i = index"
+                    class="hover:bg-indigo-50 transition-all duration-200 group"
+                    [class.bg-gray-50]="i % 2 === 0">
+
+                  <!-- Boutique -->
+                  <td class="p-4">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm"
+                           [ngClass]="p.statut === 'PROFIT' ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'">
+                        {{ p.boutique.charAt(0) }}
+                      </div>
+                      <span class="font-medium text-gray-800">{{ p.boutique }}</span>
+                    </div>
+                  </td>
+
+                  <!-- Chiffre d'affaire -->
+                  <td class="p-4 text-right font-semibold text-indigo-600">
+                    {{ p.chiffreAffaire | number }} Ar
+                  </td>
+
+                  <!-- Charges -->
+                  <td class="p-4 text-right font-semibold text-red-500">
+                    {{ p.charges | number }} Ar
+                  </td>
+
+                  <!-- Profit -->
+                  <td class="p-4 text-right font-bold"
+                      [ngClass]="p.profit >= 0 ? 'text-emerald-600' : 'text-rose-600'">
+                    {{ p.profit >= 0 ? '+' : '' }}{{ p.profit | number }} Ar
+                  </td>
+
+                  <!-- Barre progression -->
+                  <td class="p-4">
+                    <div class="flex items-center gap-2 min-w-[120px]">
+                      <div class="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div
+                          class="h-full rounded-full transition-all duration-700"
+                          [ngClass]="p.statut === 'PROFIT' ? 'bg-gradient-to-r from-emerald-500 to-teal-400' : 'bg-gradient-to-r from-rose-500 to-pink-400'"
+                          [style.width.%]="getProgressPct(p.profit)">
+                        </div>
+                      </div>
+                      <span class="text-xs text-gray-500 font-mono w-9 text-right">
+                        {{ getProgressPct(p.profit) }}%
+                      </span>
+                    </div>
+                  </td>
+
+                  <!-- Statut -->
+                  <td class="p-4 text-center">
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold flex items-center justify-center gap-1 w-fit mx-auto"
+                          [ngClass]="p.statut === 'PROFIT'
+                            ? 'bg-emerald-100 text-emerald-700'
+                            : 'bg-rose-100 text-rose-700'">
+                      <span class="w-2 h-2 rounded-full"
+                            [ngClass]="p.statut === 'PROFIT' ? 'bg-emerald-500' : 'bg-rose-500'"></span>
+                      {{ p.statut }}
+                    </span>
+                  </td>
+
+                </tr>
+              </tbody>
+
+              <!-- TOTAL ROW -->
+              <tfoot>
+                <tr class="bg-gray-50 border-t-2 border-gray-200 font-bold">
+                  <td class="p-4 text-gray-700">TOTAL</td>
+                  <td class="p-4 text-right text-indigo-600">{{ totalChiffre | number }} Ar</td>
+                  <td class="p-4 text-right text-red-500">{{ totalCharges | number }} Ar</td>
+                  <td class="p-4 text-right"
+                      [ngClass]="totalProfit >= 0 ? 'text-emerald-600' : 'text-rose-600'">
+                    {{ totalProfit >= 0 ? '+' : '' }}{{ totalProfit | number }} Ar
+                  </td>
+                  <td class="p-4"></td>
+                  <td class="p-4 text-center">
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold"
+                          [ngClass]="totalProfit >= 0
+                            ? 'bg-emerald-100 text-emerald-700'
+                            : 'bg-rose-100 text-rose-700'">
+                      {{ totalProfit >= 0 ? 'POSITIF' : 'NÉGATIF' }}
+                    </span>
+                  </td>
+                </tr>
+              </tfoot>
+
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- État vide -->
+      <div *ngIf="!performanceData" class="flex flex-col items-center justify-center py-24 text-gray-400">
+        <svg class="w-16 h-16 mb-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+        <p class="text-lg font-medium">Sélectionnez un mois pour afficher les performances</p>
+        <p class="text-sm mt-1">Utilisez le filtre ci-dessus puis cliquez sur "Voir Performance"</p>
+      </div>
+
+    </main>
+  </div>
+</div>

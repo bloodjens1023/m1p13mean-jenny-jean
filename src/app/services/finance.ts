@@ -21,4 +21,9 @@ export class FinanceService {
   ajouterDepense(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/ajout`, data);
   }
+  GetPerformance(mois: string): Observable<any> {
+   return this.http.get<{ message: string, data: any }>(
+    `${this.apiUrl}/performance?mois=${mois}`
+  );
+  }
 }

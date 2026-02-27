@@ -6,7 +6,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NavbarAdmin } from "../navbar-admin/navbar-admin";
-
+interface Boutik {
+  loyerMensuel: number;
+  _id: string;
+  boutique: string;
+  type: string;
+  montant: number;
+  description: string;
+}
 
 @Component({
   selector: 'app-finance',
@@ -14,6 +21,7 @@ import { NavbarAdmin } from "../navbar-admin/navbar-admin";
   templateUrl: './finance.html',
   styleUrl: './finance.css',
 })
+
 
 export class AdminFinanceComponent implements OnInit {
 
@@ -28,6 +36,7 @@ export class AdminFinanceComponent implements OnInit {
     montant: '',
     description: ''
   };
+
 
   constructor(private financeService: FinanceService, private boutiqueService : BoutiqueService) {
      const today = new Date();
@@ -94,5 +103,27 @@ chargerFinance() {
    get benefice(): number {
     if (!this.financeData) return 0;
     return this.financeData.revenuCentre - this.financeData.loyersPayes.total;
+  }
+  payerLoyer(b : Boutik){
+
+    console.log(b)
+    this.form.boutique = b._id
+    this.form.montant = b.loyerMensuel.toString()
+    this.form.type = "LOYER"
+    this.form.description = "Loyer"
+    console.log(this.form)
+
+    this.financeService.ajouterDepense(this.form)
+      .subscribe(() => {
+        alert('Loyer Payé avec succès');
+        this.chargerFinance(); // refresh
+      });
+
+    this.form ={
+      boutique : "",
+      montant : "",
+      type : "",
+      description : ""
+    }
   }
 }

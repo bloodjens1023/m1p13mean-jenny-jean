@@ -21,12 +21,14 @@ import { HomeRedirect } from './components/home-redirect/home-redirect';
 import { AjoutProduit } from './pages/ajout-produit/ajout-produit';
 import { AdminFinanceComponent } from './components/finance/finance';
 import { AdminInfo } from './components/admin-info/admin-info';
+import { AdminPerformanceComponent } from './components/performance/performance';
 
 
 export const routes: Routes = [
 
   // ── Page d'accueil : redirige selon le rôle ──────────────
   { path: '', component: HomeRedirect },
+
 
 
   // ── Auth ─────────────────────────────────────────────────
@@ -85,7 +87,8 @@ export const routes: Routes = [
       { path: 'boutique/detail/:id',  component: BoutiqueDetail  },
 
       { path: 'finance', component: AdminFinanceComponent },
-      { path: 'info', component: AdminInfo }
+      { path: 'info', component: AdminInfo },
+        { path: 'perf', component: AdminPerformanceComponent },
     ]
   },
 

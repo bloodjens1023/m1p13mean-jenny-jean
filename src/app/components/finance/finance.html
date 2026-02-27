@@ -225,7 +225,7 @@
                       {{ b.active ? 'Active' : 'Inactive' }}
                     </span>
                   </td>
-                  <td class="p-4 text-center">
+                  <td class="p-4 text-center" (click)="payerLoyer(b)">
                     <button class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
                       Payer
                     </button>
