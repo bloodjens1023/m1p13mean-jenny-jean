@@ -30,4 +30,7 @@ export class ProduitService {
  deleteProduit(id: string): Observable<any> {
  return this.http.delete(`${this.apiUrl}/${id}/delete`);
  }
+ getImageUrl(image: string) {
+  return 'https://m1p13mean-jenny-jean-backend-1.onrender.com/uploads/' + image;
+}
 }

@@ -90,6 +90,10 @@ export class ProduitList1 implements  OnInit  {
         console.error('Erreur lors de la récupération de la boutique :', err);
       }
     })
+
+  }
+  getImageUrl(image: string) {
+    return 'https://m1p13mean-jenny-jean-backend-1.onrender.com/uploads/' + image;
   }
 
 

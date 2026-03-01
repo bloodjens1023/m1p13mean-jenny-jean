@@ -45,4 +45,7 @@ export class ProduitDetail {
       error: (err) => console.error('Erreur:', err)
     });
   }
+  getImageUrl(image: string) {
+    return 'https://m1p13mean-jenny-jean-backend-1.onrender.com/uploads/' + image;
+  }
 }
