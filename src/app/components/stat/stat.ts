@@ -19,6 +19,7 @@ export class Stat {
   user: any[] = [];
   auth = inject(AuthService);
   isOpen: boolean = false;
+  loading = true;
   constructor(private boutiqueService: BoutiqueService,private userService: UserService) {
     setInterval(() => {
     this.generer();
@@ -41,15 +42,18 @@ export class Stat {
   }
 
   nbBoutiquesActif() {
+    if (this.boutiques.length === 0) this.loading = true;
     this.boutiqueService.getBoutique().subscribe({
          next: (res) => {
             this.boutiques = res;
             // console.log('Produits récupérés :', this.boutiques);
             this.boutique_actif = this.boutiques.filter(b => b.active).length;
             this.boutique_total = this.boutiques.length;
+            this.loading = false;
          },
          error: (err) => {
             console.error('Erreur lors de la récupération des produits :', err);
+            this.loading = false;
          }
       });
   }

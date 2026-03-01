@@ -18,6 +18,7 @@ export class AdminPerformanceComponent implements OnInit {
   moisSelectionne: string = '';
   performanceData: any = null;
   isOpen = false;
+  loading = true;
 
   constructor(private financeService: FinanceService) {
     const today = new Date();
@@ -41,11 +42,15 @@ export class AdminPerformanceComponent implements OnInit {
 
   chargerPerformance() {
     if (!this.moisSelectionne) return;
+    this.loading = true;
     this.financeService.GetPerformance(this.moisSelectionne)
       .subscribe((res: any) => {
         this.performanceData = res.data;
         console.log(res.data)
         this.buildChart();
+        this.loading = false;
+      }, _err => {
+        this.loading = false;
       });
   }
 

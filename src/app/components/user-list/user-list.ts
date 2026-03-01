@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 export class UserList {
 
   users: any[] = [];
+  loading = true;
 
   private router = inject(Router);
 
@@ -26,18 +27,19 @@ export class UserList {
   }
 
   UserDetail(): void {
+    this.loading = true;
     this.userService.getAllUser().subscribe({
       next: (res: any[]) => {
         this.users = res;
-        console.log(res)
+        this.loading = false;
       },
       error: (err) => {
-        console.error('Erreur lors de la récupération des boutiques :', err);
+        this.loading = false;
       }
     });
-   
+
   }
-  
+
 
   user_clique(id: string): void {
     console.log("Boutique cliquée avec l'ID :", id);

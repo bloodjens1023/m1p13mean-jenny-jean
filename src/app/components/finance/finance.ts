@@ -29,6 +29,7 @@ export class AdminFinanceComponent implements OnInit {
   boutiques: any[] = [];
   isOpen = false;
   isModalOpen = false;
+  loading = true;
   form = {
     boutique: '',
     type: '',
@@ -83,10 +84,14 @@ logout() {
 chargerFinance() {
   if (!this.moisSelectionne) return;
 
+  this.loading = true;
   this.financeService.getFinanceParMois(this.moisSelectionne)
     .subscribe(res => {
       this.financeData = res.data;
       console.log(this.financeData);
+      this.loading = false;
+    }, _err => {
+      this.loading = false;
     });
 }
 
@@ -96,7 +101,7 @@ chargerFinance() {
     this.financeService.ajouterDepense(this.form)
       .subscribe(() => {
         alert('Dépense ajoutée avec succès');
-        this.chargerFinance(); 
+        this.chargerFinance();
       });
   }
    get benefice(): number {
