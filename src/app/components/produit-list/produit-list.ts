@@ -37,6 +37,9 @@ export class ProduitList {
   produit_clique(id: string) {
     this.router.navigate(['/user/produit', id]);
   }
+  getImageUrl(image: string) {
+    return 'https://m1p13mean-jenny-jean-backend-1.onrender.com/uploads/' + image;
+  }
 }
 
 
