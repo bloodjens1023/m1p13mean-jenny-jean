@@ -22,12 +22,14 @@ import { AjoutProduit } from './pages/ajout-produit/ajout-produit';
 import { AdminFinanceComponent } from './components/finance/finance';
 import { AdminInfo } from './components/admin-info/admin-info';
 import { AdminPerformanceComponent } from './components/performance/performance';
+import { FinanceDash } from './pages/finance-dash/finance-dash';
 
 
 export const routes: Routes = [
 
   // ── Page d'accueil : redirige selon le rôle ──────────────
   { path: '', component: HomeRedirect },
+ 
 
 
 
@@ -66,6 +68,7 @@ export const routes: Routes = [
       { path: '',          redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardBoutique },
       { path: 'produit', component: AjoutProduit },
+      { path: 'finance', component: FinanceDash },
     ]
   },
 
