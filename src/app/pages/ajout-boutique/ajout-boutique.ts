@@ -25,7 +25,7 @@ export class AjoutBoutique {
   owner: string = '';
   categorie: string='';
   boutiqueForm!: FormGroup;
-
+  isLoading: boolean = false;
   boutique : any[] = [];
   id!: string;
   constructor(
@@ -53,11 +53,13 @@ export class AjoutBoutique {
     });
     console.log("FORM VALUE :", this.boutiqueForm.value);
     if (this.boutiqueForm.valid) {
+      this.isLoading = true;
 
 
 
       this.boutiqueService.addBoutique(this.boutiqueForm.value).subscribe({
         next: () => {
+          this.isLoading = false;
           toast.success('Connexion réussite', {
                     description: 'Boutique modifiée avec succès !'
                   });
@@ -66,6 +68,7 @@ export class AjoutBoutique {
           });
         },
         error: (err) => {
+           this.isLoading = false;
            toast.error('Erreur', {
                     description:'Eviter de donner un même code a 2 boutiques differents.'
                   });

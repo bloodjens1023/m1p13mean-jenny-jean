@@ -36,6 +36,7 @@ export class AjoutProduit implements OnInit {
   boutiqueNom = 'Ma Boutique';
   today = new Date();
   searchTerm = '';
+  loadingProduits = true;
 
   // Modal états
   modalOuvert = false;
@@ -69,14 +70,15 @@ export class AjoutProduit implements OnInit {
 
   // Données (à remplacer par appels API)
   loadProduits(id : string) {
-
+    this.loadingProduits = true;
     this.produitService.getProduitByIDBoutique(id).subscribe({
       next: (data) => {
         this.produits = data;
-
+        this.loadingProduits = false;
       },
       error: (err) => {
         console.error('Erreur lors du chargement des produits', err);
+        this.loadingProduits = false;
       }
     });
   }

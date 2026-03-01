@@ -23,11 +23,15 @@ export class Commandess {
 
   commandes: any[] = [];
   idBoutique!: string;
+  loading = true;
+  error = false;
 
   ngOnInit() {
     const owner = this.auth.user()?.id;
     if (!owner) {
       console.error('Owner non trouvé');
+      this.loading = false;
+      this.error = true;
       return;
     }
 
@@ -39,23 +43,32 @@ export class Commandess {
           this.commandesParBoutique();
           } else {
             console.warn('Aucune boutique trouvée pour cet owner');
+            this.loading = false;
+            this.error = true;
           }
         },
         error: (err) => {
           console.error('Erreur récupération boutique', err);
+          this.loading = false;
+          this.error = true;
         }
       });
     }
     commandesParBoutique() {
+      this.loading = true;
+      this.error = false;
       this.commandeService.commandesParBoutique(this.idBoutique)
         .subscribe({
           next: (res: any[]) => {
             console.log('Réponse API commandes :', res);
             this.commandes = res;
+            this.loading = false;
           },
           error: (err) => {
             console.error('Erreur chargement commandes', err);
             this.commandes = [];
+            this.loading = false;
+            this.error = true;
           }
         });
     }
@@ -92,10 +105,10 @@ export class Commandess {
       console.error('Commande invalide', commande);
       return;
     }
-  
+
     const nouveauStatut =
       commande.statut === 'Confirmée' ? 'Annulée' : 'Confirmée';
-  
+
     Swal.fire({
       title: 'Confirmation',
       text:
