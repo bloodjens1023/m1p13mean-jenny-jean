@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { NavbarAdmin } from "../navbar-admin/navbar-admin";
 interface Boutik {
   loyerMensuel: number;
@@ -17,7 +16,7 @@ interface Boutik {
 
 @Component({
   selector: 'app-finance',
-  imports: [CommonModule, FormsModule, RouterLink, NavbarAdmin],
+  imports: [CommonModule, FormsModule, NavbarAdmin],
   templateUrl: './finance.html',
   styleUrl: './finance.css',
 })
@@ -86,7 +85,7 @@ chargerFinance() {
 
   this.financeService.getFinanceParMois(this.moisSelectionne)
     .subscribe(res => {
-      this.financeData = res.data; // contient revenuCentre, loyersPayes, etc.
+      this.financeData = res.data;
       console.log(this.financeData);
     });
 }
@@ -97,12 +96,12 @@ chargerFinance() {
     this.financeService.ajouterDepense(this.form)
       .subscribe(() => {
         alert('Dépense ajoutée avec succès');
-        this.chargerFinance(); // refresh
+        this.chargerFinance(); 
       });
   }
    get benefice(): number {
     if (!this.financeData) return 0;
-    return this.financeData.revenuCentre - this.financeData.loyersPayes.total;
+    return this.financeData.revenuCentre - this.financeData.totalChargesCentre;
   }
   payerLoyer(b : Boutik){
 

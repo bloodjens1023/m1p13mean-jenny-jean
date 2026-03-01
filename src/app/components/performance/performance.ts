@@ -2,7 +2,6 @@ import { FinanceService } from '@/services/finance';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { NavbarAdmin } from '../navbar-admin/navbar-admin';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration } from 'chart.js';
@@ -10,7 +9,7 @@ import 'chart.js/auto';
 
 @Component({
   selector: 'app-performance',
-  imports: [CommonModule, FormsModule, RouterLink, NavbarAdmin, BaseChartDirective],
+  imports: [CommonModule, FormsModule, NavbarAdmin, BaseChartDirective],
   templateUrl: './performance.html',
   styleUrl: './performance.css',
 })
