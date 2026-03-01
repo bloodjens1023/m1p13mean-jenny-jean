@@ -69,11 +69,10 @@
     </button>
   </div>
 
-  <!-- Résumé -->
   <div *ngIf="financeData" class="grid grid-cols-1 md:grid-cols-3 gap-6 ">
 
     <div class="bg-gray-50 p-6 rounded-lg shadow text-center">
-      <p class="text-sm text-gray-500">Total Ventes</p>
+      <p class="text-sm text-gray-500">Revenu du centre</p>
       <h2 class="text-2xl font-bold text-green-500 mt-2">
         {{ financeData.revenuCentre | number }} Ar
       </h2>
@@ -87,7 +86,7 @@
     </div>
 
     <div class="bg-gray-50 p-6 rounded-lg shadow text-center">
-      <p class="text-sm text-gray-500">Bénéfice</p>
+      <p class="text-sm text-gray-500">Commission</p>
       <h2 class="text-2xl font-bold mt-2"
           [ngClass]="benefice >= 0 ? 'text-indigo-600' : 'text-red-600'">
         {{ benefice | number }} Ar
