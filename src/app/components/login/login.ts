@@ -18,6 +18,7 @@ export class Login {
     email: '',
     password: ''
   };
+  loading = false;
 
   // injecter le router
   router = inject(Router);
@@ -26,13 +27,11 @@ export class Login {
   constructor(private authService: AuthService) {}
 
   onLogin() {
-    console.log('Données envoyées :', this.loginData);
+    this.loading = true;
 
     this.authService.login(this.loginData).subscribe({
       next: (res) => {
-        console.log('Réponse backend :', res);
-        console.log('Token :', res.token);
-        console.log('User :', res.user.role);
+        this.loading = false;
         if(res.user.role === "ADMIN" || res.user.role === "SHOP"){
           toast.error('Erreur de Connexion', {
             description: 'Connexion impossible.'
@@ -46,7 +45,7 @@ export class Login {
         }
       },
       error: (err) => {
-        console.error('Erreur login :', err.error?.message || err);
+        this.loading = false;
         toast.error('Connexion impossible', {
           description: err.error?.message || 'Une erreur est survenue lors de la connexion.'
         });

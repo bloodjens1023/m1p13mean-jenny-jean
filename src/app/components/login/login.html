@@ -16,7 +16,8 @@
                 [(ngModel)]="loginData.email"
                 required
                 name="email"
-                class="py-2 w-full rounded border border-gray-300 bg-slate-100 px-2 text-center text-gray-400 placeholder-[#7f8c8d] focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+                [disabled]="loading"
+                class="py-2 w-full rounded border border-gray-300 bg-slate-100 px-2 text-center text-gray-400 placeholder-[#7f8c8d] focus:ring-2 focus:ring-indigo-500 focus:outline-none disabled:opacity-60" />
         </div>
         <div class="mb-4">
             <label for="password" class="mb-1 block text-sm text-gray-400">Mot de passe</label>
@@ -24,14 +25,21 @@
               [(ngModel)]="loginData.password"
               required
               name="passwword"
-                class="py-2 w-full rounded border border-gray-300 bg-slate-100 px-2 text-center text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+              [disabled]="loading"
+                class="py-2 w-full rounded border border-gray-300 bg-slate-100 px-2 text-center text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none disabled:opacity-60" />
         </div>
         <div class="mb-2 text-right">
-            <a href="#" class="text-sm text-gray-400 hover:text-indigo-500">Mot de passe oublié?</a>
+            <a routerLink="#" class="text-sm text-gray-400 hover:text-indigo-500">Mot de passe oublié?</a>
         </div>
         <button type="submit"
+            [disabled]="loading"
             class="py-2.5 font-medium w-full rounded bg-[#1D7874]
-             text-white transition-colors duration-300 hover:bg-[#295553]">Se connecter
+             text-white transition-colors duration-300 hover:bg-[#295553] disabled:opacity-60 disabled:cursor-not-allowed">
+             <span *ngIf="!loading">Se connecter</span>
+             <span *ngIf="loading" class="flex items-center justify-center gap-2">
+               <span class="inline-block w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
+               Connexion...
+             </span>
             </button>
     </form>
 
@@ -44,12 +52,12 @@
     </div>
     <div class="mb-2 text-right mt-2">
 
-        <a href="/login-admin" class="text-sm text-gray-400 hover:text-indigo-500 mb-2 block"> connecter en tant que administrateur</a>
-              <a href="/login-shop" class="text-sm text-gray-400 hover:text-indigo-500"> connecter en tant que boutique</a>
+        <a routerLink="/login-admin" class="text-sm text-gray-400 hover:text-indigo-500 mb-2 block"> connecter en tant que administrateur</a>
+              <a routerLink="/login-shop" class="text-sm text-gray-400 hover:text-indigo-500"> connecter en tant que boutique</a>
 </div>
     <p class="mt-8 text-center text-sm text-gray-400">
         En cliquant sur Se connecter, vous acceptez nos
-        <a href="#" class="underline">conditions d’utilisation</a> et <a href="#" class="underline">notre politique de confidentialité</a>.
+        <a routerLink="#" class="underline">conditions d’utilisation</a> et <a href="#" class="underline">notre politique de confidentialité</a>.
     </p>
 </div>
 </main>

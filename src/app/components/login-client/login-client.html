@@ -53,6 +53,7 @@
             [(ngModel)]="newUser.name"
             required
             placeholder="John Doe"
+            [disabled]="loading"
             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1D7874] focus:border-[#1D7874] transition-all duration-200 text-base placeholder-gray-400"
           />
         </div>
@@ -69,6 +70,7 @@
             [(ngModel)]="newUser.email"
             required
             placeholder="name@example.com"
+            [disabled]="loading"
             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1D7874] focus:border-[#1D7874] transition-all duration-200 text-base placeholder-gray-400"
           />
         </div>
@@ -86,6 +88,7 @@
               [(ngModel)]="newUser.password"
               required
               placeholder="Au moins 8 caractères"
+              [disabled]="loading"
               class="w-full pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1D7874] focus:border-[#1D7874] transition-all duration-200 text-base placeholder-gray-400"
             />
             <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
@@ -107,6 +110,7 @@
               [(ngModel)]="passconfirm"
               required
               placeholder="Répétez votre mot de passe"
+              [disabled]="loading"
               class="w-full pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1D7874] focus:border-[#1D7874] transition-all duration-200 text-base placeholder-gray-400"
             />
             <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
@@ -129,6 +133,7 @@
             id="role"
             name="role"
             [(ngModel)]="newUser.role"
+            [disabled]="loading"
             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1D7874] focus:border-[#1D7874] transition-all duration-200 text-base"
           >
             <option value="USER">🛒 Acheteur (Client)</option>
@@ -144,13 +149,16 @@
           </a>
           <button
             type="submit"
+            [disabled]="loading"
 
-            class="flex-1  bg-[#1D7874]  hover:bg-[#114643] text-white py-4 px-6 rounded-lg font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
-          >
-           Enregistrer
+            class="flex-1  bg-[#1D7874]  hover:bg-[#114643] text-white py-2 px-8 rounded-lg font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
+            ><span *ngIf="!loading">Enregistrer</span>
+            <span *ngIf="loading" class="flex items-center justify-center gap-2">
+              <span class=" inline-block w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
+            </span>
+
           </button>
         </div>
-      </form>
 
 
       <div class="mt-8 pt-6 border-t border-gray-200 text-center text-sm">
@@ -163,4 +171,3 @@
           © 2026 SmartShop. Tous droits réservés.
         </p>
       </div>
-    </div>

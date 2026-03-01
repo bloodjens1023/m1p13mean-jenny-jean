@@ -15,6 +15,7 @@ export class User {
   showModal = false;
   message = "";
   passconfirm = "";
+  loading = false;
   newUser = {
     name: '',
     email: '',
@@ -34,8 +35,10 @@ export class User {
       });
       return;
     }else{
+      this.loading = true;
        this.userService.insertUser(this.newUser).subscribe({
       next: () => {
+        this.loading = false;
         toast.success('Utilisateur créé avec succès');
 
         this.showModal = false;
@@ -47,6 +50,7 @@ export class User {
         };
       },
       error: (err) => {
+        this.loading = false;
         toast.error('Erreur création utilisateur', {
           description: err.error?.message||"veuillez vérifier les champs saisis"
         });

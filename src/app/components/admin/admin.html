@@ -13,7 +13,8 @@
                 [(ngModel)]="loginData.email"
                 required
                 name="email"
-                class="py-2 w-full rounded border border-gray-300 bg-slate-100 px-2 text-center text-gray-400 placeholder-[#7f8c8d] focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+                [disabled]="loading"
+                class="py-2 w-full rounded border border-gray-300 bg-slate-100 px-2 text-center text-gray-400 placeholder-[#7f8c8d] focus:ring-2 focus:ring-indigo-500 focus:outline-none disabled:opacity-60" />
         </div>
         <div class="mb-4">
             <label for="password" class="mb-1 block text-sm text-gray-400">Mot de passe</label>
@@ -21,14 +22,21 @@
               [(ngModel)]="loginData.password"
               required
               name="passwword"
-                class="py-2 w-full rounded border border-gray-300 bg-slate-100 px-2 text-center text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+              [disabled]="loading"
+                class="py-2 w-full rounded border border-gray-300 bg-slate-100 px-2 text-center text-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none disabled:opacity-60" />
         </div>
         <div class="mb-2 text-right">
             <a href="#" class="text-sm text-gray-400 hover:text-indigo-500">Mot de passe oublié?</a>
         </div>
         <button type="submit"
+            [disabled]="loading"
             class="py-2.5 font-medium w-full rounded bg-indigo-500
-             text-white transition-colors duration-300 hover:bg-indigo-600">Se connecter
+             text-white transition-colors duration-300 hover:bg-indigo-600 disabled:opacity-60 disabled:cursor-not-allowed">
+             <span *ngIf="!loading">Se connecter</span>
+             <span *ngIf="loading" class="flex items-center justify-center gap-2">
+               <span class="inline-block w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
+               Connexion...
+             </span>
             </button>
     </form>
 

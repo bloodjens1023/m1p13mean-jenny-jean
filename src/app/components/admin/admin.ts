@@ -18,6 +18,7 @@ export class Admin {
     email: '',
     password: ''
   };
+  loading = false;
 
   // injecter le router
   router = inject(Router);
@@ -25,21 +26,22 @@ export class Admin {
   constructor(private authService: AuthService) {}
 
   onLogin() {
-    console.log('Données envoyées :', this.loginData);
+    this.loading = true;
 
     this.authService.login(this.loginData).subscribe({
       next: (res) => {
         if (res.user.role !== 'ADMIN') {
+          this.loading = false;
           toast.error('Accès refusé', {
             description: 'Vous n\'avez pas les droits administrateur.'
           });
           return;
         }else{
           // console.log('Réponse backend :', res);
-          console.log('Token :', res.token);
           toast.success('Connexion réussite', {
           description: 'Vous êtes maintenant connecté.'
           });
+          this.loading = false;
 
 
           this.router.navigate(['/admin/dashboard']);
@@ -48,14 +50,15 @@ export class Admin {
 
 
 
-
+        this.loading = false;
       },
       error: (err) => {
         console.error('Erreur login :', err.error?.message || err);
+        this.loading = false
         toast.error('Connexion impossible', {
           description: err.error?.message || 'Une erreur est survenue lors de la connexion.'
         });
       }
-    });
+    })
   }
 }
