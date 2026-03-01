@@ -32,7 +32,7 @@ export class CommandeService {
 
   }
   imprimerFacture(commandeId: string) {
-    return `${environment.apiUrl}/${commandeId}/facture`;
+    return `${environment.apiUrl}/api/commande/${commandeId}/facture`;
   }
   modifierStatutCommande(id: string, statut: string): Observable<any> {
     return this.http.put(
