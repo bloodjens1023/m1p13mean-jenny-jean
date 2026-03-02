@@ -137,6 +137,6 @@
 
     .error-box { background:#fff0f0; border:1.5px solid #ffd7d7; color:#8a1f1f; padding:14px 16px; border-radius:10px; box-shadow:var(--shadow); }
 
-    @media (max-width:1200px) { .kpi-grid { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:1200px) { .kpi-grid { grid-template-columns:repeat(1,1fr); } }
     @media (max-width:900px)  { .bottom-grid { grid-template-columns:1fr; } .sidebar { display:none; } }
     @media (max-width:600px)  { .kpi-grid { grid-template-columns:1fr; } .main-content { padding:16px; } .kpi-card { padding:18px; } .kpi-value { font-size:24px; } }

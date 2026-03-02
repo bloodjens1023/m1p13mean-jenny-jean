@@ -23,13 +23,15 @@ import { AdminFinanceComponent } from './components/finance/finance';
 import { AdminInfo } from './components/admin-info/admin-info';
 import { AdminPerformanceComponent } from './components/performance/performance';
 import { FinanceDash } from './pages/finance-dash/finance-dash';
+import { CommandeBoutique } from './pages/commande-boutique/commande-boutique';
+import { VenteBoutique } from './pages/vente-boutique/vente-boutique';
 
 
 export const routes: Routes = [
 
   // ── Page d'accueil : redirige selon le rôle ──────────────
   { path: '', component: HomeRedirect },
- 
+
 
 
 
@@ -68,7 +70,9 @@ export const routes: Routes = [
       { path: '',          redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardBoutique },
       { path: 'produit', component: AjoutProduit },
+      { path: 'commande', component: CommandeBoutique },
       { path: 'finance', component: FinanceDash },
+      { path: 'vente', component: VenteBoutique },
     ]
   },
 

@@ -25,11 +25,11 @@
     <!-- TOPBAR -->
     <div class="topbar">
       <div>
-      
+
         <h1 class="page-title">Gestion financière</h1>
         <span class="page-date">{{ today | date:'EEEE d MMMM yyyy' }}</span>
       </div>
-     
+
     </div>
 
     <!-- KPI -->
@@ -113,113 +113,9 @@
       </div>
     </div>
 
-    <!-- ╔═ Commandes reçues ═══ -->
-    <div class="card">
-      <div class="card-head card-head--top">
-        <div>
-          <h3 class="card-title">Commandes Reçues</h3>
-          <p class="card-sub">Suivi des commandes et mise à jour des statuts</p>
-        </div>
-      </div>
 
-      <div class="table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Commande</th>
-              <th>Client</th>
-              <th>Produits</th>
-              <th class="th-center">Qté</th>
-              <th class="th-center">Date</th>
-              <th class="th-right">Total</th>
-              <th class="th-center">Statut</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let o of orders">
-              <td>#{{ o.id }}</td>
-              <td>{{ o.customer }}</td>
-              <td>
-                <span *ngFor="let it of o.items; let k = index">
-                  {{ it.name }}×{{ it.qty }}<span *ngIf="k < o.items.length - 1">, </span>
-                </span>
-              </td>
-              <td class="td-center">{{ o.qty }}</td>
-              <td class="td-center">{{ o.date | date:'dd MMM yyyy' }}</td>
-              <td class="td-right">{{ o.total | number }} Ar</td>
-              <td class="td-center">
-                <div class="order-status-wrap">
-                  <span class="badge-order"
-                        [class.pending]="o.status === 'En attente'"
-                        [class.confirmed]="o.status === 'Confirmée'"
-                        [class.delivered]="o.status === 'Livrée'">
-                    {{ o.status === 'En attente' ? 'En attente' : o.status === 'Confirmée' ? 'Confirmée' : 'Livrée' }}
-                  </span>
-                  <div class="status-actions">
-                    <button class="s-btn s-pending" (click)="setOrderStatus(o,'En attente')">En attente</button>
-                    <button class="s-btn s-confirmed" (click)="setOrderStatus(o,'Confirmée')">Confirmée</button>
-                    <button class="s-btn s-delivered" (click)="setOrderStatus(o,'Livrée')">Livrée</button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
 
-    <!-- ╔═ Historique des ventes ═══ -->
-    <div class="card">
-      <div class="card-head card-head--top">
-        <div>
-          <h3 class="card-title">Historique des Ventes</h3>
-          <p class="card-sub">Commandes livrées uniquement</p>
-        </div>
-      </div>
 
-      <div class="stats-bar">
-        <div class="stat-item">
-          <span class="stat-val">{{ totalRevenue | number }} Ar</span>
-          <span class="stat-label">Chiffre d'affaires</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-val">{{ totalDelivered }}</span>
-          <span class="stat-label">Commandes livrées</span>
-        </div>
-        <div class="stat-item stat-item--wide">
-          <span class="stat-val stat-val--sm">{{ bestSellingProduct }}</span>
-          <span class="stat-label">Meilleur produit</span>
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Produits</th>
-              <th class="th-center">Qté</th>
-              <th class="th-right">Montant</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let s of salesHistory">
-              <td class="td-muted">{{ s.date | date:'dd MMM yyyy' }}</td>
-              <td class="td-muted td-truncate">
-                <span *ngFor="let it of s.items; let k = index">
-                  {{ it.name }}×{{ it.qty }}<span *ngIf="k < s.items.length - 1">, </span>
-                </span>
-              </td>
-              <td class="td-center">{{ s.qty }}</td>
-              <td class="td-right">{{ s.total | number }} Ar</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-  </main>
-</div>
 
 <!-- ===== MODALE AJOUT PRODUIT ===== -->
 <div class="modal-overlay" *ngIf="addModalOpen" (click)="closeAddModal()">
