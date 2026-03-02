@@ -62,7 +62,10 @@
           <h3 class="card-title">Gestion des Stocks</h3>
           <p class="card-sub">Produits, prix, promotions et stocks</p>
         </div>
+       <div class="flex gap-3">
+         <button class="btn btn-secondary border-2! border-solid!" (click)="openModal()"> Demande Depense</button>
         <button class="btn btn-primary" (click)="openAddModal()">+ Nouveau produit</button>
+       </div>
       </div>
       <!-- Le formulaire inline est remplacé par une modale élégante -->
 
@@ -113,8 +116,63 @@
       </div>
     </div>
 
+<!-- ===== MODALE DEMANDE DEPENSE ===== -->
+ <!-- ================= AJOUT DEPENSE ================= -->
+     <!-- OVERLAY -->
+      <div *ngIf="isModalOpen"
+          class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
 
+        <!-- MODAL -->
+        <div class="bg-white w-full max-w-2xl p-6 rounded-xl shadow-lg relative">
 
+          <!-- Close Button -->
+          <button
+            (click)="closeModal()"
+            class="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl">
+            ✕
+          </button>
+
+          <h2 class="text-xl font-bold text-indigo-500 mb-6">
+            Ajouter une Dépense
+          </h2>
+
+          <form (ngSubmit)="ajouterDepense(); closeModal()"
+                class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <!-- Type dépense -->
+            <select [(ngModel)]="form.type" name="type"
+                    class="px-4 py-2 border rounded-lg" required>
+              <option value="">Type</option>
+              <option value="LOYER">Loyer</option>
+              <option value="CHARGES">Charges</option>
+              <option value="PROMOTION">Promotion</option>
+            </select>
+
+            <!-- Montant -->
+            <input type="number"
+                  placeholder="Montant"
+                  [(ngModel)]="form.montant"
+                  name="montant"
+                  class="px-4 py-2 border rounded-lg"
+                  required />
+
+            <!-- Description -->
+            <input type="text"
+                  placeholder="Description"
+                  [(ngModel)]="form.description"
+                  name="description"
+                  class="px-4 py-2 border rounded-lg" />
+
+            <!-- Bouton -->
+            <button type="submit"
+                    class="md:col-span-2 bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2 rounded-lg transition">
+              Enregistrer Dépense
+            </button>
+
+          </form>
+
+        </div>
+      </div>
 
 
 <!-- ===== MODALE AJOUT PRODUIT ===== -->

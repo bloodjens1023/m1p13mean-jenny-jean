@@ -8,6 +8,7 @@ import { CommandeService } from '@/services/commande';
 import { BoutiqueService } from '@/services/boutique';
 import { AuthService } from '@/services/auth';
 import Swal from 'sweetalert2';
+import { FinanceService } from '@/services/finance';
 
 interface Product {
   id: string;
@@ -25,6 +26,7 @@ interface OrderItem {
   name: string;
   qty: number;
 }
+
 
 interface Order {
   id: string;
@@ -44,6 +46,13 @@ interface Order {
   styleUrls: ['./finance-dash.css'],
 })
 export class FinanceDash implements OnInit {
+  constructor(private financeService : FinanceService){}
+  form = {
+    boutique: '',
+    type: '',
+    montant: '',
+    description: ''
+  };
 
   today: Date = new Date();
   loading: boolean = false;
@@ -53,6 +62,7 @@ export class FinanceDash implements OnInit {
   private commandeService = inject(CommandeService);
   private boutiqueService = inject(BoutiqueService);
   private authService = inject(AuthService);
+  isModalOpen : Boolean = false;
   boutiqueId: string = '';
   newProductImage: File | null = null;
   imagePreview: string | null = null;
@@ -62,6 +72,24 @@ export class FinanceDash implements OnInit {
     { id: 'P002', name: 'Sneakers Air Pro', category: 'Chaussures', stock: 3, price: 120000, editing: false, promoActive: false, discountPercent: 0 },
     { id: 'P003', name: 'Casquette Logo', category: 'Accessoires', stock: 0, price: 25000, editing: false, promoActive: false, discountPercent: 0 },
   ];
+    openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
+   ajouterDepense() {
+    this.form.boutique = this.boutiqueId
+    console.log(this.form)
+    this.financeService.ajouterDepense(this.form)
+      .subscribe(() => {
+        alert('Dépense ajoutée avec succès');
+        // this.chargerFinance();
+      });
+  }
+
+
 
   newProduct: (Partial<Product> & { description?: string; couleur?: string }) = {
     id: '',
@@ -86,7 +114,8 @@ export class FinanceDash implements OnInit {
 
   // ====== PRODUITS ======
   addProduct() {
-    // Logique harmonisée avec ajout-produit.ts (L210-233)
+
+
     if (!this.newProduct?.name || this.newProduct?.price == null || this.newProduct?.stock == null) return;
     const formData = new FormData();
     formData.append('nom', this.newProduct.name!);
