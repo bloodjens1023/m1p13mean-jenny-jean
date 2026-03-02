@@ -28,10 +28,29 @@
     class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
 
   @for (produit of produit; track produit._id) {
+
     <div
 
-    class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl "
+    class="w-72 bg-white shadow-md rounded-xl duration-500 scale-100 hover:scale-105 hover:shadow-xl "
     >
+    <!-- Badge promo rond -->
+  <div
+    *ngIf="produit.activepromo"
+    class="absolute -top-3 -right-3
+           w-14 h-14
+           bg-red-500
+           text-white
+           rounded-full
+           flex items-center justify-center
+           text-sm font-bold
+           shadow-lg
+           border-2 border-white">
+
+    -{{ produit.promotion }}%
+
+  </div>
+
+
         <a >
           <img (click)="produit_clique(produit._id)" [src]="getImageUrl(produit.image)" alt="Product"
             class="h-80 w-72 object-cover rounded-t-xl cursor-pointer"

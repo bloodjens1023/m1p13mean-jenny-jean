@@ -1,52 +1,75 @@
 
-<div class="bottom-grid">
-  <div class="card">
-    <div class="card-header">
-      <div>
-        <h3 class="card-title">Dernières Commandes</h3>
-        <p class="card-subtitle">{{ commandes.length }} commandes récentes</p>
-      </div>
-      
-      <div class="card-actions">
-        <button class="btn-ghost">Voir tout</button>
-      </div>
+<!-- From Uiverse.io by Cybercom682 -->
+<div class="text-center h-screen flex flex-col items-center justify-center" *ngIf="loading">
+  <div
+    class="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-yellow-500 mx-auto"
+  ></div>
+
+</div>
+
+
+
+
+<div class="orders-elegant" *ngIf="!loading">
+  <!-- En-tête -->
+  <div class="orders-header">
+    <div class="header-title">
+      <h2>Dernières Commandes</h2>
+      <span class="orders-count">{{ commandes.length }} commandes</span>
     </div>
-    <div class="table-wrap">
-      <table class="orders-table">
-        <thead>
-          <tr><th>Commande</th><th>Produit</th><th>Quantité</th><th>Total</th><th>Date</th><th>Statut</th></tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let c of commandes" class="table-row">
-            <td><span class="order-id">#{{ c._id.slice(-4) }}</span></td>
-            <td>
-              <div class="product-cell">
-                <div class="product-thumb">{{ c.produits[0]?.produit?.nom?.charAt(0) }}</div>
-                <span class="product-name">
-                  {{ nomsProduits(c) }}
-                </span>
-              </div>
-            </td>
-            <td><span class="qty-badge">{{ c.produits[0]?.quantite }}</span></td>
-            <td><strong>{{ c.total | number }}AR</strong></td>
-            <td class="date-cell">{{ c.createdAt | date:'dd MMM yyyy' }}</td>
-            <td>
-              <span class="status-badge"
-                [class.status-livree]="c.statut === 'Confirmée'"
-                [class.status-en-cours]="c.statut === 'En attente'"
-                [class.status-annulee]="c.statut === 'Annulée'">
-                {{ c.statut }}
-              </span>
-            </td>
-            <td>
-              <button class="order-action-btn"
-                      (click)="imprimerFacture(c._id)">
-                🧾 Facture
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <button class="btn-view-all" routerLink="/">
+      Retourner
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M6 12l4-4-4-4"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Liste des commandes -->
+  <div class="orders-grid">
+    <div *ngFor="let c of commandes" class="order-item" [class]="'status-' + c.statut.toLowerCase().replace(' ', '-')">
+
+      <!-- Ligne principale -->
+      <div class="order-main">
+        <div class="order-info">
+          <div class="order-id">#{{ c._id.slice(-6).toUpperCase() }}</div>
+          <div class="order-date">{{ c.createdAt | date:'dd MMM yyyy' }}</div>
+        </div>
+
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          {{ c.statut }}
+        </div>
+      </div>
+
+      <!-- Produits -->
+      <div class="order-products">
+        <div class="product-row"  *ngFor="let p of c.produits.slice(0, 2); let last = last">
+          <div class="product-icon">{{ p.produit?.nom?.charAt(0).toUpperCase() }}</div>
+          <div class="product-name">{{ p.produit?.nom }}</div>
+          <div class="product-qty">×{{ p.quantite }}</div>
+        </div>
+        <div class="more-items" *ngIf="c.produits.length > 2">
+          +{{ c.produits.length - 2 }} autres
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="order-footer">
+        <div class="total-price">
+          <span class="label">Total</span>
+          <span class="amount">{{ c.total | number }} <small>AR</small></span>
+        </div>
+        <button class="btn-invoice" (click)="imprimerFacture(c._id)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          Facture
+        </button>
+      </div>
     </div>
   </div>
 </div>

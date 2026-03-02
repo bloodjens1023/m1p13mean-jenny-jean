@@ -3,12 +3,12 @@ import { Component, inject } from '@angular/core';
 import { AuthService } from '@/services/auth';
 import { CommandeService } from '@/services/commande';
 import { FormsModule } from '@angular/forms';
-import {  Router } from '@angular/router';
+import {  Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-historique-commande',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule,CommonModule, RouterLink],
   templateUrl: './historique-commande.html',
   styleUrl: './historique-commande.css',
 })
@@ -17,11 +17,12 @@ export class HistoriqueCommande {
 
   auth = inject(AuthService);
   commandeService = inject(CommandeService);
-
+  loading : boolean = false;
   commandes: any[] = [];
   acheteur!: string;
 
   ngOnInit() {
+    this.loading = true;
     const user = this.auth.user();
 
     if (!user || !user.id) {
@@ -29,6 +30,7 @@ export class HistoriqueCommande {
     }
 
     this.acheteur = user.id;
+
   this.loadHistorique();
   }
 
@@ -36,7 +38,9 @@ export class HistoriqueCommande {
     this.commandeService.historiqueCommandes(this.acheteur)
       .subscribe(res => {
         this.commandes = res.historique;
+        this.loading = false
       });
+
   }
   imprimerFacture(commandeId: string) {
     const url = this.commandeService.imprimerFacture(commandeId);

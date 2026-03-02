@@ -33,29 +33,62 @@
     </div>
 
     <!-- KPI -->
-    <div class="kpi-row">
-      <div class="kpi-card purple">
-        <div class="kpi-icon">💰</div>
-        <div class="kpi-label">Chiffre d'affaires</div>
-        <div class="kpi-value">{{ totalRevenue | number }} Ar</div>
-      </div>
-      <div class="kpi-card teal">
-        <div class="kpi-icon">📦</div>
-        <div class="kpi-label">Produits</div>
-        <div class="kpi-value">{{ products.length }}</div>
-      </div>
-      <div class="kpi-card amber">
-        <div class="kpi-icon">🛒</div>
-        <div class="kpi-label">Commandes</div>
-        <div class="kpi-value">{{ orders.length }}</div>
-      </div>
-      <div class="kpi-card gold">
-        <div class="kpi-icon">🏆</div>
-        <div class="kpi-label">Top produit</div>
-        <div class="kpi-value small">{{ bestSellingProduct }}</div>
-      </div>
-    </div>
+    <div class="mb-4 flex items-center gap-4">
+  <label class="text-sm font-medium text-gray-700">Période :</label>
+  <input
+    type="month"
+    [(ngModel)]="moisSelectionne"
+    (change)="changerMois($event.target.value)"
+    class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
 
+  <span *ngIf="loadingPerformance" class="text-sm text-indigo-600 animate-pulse">
+    Chargement...
+  </span>
+</div>
+
+<!-- KPIs AVEC DONNÉES API -->
+<div class="kpi-row">
+  <!-- Chiffre d'affaires -->
+  <div class="kpi-card purple">
+    <div class="kpi-icon">💰</div>
+    <div class="kpi-label">Chiffre d'affaires</div>
+    <div class="kpi-value">
+      {{ performanceData.chiffreAffaires | number }} Ar
+    </div>
+    <div class="text-xs text-purple-200 mt-1">{{ moisSelectionne }}</div>
+  </div>
+
+  <!-- Total Dépenses -->
+  <div class="kpi-card teal">
+    <div class="kpi-icon">📉</div>
+    <div class="kpi-label">Total Dépenses</div>
+    <div class="kpi-value">
+      {{ performanceData.totalDepense | number }} Ar
+    </div>
+  </div>
+
+  <!-- Bénéfice -->
+  <div class="kpi-card" [class]="performanceData.totalBenefice >= 0 ? 'green' : 'red'">
+    <div class="kpi-icon">{{ performanceData.totalBenefice >= 0 ? '📈' : '📉' }}</div>
+    <div class="kpi-label">Bénéfice Net</div>
+    <div class="kpi-value" [class.text-green-600]="performanceData.totalBenefice >= 0"
+                           [class.text-red-600]="performanceData.totalBenefice < 0">
+      {{ performanceData.totalBenefice | number }} Ar
+    </div>
+  </div>
+
+  <!-- Total Ventes -->
+  <div class="kpi-card gold">
+    <div class="kpi-icon">🛒</div>
+    <div class="kpi-label">Total Ventes</div>
+    <div class="kpi-value">
+      {{ performanceData.totalVente | number }} Ar
+    </div>
+    <div class="text-xs text-yellow-200 mt-1" *ngIf="performanceData.nombreVentes">
+      {{ performanceData.nombreVentes }} commandes
+    </div>
+  </div>
+</div>
     <div class="card">
       <div class="card-head card-head--top">
         <div>
@@ -70,51 +103,73 @@
       <!-- Le formulaire inline est remplacé par une modale élégante -->
 
       <div class="table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Produit</th>
-              <th>Catégorie</th>
-              <th class="th-center">Stock</th>
-              <th class="th-right">Prix</th>
-              <th class="th-center">Promotion</th>
-              <th class="th-center">Statut</th>
-              <th class="th-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let p of products">
-              <td>{{ p.name }}</td>
-              <td>{{ p.category }}</td>
-              <td class="td-center">{{ p.stock }}</td>
-              <td class="td-right">
-                {{ p.price | number }} Ar
-                <div *ngIf="p.promoActive">
-                  → {{ discountedPrice(p) | number }} Ar (−{{ p.discountPercent }}%)
-                </div>
-              </td>
-              <td class="td-center">
-                <label class="toggle">
-                  <input type="checkbox" [(ngModel)]="p.promoActive">
-                  <span class="slider"></span>
-                </label>
-                <input type="number" min="0" max="90" [(ngModel)]="p.discountPercent" class="pct-input">
-              </td>
-              <td class="td-center">
-                <span class="badge"
-                      [class.low]="p.stock < 5"
-                      [class.ok]="p.stock >= 5">
-                  {{ p.stock < 5 ? 'Stock faible' : 'Disponible' }}
-                </span>
-              </td>
-              <td class="td-center">
-                <button class="action delete" (click)="deleteProduct(p.id)">Suppr.</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Produit</th>
+        <th>Catégorie</th>
+        <th class="th-center">Stock</th>
+        <th class="th-right">Prix</th>
+        <th class="th-center">Promotion</th>
+        <th class="th-center">Statut</th>
+        <th class="th-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of products">
+        <td>{{ p.name }}</td>
+        <td>{{ p.category }}</td>
+        <td class="td-center">{{ p.stock }}</td>
+        <td class="td-right">
+          <div *ngIf="!p.promoActive">
+            {{ p.price | number }} Ar
+          </div>
+          <div *ngIf="p.promoActive">
+            <span style="text-decoration: line-through; color: #999; font-size: 0.9em;">
+              {{ p.price | number }} Ar
+            </span>
+            <div style="color: #22c55e; font-weight: 600;">
+              {{ discountedPrice(p) | number }} Ar
+            </div>
+            <div style="color: #ef4444; font-size: 0.85em;">
+              −{{ p.discountPercent }}%
+            </div>
+          </div>
+        </td>
+        <td class="td-center">
+          <div class="promo-controls">
+            <label class="toggle">
+              <input
+                type="checkbox"
+                [checked]="p.promoActive"
+                (change)="onTogglePromo($event, p)">
+              <span class="slider"></span>
+            </label>
+            <input
+              type="number"
+              min="0"
+              max="90"
+              [value]="p.discountPercent"
+              (change)="onDiscountChange($event, p)"
+
+              class="pct-input"
+              placeholder="%">
+          </div>
+        </td>
+        <td class="td-center">
+          <span class="badge"
+                [class.low]="p.stock < 5"
+                [class.ok]="p.stock >= 5">
+            {{ p.stock < 5 ? 'Stock faible' : 'Disponible' }}
+          </span>
+        </td>
+        <td class="td-center">
+          <button class="action delete" (click)="deleteProduct(p.id)">Suppr.</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <!-- ===== MODALE DEMANDE DEPENSE ===== -->
  <!-- ================= AJOUT DEPENSE ================= -->
@@ -234,3 +289,66 @@
     </div>
   </div>
 </div>
+
+<div *ngIf="financeData?.loyersPayes?.details && financeData.loyersPayes.details.length > 0 " class="mt-8 animate-fade-in">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+            <span class="w-2 h-8 bg-emerald-500 rounded-full"></span>
+            Liste des depenses
+            <span class="text-sm font-normal text-gray-500 bg-emerald-100 px-3 py-1 rounded-full">
+              {{ financeData.loyersPayes.details.length | number}} paiement(s)
+            </span>
+          </h3>
+
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-linear-to-r from-emerald-500 to-teal-600 text-white">
+                  <th class="p-4 font-semibold text-sm uppercase tracking-wider">Boutique</th>
+                  <th class="p-4 font-semibold text-sm uppercase tracking-wider">Type</th>
+                  <th class="p-4 font-semibold text-sm uppercase tracking-wider text-right">Montant</th>
+                  <th class="p-4 font-semibold text-sm uppercase tracking-wider">Description</th>
+                  <th class="p-4 font-semibold text-sm uppercase tracking-wider">Date</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr *ngFor="let depense of financeData.loyersPayes.details; let i = index"
+                    class="hover:bg-emerald-50 transition-all duration-200 group"
+                    [class.bg-gray-50]="i % 2 === 0">
+                  <td class="p-4">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-sm">
+                        {{ depense.boutique.nom.charAt(0) }}
+                      </div>
+                      <span class="font-medium text-gray-800">{{ depense.boutique.nom }}</span>
+                    </div>
+                  </td>
+                  <td class="p-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                      {{ depense.type }}
+                    </span>
+                  </td>
+                  <td class="p-4 text-right font-bold ">
+                    {{ depense.montant | number }} Ar
+                  </td>
+                  <td class="p-4 text-gray-600 max-w-xs truncate" [title]="depense.description">
+                    {{ depense.description }}
+                  </td>
+                  <td class="p-4 text-gray-500">
+                    <div class="flex items-center gap-2">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                      </svg>
+                      {{ depense.date | date:'dd MMM yyyy' }}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+

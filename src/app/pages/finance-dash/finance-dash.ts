@@ -22,20 +22,14 @@ interface Product {
   _backup?: Partial<Product>;
 }
 
-interface OrderItem {
-  name: string;
-  qty: number;
-}
 
 
-interface Order {
-  id: string;
-  customer: string;
-  items: OrderItem[];
-  qty: number;
-  date: Date;
-  total: number;
-  status: 'En attente' | 'Confirmée' | 'Livrée';
+interface PerformanceFinanciere {
+  chiffreAffaires: number;
+  totalDepense: number;
+  totalBenefice: number;
+  totalVente: number;
+  nombreVentes: number;
 }
 
 @Component({
@@ -46,7 +40,8 @@ interface Order {
   styleUrls: ['./finance-dash.css'],
 })
 export class FinanceDash implements OnInit {
-  constructor(private financeService : FinanceService){}
+  constructor(private financeService: FinanceService) {}
+
   form = {
     boutique: '',
     type: '',
@@ -58,38 +53,217 @@ export class FinanceDash implements OnInit {
   loading: boolean = false;
   error: boolean = false;
   errorMessage: string = '';
+
   private produitService = inject(ProduitService);
   private commandeService = inject(CommandeService);
   private boutiqueService = inject(BoutiqueService);
   private authService = inject(AuthService);
-  isModalOpen : Boolean = false;
+
+  isModalOpen: boolean = false;
   boutiqueId: string = '';
   newProductImage: File | null = null;
   imagePreview: string | null = null;
 
   products: Product[] = [
     { id: 'P001', name: 'Chemise Classic', category: 'Vêtements', stock: 12, price: 45000, editing: false, promoActive: false, discountPercent: 0 },
-    { id: 'P002', name: 'Sneakers Air Pro', category: 'Chaussures', stock: 3, price: 120000, editing: false, promoActive: false, discountPercent: 0 },
+    { id: 'P002', name: 'Sneakers Air Pro', category: 'Chaussures', stock: 3, price: 120000, editing: false, promoActive: true, discountPercent: 15 },
     { id: 'P003', name: 'Casquette Logo', category: 'Accessoires', stock: 0, price: 25000, editing: false, promoActive: false, discountPercent: 0 },
   ];
-    openModal() {
+
+  performanceData: PerformanceFinanciere = {
+    chiffreAffaires: 0,
+    totalDepense: 0,
+    totalBenefice: 0,
+    totalVente: 0,
+    nombreVentes: 0
+  };
+    moisSelectionne: string = this.getMoisActuel();
+  loadingPerformance: boolean = false;
+
+  private getMoisActuel(): string {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  }
+
+   changerMois(nouveauMois: string): void {
+    this.moisSelectionne = nouveauMois;
+    this.loadPerformanceData();
+  }
+
+  private loadPerformanceData(): void {
+    if (!this.boutiqueId) return;
+
+    this.loadingPerformance = true;
+
+    this.financeService.GetPerformance(this.moisSelectionne).subscribe({
+      next: (response: any) => {
+        console.log('Performance data:', response);
+
+        // Adaptez selon la structure exacte de votre API
+        // Si l'API retourne { data: { [boutiqueId]: { chiffreAffaires, ... } } }
+        const data = response.data?.[this.boutiqueId] || response.data;
+
+        if (data) {
+          this.performanceData = {
+            chiffreAffaires: data.chiffreAffaires || data.chiffre_affaires || 0,
+            totalDepense: data.totalDepense || data.total_depense || data.depenses || 0,
+            totalBenefice: data.totalBenefice || data.total_benefice || data.benefice || 0,
+            totalVente: data.totalVente || data.total_vente || data.ventes || 0,
+            nombreVentes: data.nombreVentes || data.nombre_ventes || 0
+          };
+        }
+
+        this.loadingPerformance = false;
+      },
+      error: (err) => {
+        console.error('Erreur chargement performance:', err);
+        this.loadingPerformance = false;
+        // Gardez les anciennes valeurs ou mettez à 0
+      }
+    });
+  }
+
+  // ============ GESTION MODALES ============
+  openModal() {
     this.isModalOpen = true;
   }
 
   closeModal() {
     this.isModalOpen = false;
   }
-   ajouterDepense() {
-    this.form.boutique = this.boutiqueId
-    console.log(this.form)
+
+  ajouterDepense() {
+    this.form.boutique = this.boutiqueId;
+    console.log(this.form);
     this.financeService.ajouterDepense(this.form)
       .subscribe(() => {
-        alert('Dépense ajoutée avec succès');
-        // this.chargerFinance();
+        Swal.fire({
+          icon: 'success',
+          title: 'Dépense ajoutée',
+          timer: 1500,
+          showConfirmButton: false
+        });
       });
   }
 
+  // ============ GESTION PROMOTIONS ============
 
+  /**
+   * Toggle activation/désactivation promotion avec confirmation
+   */
+  /**
+ * Toggle activation/désactivation promotion avec confirmation
+ */
+onTogglePromo(event: Event, product: Product): void {
+  const checkbox = event.target as HTMLInputElement;
+  const wantActivate = checkbox.checked;
+  const currentState = product.promoActive;
+
+  // Si on veut activer mais pas de pourcentage valide
+  if (wantActivate && (!product.discountPercent || product.discountPercent <= 0)) {
+    checkbox.checked = false;
+    Swal.fire({
+      title: 'Pourcentage requis',
+      text: 'Veuillez d\'abord saisir un pourcentage de promotion (1-90%)',
+      icon: 'warning',
+      confirmButtonColor: '#6366f1'
+    });
+    return;
+  }
+
+  const title = wantActivate ? 'Activer la promotion ?' : 'Désactiver la promotion ?';
+  const text = wantActivate
+    ? `Appliquer ${product.discountPercent}% de réduction sur "${product.name}" ?`
+    : `Retirer la promotion sur "${product.name}" ?`;
+
+  Swal.fire({
+    title,
+    text,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Confirmer',
+    cancelButtonText: 'Annuler',
+    confirmButtonColor: wantActivate ? '#22c55e' : '#ef4444',
+    cancelButtonColor: '#6b7280'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      product.promoActive = wantActivate;
+      this.savePromotionToBackend(product);
+    } else {
+      checkbox.checked = currentState;
+    }
+  });
+}
+
+/**
+ * Changement du pourcentage de réduction
+ */
+onDiscountChange(event: Event, product: Product): void {
+  const input = event.target as HTMLInputElement;
+  let value = parseInt(input.value, 10);
+
+  if (isNaN(value) || value < 0) value = 0;
+  if (value > 90) value = 90;
+
+  product.discountPercent = value;
+
+  // Si promo active, sauvegarder immédiatement
+  if (product.promoActive) {
+    this.savePromotionToBackend(product);
+  }
+}
+
+/**
+ * Sauvegarde promotion vers backend - CORRIGÉ pour matcher le backend
+ */
+private savePromotionToBackend(product: Product): void {
+  const payload = {
+
+    activepromo: product.promoActive,
+    promotion: product.discountPercent
+  };
+
+  console.log('Envoi au backend:', payload); // Debug
+
+  this.produitService.updateProduit(product.id, payload).subscribe({
+    next: (response) => {
+      console.log('Réponse backend:', response);
+
+      // Optionnel: synchroniser avec la réponse du serveur
+      if (response.activepromo !== undefined) {
+        product.promoActive = response.activepromo;
+      }
+      if (response.promotion !== undefined) {
+        product.discountPercent = response.promotion;
+      }
+    },
+    error: (err) => {
+      console.error('Erreur mise à jour:', err);
+
+      // Rollback
+      product.promoActive = !product.promoActive;
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: err.error?.message || 'Impossible de mettre à jour la promotion',
+        confirmButtonColor: '#ef4444'
+      });
+    }
+  });
+}
+  /**
+   * Calcul du prix remisé
+   */
+  discountedPrice(product: Product): number {
+    if (!product.promoActive || !product.discountPercent) {
+      return product.price;
+    }
+    const discount = product.price * (product.discountPercent / 100);
+    return Math.max(0, Math.round(product.price - discount));
+  }
+
+  // ============ GESTION PRODUITS ============
 
   newProduct: (Partial<Product> & { description?: string; couleur?: string }) = {
     id: '',
@@ -103,29 +277,23 @@ export class FinanceDash implements OnInit {
     couleur: ''
   };
 
-  orders: Order[] = [
-    { id: 'CMD-1001', customer: 'Jean', items: [{ name: 'Chemise Classic', qty: 1 }], qty: 1, date: new Date(), total: 45000, status: 'En attente' },
-    { id: 'CMD-1002', customer: 'Aina', items: [{ name: 'Sneakers Air Pro', qty: 1 }], qty: 1, date: new Date(), total: 120000, status: 'Confirmée' },
-    { id: 'CMD-1003', customer: 'Rivo', items: [{ name: 'Casquette Logo', qty: 2 }], qty: 2, date: new Date(), total: 50000, status: 'Livrée' },
-  ];
-
   showAddForm: boolean = false;
   toggleAddForm() { this.showAddForm = !this.showAddForm; }
 
-  // ====== PRODUITS ======
   addProduct() {
-
-
     if (!this.newProduct?.name || this.newProduct?.price == null || this.newProduct?.stock == null) return;
+
     const formData = new FormData();
     formData.append('nom', this.newProduct.name!);
     formData.append('prix', this.newProduct.price!.toString());
     formData.append('stock', this.newProduct.stock!.toString());
+
     if (this.boutiqueId) formData.append('boutiqueId', this.boutiqueId);
     if (this.newProduct.description) formData.append('description', this.newProduct.description);
     if (this.newProduct.couleur) formData.append('couleur', this.newProduct.couleur);
     if (this.newProduct.category) formData.append('categorie', this.newProduct.category);
     if (this.newProduct.discountPercent) formData.append('discountPercent', String(this.newProduct.discountPercent));
+    if (this.newProduct.promoActive) formData.append('promoActive', 'true');
     if (this.newProductImage) formData.append('image', this.newProductImage);
 
     this.loading = true;
@@ -134,25 +302,15 @@ export class FinanceDash implements OnInit {
         this.loading = false;
         this.loadProducts();
         this.closeAddModal();
+
         Swal.fire({
           icon: 'success',
           title: 'Produit ajouté',
           text: 'Le produit a été ajouté avec succès.',
           confirmButtonColor: '#6366f1'
         });
-        this.newProduct = {
-          id: '',
-          name: '',
-          category: '',
-          stock: 0,
-          price: 0,
-          promoActive: false,
-          discountPercent: 0,
-          description: '',
-          couleur: ''
-        };
-        this.newProductImage = null;
-        this.imagePreview = null;
+
+        this.resetNewProduct();
       },
       error: (err) => {
         this.loading = false;
@@ -162,8 +320,33 @@ export class FinanceDash implements OnInit {
     });
   }
 
-  startEdit(p: Product) { p._backup = { ...p }; p.editing = true; }
-  cancelEdit(p: Product) { if(p._backup) Object.assign(p, p._backup); p.editing = false; delete p._backup; }
+  private resetNewProduct(): void {
+    this.newProduct = {
+      id: '',
+      name: '',
+      category: '',
+      stock: 0,
+      price: 0,
+      promoActive: false,
+      discountPercent: 0,
+      description: '',
+      couleur: ''
+    };
+    this.newProductImage = null;
+    this.imagePreview = null;
+  }
+
+  startEdit(p: Product) {
+    p._backup = { ...p };
+    p.editing = true;
+  }
+
+  cancelEdit(p: Product) {
+    if (p._backup) Object.assign(p, p._backup);
+    p.editing = false;
+    delete p._backup;
+  }
+
   saveEdit(p: Product) {
     const payload: any = {
       nom: p.name,
@@ -171,9 +354,11 @@ export class FinanceDash implements OnInit {
       stock: p.stock,
       categorie: p.category
     };
+
     this.produitService.updateProduit(p.id, payload).subscribe({
       next: () => {
-        p.editing = false; delete p._backup;
+        p.editing = false;
+        delete p._backup;
         this.loadProducts();
       },
       error: (err) => {
@@ -182,6 +367,7 @@ export class FinanceDash implements OnInit {
       }
     });
   }
+
   deleteProduct(id: string) {
     Swal.fire({
       title: 'Supprimer le produit ?',
@@ -203,96 +389,77 @@ export class FinanceDash implements OnInit {
       }
     });
   }
-  updatePrice(p: Product) { if (p.price < 0) p.price = 0; }
-  togglePromo(p: Product) { p.promoActive = !p.promoActive; }
-  discountedPrice(p: Product): number { return p.promoActive ? Math.max(0, Math.round(p.price * (1 - p.discountPercent / 100))) : p.price; }
+
+  updatePrice(p: Product) {
+    if (p.price < 0) p.price = 0;
+  }
+
+  // ============ STATUS & KPI ============
 
   getStatusClass(stock: number) {
     if (stock <= 0) return 'text-rose-600 bg-rose-50';
     if (stock <= 5) return 'text-amber-600 bg-amber-50';
     return 'text-emerald-600 bg-emerald-50';
   }
+
   getStatusLabel(stock: number) {
     if (stock <= 0) return 'Rupture';
     if (stock <= 5) return 'Stock faible';
     return 'En stock';
   }
 
-  // ====== COMMANDES ======
-  setOrderStatus(o: Order, status: 'En attente' | 'Confirmée' | 'Livrée') {
-    if (o.status === status) return;
-    Swal.fire({
-      title: 'Changer le statut ?',
-      text: `Passer de "${o.status}" à "${status}"`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Confirmer',
-      cancelButtonText: 'Annuler'
-    }).then(result => {
-      if (result.isConfirmed) {
-        const backendStatut = this.toBackendStatus(status);
-        this.commandeService.modifierStatutCommande(o.id, backendStatut).subscribe({
-          next: () => {
-            o.status = status;
-          },
-          error: (err) => {
-            console.error(err);
-            this.triggerError("Mise à jour du statut échouée");
-          }
-        });
-      }
-    });
-  }
 
-  get salesHistory(): Order[] { return this.orders.filter(o => o.status === 'Livrée'); }
-  get totalRevenue(): number { return this.salesHistory.reduce((sum, o) => sum + o.total, 0); }
-  get totalDelivered(): number { return this.salesHistory.length; }
-  get pendingCount(): number { return this.orders.filter(o => o.status === 'En attente').length; }
 
-  get bestSellingProduct(): string {
-    const counts: Record<string, number> = {};
-    this.salesHistory.forEach(o => o.items.forEach(it => counts[it.name] = (counts[it.name] || 0) + it.qty));
-    const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]);
-    return sorted.length ? `${sorted[0][0]} (${sorted[0][1]})` : '-';
-  }
+  // ============ UTILITAIRES ============
 
-  // ====== SIMULATION CHARGEMENT / ERREUR ======
   refreshData() {
     this.loading = true;
     this.error = false;
     setTimeout(() => this.loading = false, 600);
   }
+
   triggerError(message: string = "Impossible de charger les données.") {
-    this.error = true; this.errorMessage = message;
+    this.error = true;
+    this.errorMessage = message;
   }
 
-  // ====== MODAL AJOUT PRODUIT ======
+  // ============ MODAL AJOUT PRODUIT ============
+
   addModalOpen: boolean = false;
-  openAddModal() { this.addModalOpen = true; }
+
+  openAddModal() {
+    this.addModalOpen = true;
+  }
+
   closeAddModal() {
     this.addModalOpen = false;
   }
+
   get canSubmitProduct(): boolean {
-    // Aligné avec la logique cible: nom, prix et stock doivent être fournis
     return !!(this.newProduct.name && this.newProduct.price != null && this.newProduct.stock != null);
   }
+
   submitAddProduct() {
     if (!this.canSubmitProduct) return;
     this.addProduct();
     this.closeAddModal();
   }
+
   onImageSelected(e: any) {
     const file: File | undefined = e?.target?.files?.[0];
     if (!file) return;
+
     this.newProductImage = file;
     const reader = new FileReader();
     reader.onload = () => this.imagePreview = reader.result as string;
     reader.readAsDataURL(file);
   }
 
-  // ====== INIT & LOADERS ======
+  // ============ INIT ============
+
   ngOnInit(): void {
     this.initBoutiqueContext();
+    this.chargerFinance()
   }
 
   private initBoutiqueContext() {
@@ -301,18 +468,21 @@ export class FinanceDash implements OnInit {
       this.triggerError("Utilisateur non authentifié");
       return;
     }
+
     this.loading = true;
     this.boutiqueService.getBoutiqueByIdOwner(owner).subscribe({
       next: (res: any) => {
         const boutiques = Array.isArray(res) ? res : res?.boutiques;
         this.boutiqueId = boutiques && boutiques.length ? boutiques[0]._id : '';
+
         if (!this.boutiqueId) {
           this.loading = false;
           this.triggerError("Boutique introuvable");
           return;
         }
+        this.loadPerformanceData();
         this.loadProducts();
-        this.loadOrders();
+
       },
       error: (err) => {
         this.loading = false;
@@ -324,6 +494,7 @@ export class FinanceDash implements OnInit {
 
   private loadProducts() {
     if (!this.boutiqueId) return;
+
     this.produitService.getProduitByIDBoutique(this.boutiqueId).subscribe({
       next: (res: any[]) => {
         this.products = (res || []).map((p: any) => ({
@@ -333,8 +504,9 @@ export class FinanceDash implements OnInit {
           stock: p.stock ?? 0,
           price: p.prix ?? 0,
           editing: false,
-          promoActive: false,
-          discountPercent: 0
+          // Mappez correctement depuis votre backend
+          promoActive: p.promoActive || p.activepromo || false,
+          discountPercent: p.discountPercent || p.promotion || 0
         }));
         this.loading = false;
       },
@@ -346,44 +518,20 @@ export class FinanceDash implements OnInit {
     });
   }
 
-  private loadOrders() {
-    if (!this.boutiqueId) return;
-    this.commandeService.commandesParBoutique(this.boutiqueId).subscribe({
-      next: (res: any[]) => {
-        this.orders = (res || []).map((c: any) => {
-          const items = (c.produits || []).map((it: any) => ({
-            name: it.produit?.nom || it.nom || it.produit || 'Produit',
-            qty: it.quantite ?? it.qty ?? 1
-          }));
-          const status = this.fromBackendStatus(c.statut || c.status);
-          const qtySum = items.reduce((s: number, it: any) => s + (it.qty || 0), 0);
-          return {
-            id: c._id || c.id,
-            customer: c.acheteur?.name || c.client?.name || c.client || 'Client',
-            items,
-            qty: c.qty ?? qtySum,
-            date: new Date(c.createdAt || c.date || new Date()),
-            total: c.total ?? 0,
-            status
-          } as Order;
-        });
-      },
-      error: (err) => {
-        console.error(err);
-        this.triggerError("Chargement des commandes échoué");
-      }
-    });
-  }
+  financeData: any = [];
+  chargerFinance() {
+  if (!this.moisSelectionne) return;
 
-  private toBackendStatus(s: 'En attente' | 'Confirmée' | 'Livrée'): string {
-    if (s === 'Confirmée') return 'Confirmée';
-    if (s === 'Livrée') return 'Livrée';
-    return 'En attente';
-  }
-  private fromBackendStatus(s: string): 'En attente' | 'Confirmée' | 'Livrée' {
-    const v = (s || '').toLowerCase();
-    if (v.includes('confirm')) return 'Confirmée';
-    if (v.includes('livr')) return 'Livrée';
-    return 'En attente';
-  }
+  this.loading = true;
+  this.financeService.getFinanceParMois(this.moisSelectionne)
+    .subscribe(res => {
+      this.financeData = res.data;
+      console.log(this.financeData);
+      this.loading = false;
+    }, _err => {
+      this.loading = false;
+    });
+}
+
+
 }
