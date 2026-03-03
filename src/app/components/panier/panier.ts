@@ -56,6 +56,7 @@ export class Panier {
       this.produits = data;
       this.total = this.cartService.getTotal();
     });
+    console.log(this.produits)
   }
 
   modifierQuantite(id: string, event: any) {
@@ -74,7 +75,7 @@ export class Panier {
   changerModeLivraison() {
     if (this.modeLivraison === 'retrait') {
       this.adresseLivraison = {
-      
+
         adresseTexte: 'Akoor'
       };
     } else {
@@ -95,25 +96,25 @@ export class Panier {
       if (this.marker) {
         this.map.removeLayer(this.marker);
       }
-    
+
       this.marker = L.marker(e.latlng).addTo(this.map);
-    
+
       const lat = e.latlng.lat;
       const lng = e.latlng.lng;
-    
+
       const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`;
-    
+
       try {
         const response = await fetch(url, {
           headers: {
             'Accept': 'application/json'
           }
         });
-    
+
         const data = await response.json();
-    
+
         const address = data.address || {};
-    
+
         const nomLieu =
           address.suburb ||
           address.neighbourhood ||
@@ -121,18 +122,18 @@ export class Panier {
           address.town ||
           address.state ||
           'Adresse inconnue';
-    
+
         this.adresseLivraison = {
           latitude: lat,
           longitude: lng,
           adresseTexte: nomLieu
         };
-    
+
         console.log('Adresse détectée :', this.adresseLivraison);
-    
+
       } catch (error) {
         console.error('Erreur reverse geocoding', error);
-    
+
         this.adresseLivraison = {
           latitude: lat,
           longitude: lng,
@@ -140,8 +141,12 @@ export class Panier {
         };
       }
     });
-    
+
   }
+  calculPromotion(prix: number, promo: number = 0): number {
+  const promoSafe = Math.min(Math.max(promo, 0), 100);
+  return prix * (1 - promoSafe / 100);
+}
 
   commander() {
     if (!this.id_User) {

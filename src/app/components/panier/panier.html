@@ -42,7 +42,8 @@
             </p>
 
             <p class="text-base font-black leading-none text-gray-800">
-              {{ p.prix * p.quantite | number }} MGA
+              {{ calculPromotion( p.prix,p.promotion)  * p.quantite | number }} MGA
+
             </p>
 
           </div>

@@ -50,6 +50,7 @@ export class ProduitList1 implements  OnInit  {
       nom: prod.nom,
       prix: prod.prix,
       quantite: 1,
+      promotion: prod.promotion,
       stock:prod.stock,
       image: prod.image
     });

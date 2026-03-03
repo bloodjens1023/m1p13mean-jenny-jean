@@ -6,6 +6,7 @@ export interface ProduitPanier {
   nom: string;
   prix: number;
   quantite: number;
+  promotion: number;
   stock: number;
   image?: string;
 }
@@ -59,8 +60,16 @@ export class CartService {
   }
 
   getTotal(): number {
-    return this.panier.reduce((total, p) => total + (p.prix * p.quantite), 0);
-  }
+  return this.panier.reduce((total, p) => {
+
+    const promo = p.promotion ?? 0; // si undefined → 0%
+    const reduction = (p.prix * promo) / 100;
+    const prixAvecPromo = p.prix - reduction;
+
+    return total + (prixAvecPromo * p.quantite);
+
+  }, 0);
+}
 
   viderPanier() {
     this.panier = [];
