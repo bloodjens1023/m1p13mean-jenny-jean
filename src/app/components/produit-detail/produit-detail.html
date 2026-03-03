@@ -16,15 +16,19 @@
                    {{produit.description}}
                 </p>
                 <div class="flex mb-4">
-                    <div class="mr-4  text-lg">
+                    <div class="mr-4  text-lg flex gap-2">
                         <span class="font-bold text-gray-700 dark:text-gray-300">Prix:</span>
-                        <span class="text-gray-600 dark:text-gray-300 text-lg"> {{produit.prix}} MGA</span>
+                        <div class="flex flex-col my-3">
+
                     </div>
-<!--
-                    <div class="mr-4  text-lg">
-                        <span class="font-bold text-gray-700 dark:text-gray-300">Description:</span>
-                        <span class="text-gray-600 dark:text-gray-300 text-lg"> {{produit.description}}</span>
-                    </div> -->
+                     <span class="dark:text-gray-300 text-lg"
+                        [class.text-red-600]="produit.activepromo"
+                        [class.text-black]="!produit.activepromo">
+                        {{ produit.activepromo ? (produit.prix * (1 - produit.promotion/100) | number:'1.0-0') : produit.prix }} MGA
+                      </span>
+                        <span *ngIf="produit.activepromo" class="line-through decoration-red-400 decoration-2  dark:text-gray-300 text-lg"> {{produit.prix}} MGA</span>
+
+                    </div>
 
                     <div>
                         <span class="text-gray-600 dark:text-gray-300 text-lg">Stock disponible : {{produit.stock}} </span>
