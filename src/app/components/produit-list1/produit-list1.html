@@ -1,5 +1,3 @@
-<!-- source: https://github.com/mfg888/Responsive-Tailwind-CSS-Grid/blob/main/index.html -->
-
 <div class="text-center p-10">
   <!-- État LOADING -->
   @if (isLoading) {
@@ -18,82 +16,93 @@
       <p class="text-gray-600">{{ boutique?.[0]?.description || '' }}</p>
     </div>
   }
-
 </div>
-
-
-
 
 <section id="Projects"
     class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
 
-  @for (produit of produit; track produit._id) {
+  <!-- SKELETON LOADING -->
+  @if (isLoading || produit.length === 0) {
+    @for (item of [1,2,3,4,5,6]; track $index) {
+      <div class="w-72 bg-white shadow-md rounded-xl overflow-hidden">
+        <!-- Image skeleton -->
+        <div class="h-80 w-72 bg-gray-200 animate-pulse relative">
+          <div class="absolute inset-0 bg-linear-to-r from-gray-200 via-gray-300 to-gray-200 bg-size-[200%_100%] animate-[shimmer_1.5s_infinite]"></div>
+        </div>
+        <div class="px-4 py-3 w-72 space-y-3">
+          <!-- Title skeleton -->
+          <div class="h-6 bg-gray-200 rounded animate-pulse w-3/4"></div>
+          <!-- Price skeleton -->
+          <div class="flex items-center justify-between">
+            <div class="h-6 bg-gray-200 rounded animate-pulse w-24"></div>
+            <div class="h-8 w-8 bg-gray-200 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    }
+  }
 
-    <div
+  <!-- Liste des produits (affiché seulement quand pas en loading) -->
+  @if (!isLoading) {
+    @for (produit of produit; track produit._id) {
+      <div class="relative w-72 bg-white shadow-md rounded-xl duration-500 scale-100 hover:scale-105 hover:shadow-xl">
 
-    class="w-72 bg-white shadow-md rounded-xl duration-500 scale-100 hover:scale-105 hover:shadow-xl "
-    >
-    <!-- Badge promo rond -->
-  <div
-    *ngIf="produit.activepromo"
-    class="absolute -top-3 -right-3
-           w-14 h-14
-           bg-red-500
-           text-white
-           rounded-full
-           flex items-center justify-center
-           text-sm font-bold
-           shadow-lg
-           border-2 border-white">
+        <!-- Badge promo rond -->
+        <div
+          *ngIf="produit.activepromo"
+          class="absolute -top-3 -right-3 z-10
+                 w-14 h-14
+                 bg-red-500
+                 text-white
+                 rounded-full
+                 flex items-center justify-center
+                 text-sm font-bold
+                 shadow-lg
+                 border-2 border-white">
+          -{{ produit.promotion }}%
+        </div>
 
-    -{{ produit.promotion }}%
-
-  </div>
-
-
-        <a >
+        <a>
           <img (click)="produit_clique(produit._id)" [src]="getImageUrl(produit.image)" alt="Product"
             class="h-80 w-72 object-cover rounded-t-xl cursor-pointer"
           />
-            <div class="px-4 py-3 w-72">
-                <p class="text-lg font-bold text-black truncate block capitalize">{{produit.nom}}</p>
-                <div class="flex items-center">
-                    <p class="text-lg font-semibold text-black cursor-auto my-3">{{produit.prix}} MGA</p>
-                    <!-- <p class="text-lg font-semibold text-black cursor-auto my-3">{{produit.description}}</p> -->
+          <div class="px-4 py-3 w-72">
+              <p class="text-lg font-bold text-black truncate block capitalize">{{produit.nom}}</p>
+              <div class="flex items-center">
+                  <p class="text-lg font-semibold text-black cursor-auto my-3">{{produit.prix}} MGA</p>
 
-                    <div (click)="ajouterAuPanier(produit)" class="ml-auto cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                  <div (click)="ajouterAuPanier(produit)" class="ml-auto cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                             fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd"
-                                d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
-                            <path
-                                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                        </svg></div>
-                </div>
-            </div>
+                      <path fill-rule="evenodd"
+                          d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
+                      <path
+                          d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                    </svg>
+                  </div>
+              </div>
+          </div>
         </a>
-    </div>
-
+      </div>
+    }
   }
 
 </section>
-@if (produit.length <=0){
+
+@if (isLoading && produit.length === 0){
   <div class="w-full flex flex-col items-center justify-center py-16 text-center">
-        <!-- From Uiverse.io by vinodjangid07 -->
+    <!-- From Uiverse.io by vinodjangid07 -->
     <div class="loader">
       <div class="book">
         <div class="page"></div>
         <div class="page page2"></div>
       </div>
     </div>
-      <p class="text-lg font-semibold text-gray-700">
+    <p class="text-lg font-semibold text-gray-700">
       Aucun produit trouvé
     </p>
-
     <p class="text-sm text-gray-500 mt-2">
       Essayez de modifier votre recherche ou filtre.
     </p>
   </div>
-   }
-
-
-
+}

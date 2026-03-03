@@ -19,6 +19,9 @@ export class BoutiqueService {
   getBoutiqueByIdOwner(id: string): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/user/${id}`);}
 
+  getFinanceParBoutique(userId: String): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/financeparboutique`, { userId });
+  }
 
 
   getBoutiqueUser(owner: String): Observable<any> {
@@ -35,4 +38,5 @@ export class BoutiqueService {
  deleteBoutique(id: string): Observable<any> {
  return this.http.delete(`${this.apiUrl}/${id}`);
  }
+
 }

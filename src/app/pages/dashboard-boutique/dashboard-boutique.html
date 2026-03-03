@@ -1,26 +1,15 @@
 <div class="dashboard-shell">
 
-  <aside class="fixed left-0 top-0 h-screen w-64 bg-white shadow-lg flex flex-col justify-between">
+  <aside class="sticky top-0 sidebar h-screen flex flex-col justify-between">
 
-  <app-nav-shop></app-nav-shop>
 
-  <div class="p-4 border-t">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold">
-        A
-      </div>
-      <div class="flex flex-col">
-        <span class="text-sm font-semibold">Admin</span>
-        <span class="text-xs text-gray-500">Gérant</span>
-      </div>
-    </div>
-  </div>
+    <app-nav-shop></app-nav-shop>
 
-</aside>
+  </aside>
 
-  <main class="main-content ml-64 main-content">
+  <main class="main-content ">
 
-    <div class="topbar">
+    <div class="topbar mb-5">
       <div>
         <h1 class="page-title">Vue d'ensemble</h1>
         <span class="page-date">{{ today | date:'EEEE d MMMM yyyy' }}</span>
@@ -29,7 +18,7 @@
     </div>
 
     <ng-container *ngIf="!loading && !error; else loadingOrError">
-      <div class="kpi-grid">
+      <div class="kpi-grid mb-5">
         <div class="kpi-card">
           <div class="kpi-header">
             <span class="kpi-label">Nombre de vente</span>

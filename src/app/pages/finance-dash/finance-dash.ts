@@ -64,11 +64,7 @@ export class FinanceDash implements OnInit {
   newProductImage: File | null = null;
   imagePreview: string | null = null;
 
-  products: Product[] = [
-    { id: 'P001', name: 'Chemise Classic', category: 'Vêtements', stock: 12, price: 45000, editing: false, promoActive: false, discountPercent: 0 },
-    { id: 'P002', name: 'Sneakers Air Pro', category: 'Chaussures', stock: 3, price: 120000, editing: false, promoActive: true, discountPercent: 15 },
-    { id: 'P003', name: 'Casquette Logo', category: 'Accessoires', stock: 0, price: 25000, editing: false, promoActive: false, discountPercent: 0 },
-  ];
+  products: Product[] = [];
 
   performanceData: PerformanceFinanciere = {
     chiffreAffaires: 0,
@@ -91,36 +87,27 @@ export class FinanceDash implements OnInit {
   }
 
   private loadPerformanceData(): void {
-    if (!this.boutiqueId) return;
+    const user = this.authService.user();
 
-    this.loadingPerformance = true;
+if (!user || !user.id) {
+  console.error("Utilisateur non connecté");
+  return;
+}
 
-    this.financeService.GetPerformance(this.moisSelectionne).subscribe({
-      next: (response: any) => {
-        console.log('Performance data:', response);
-
-        // Adaptez selon la structure exacte de votre API
-        // Si l'API retourne { data: { [boutiqueId]: { chiffreAffaires, ... } } }
-        const data = response.data?.[this.boutiqueId] || response.data;
-
-        if (data) {
-          this.performanceData = {
-            chiffreAffaires: data.chiffreAffaires || data.chiffre_affaires || 0,
-            totalDepense: data.totalDepense || data.total_depense || data.depenses || 0,
-            totalBenefice: data.totalBenefice || data.total_benefice || data.benefice || 0,
-            totalVente: data.totalVente || data.total_vente || data.ventes || 0,
-            nombreVentes: data.nombreVentes || data.nombre_ventes || 0
-          };
-        }
-
-        this.loadingPerformance = false;
-      },
-      error: (err) => {
-        console.error('Erreur chargement performance:', err);
-        this.loadingPerformance = false;
-        // Gardez les anciennes valeurs ou mettez à 0
-      }
-    });
+this.boutiqueService
+  .getFinanceParBoutique(user.id)
+  .subscribe({
+    next: (response: any) => {
+      console.log('Finance data reçue:', response);
+      this.financeData = response;
+      this.loadingPerformance = false;
+    },
+    error: (err) => {
+      console.error('Erreur chargement performance:', err);
+      this.errorMessage = err.error?.message || err.message;
+      this.loadingPerformance = false;
+    }
+  });
   }
 
   // ============ GESTION MODALES ============
@@ -520,7 +507,6 @@ private savePromotionToBackend(product: Product): void {
 
   financeData: any = [];
   chargerFinance() {
-  if (!this.moisSelectionne) return;
 
   this.loading = true;
   this.financeService.getFinanceParMois(this.moisSelectionne)

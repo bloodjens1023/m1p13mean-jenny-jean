@@ -5,17 +5,6 @@
 
     <app-nav-shop></app-nav-shop>
 
-    <div class="p-4 border-t">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold">
-        A
-      </div>
-      <div class="flex flex-col">
-        <span class="text-sm font-semibold text-black">Admin</span>
-        <span class="text-xs text-gray-500">Gérant</span>
-      </div>
-    </div>
-  </div>
   </aside>
 
   <!-- MAIN -->
@@ -53,7 +42,7 @@
     <div class="kpi-icon">💰</div>
     <div class="kpi-label">Chiffre d'affaires</div>
     <div class="kpi-value">
-      {{ performanceData.chiffreAffaires | number }} Ar
+      {{ financeData.chiffreAffaire | number }} Ar
     </div>
     <div class="text-xs text-purple-200 mt-1">{{ moisSelectionne }}</div>
   </div>
@@ -63,17 +52,17 @@
     <div class="kpi-icon">📉</div>
     <div class="kpi-label">Total Dépenses</div>
     <div class="kpi-value">
-      {{ performanceData.totalDepense | number }} Ar
+      {{ financeData.depensesTotal | number }} Ar
     </div>
   </div>
 
   <!-- Bénéfice -->
-  <div class="kpi-card" [class]="performanceData.totalBenefice >= 0 ? 'green' : 'red'">
-    <div class="kpi-icon">{{ performanceData.totalBenefice >= 0 ? '📈' : '📉' }}</div>
+  <div class="kpi-card " [class]="financeData.profit  >= 0 ? 'green' : 'red'">
+    <div class="kpi-icon">{{ financeData.profit  >= 0 ? '📈' : '📉' }}</div>
     <div class="kpi-label">Bénéfice Net</div>
-    <div class="kpi-value" [class.text-green-600]="performanceData.totalBenefice >= 0"
-                           [class.text-red-600]="performanceData.totalBenefice < 0">
-      {{ performanceData.totalBenefice | number }} Ar
+    <div class="kpi-value" [class.text-white-600]="financeData.profit  >= 0"
+                           [class.text-red-600]="financeData.profit  < 0">
+      {{ financeData.profit | number }} Ar
     </div>
   </div>
 
@@ -290,65 +279,72 @@
   </div>
 </div>
 
-<div *ngIf="financeData?.loyersPayes?.details && financeData.loyersPayes.details.length > 0 " class="mt-8 animate-fade-in">
+<div *ngIf="financeData?.detailDepense && financeData?.detailDepense.length > 0 " class="mt-8 animate-fade-in">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
             <span class="w-2 h-8 bg-emerald-500 rounded-full"></span>
             Liste des depenses
             <span class="text-sm font-normal text-gray-500 bg-emerald-100 px-3 py-1 rounded-full">
-              {{ financeData.loyersPayes.details.length | number}} paiement(s)
+              {{ financeData?.detailDepense.length | number}} paiement(s)
             </span>
           </h3>
 
         </div>
 
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="bg-linear-to-r from-emerald-500 to-teal-600 text-white">
-                  <th class="p-4 font-semibold text-sm uppercase tracking-wider">Boutique</th>
-                  <th class="p-4 font-semibold text-sm uppercase tracking-wider">Type</th>
-                  <th class="p-4 font-semibold text-sm uppercase tracking-wider text-right">Montant</th>
-                  <th class="p-4 font-semibold text-sm uppercase tracking-wider">Description</th>
-                  <th class="p-4 font-semibold text-sm uppercase tracking-wider">Date</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-100">
-                <tr *ngFor="let depense of financeData.loyersPayes.details; let i = index"
-                    class="hover:bg-emerald-50 transition-all duration-200 group"
-                    [class.bg-gray-50]="i % 2 === 0">
-                  <td class="p-4">
-                    <div class="flex items-center gap-3">
-                      <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-sm">
-                        {{ depense.boutique.nom.charAt(0) }}
-                      </div>
-                      <span class="font-medium text-gray-800">{{ depense.boutique.nom }}</span>
-                    </div>
-                  </td>
-                  <td class="p-4">
-                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                      {{ depense.type }}
-                    </span>
-                  </td>
-                  <td class="p-4 text-right font-bold ">
-                    {{ depense.montant | number }} Ar
-                  </td>
-                  <td class="p-4 text-gray-600 max-w-xs truncate" [title]="depense.description">
-                    {{ depense.description }}
-                  </td>
-                  <td class="p-4 text-gray-500">
-                    <div class="flex items-center gap-2">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                      </svg>
-                      {{ depense.date | date:'dd MMM yyyy' }}
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+<div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse min-w-[640px]">
+      <thead>
+        <tr class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white">
+          <th class="p-3 md:p-4 font-semibold text-xs md:text-sm uppercase tracking-wider">Type</th>
+          <th class="p-3 md:p-4 font-semibold text-xs md:text-sm uppercase tracking-wider text-right">Montant</th>
+          <th class="p-3 md:p-4 font-semibold text-xs md:text-sm uppercase tracking-wider hidden sm:table-cell">Description</th>
+          <th class="p-3 md:p-4 font-semibold text-xs md:text-sm uppercase tracking-wider hidden md:table-cell">Date</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <tr *ngFor="let depense of financeData?.detailDepense; let i = index"
+            class="hover:bg-emerald-50 transition-all duration-200 group"
+            [class.bg-gray-50]="i % 2 === 0">
+
+          <!-- Type -->
+          <td class="p-3 md:p-4">
+            <span class="px-2 py-1 md:px-3 md:py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 whitespace-nowrap">
+              {{ depense.type }}
+            </span>
+          </td>
+
+          <!-- Montant -->
+          <td class="p-3 md:p-4 text-right font-bold text-sm md:text-base whitespace-nowrap">
+            {{ depense.montant | number }} Ar
+          </td>
+
+          <!-- Description (caché sur mobile) -->
+          <td class="p-3 md:p-4 text-gray-600 max-w-xs truncate hidden sm:table-cell" [title]="depense.description">
+            {{ depense.description }}
+          </td>
+
+          <!-- Date (caché sur mobile et tablette) -->
+          <td class="p-3 md:p-4 text-gray-500 hidden md:table-cell">
+            <div class="flex items-center gap-2 whitespace-nowrap text-sm">
+              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              {{ depense.date | date:'dd MMM yyyy' }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Message si aucune donnée -->
+  <div *ngIf="!financeData?.detailDepense?.length" class="p-8 text-center text-gray-500">
+    <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+    </svg>
+    <p class="text-sm">Aucune dépense trouvée</p>
+  </div>
+</div>
       </div>
 

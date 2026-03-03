@@ -1,3 +1,17 @@
+:host {
+      --bg: #f5f4fb;
+      --surface: #ffffff;
+      --surface2: #f0eeff;
+      --border: #e4e0f7;
+      --text: #1a1535;
+      --text-muted: #1D7874;
+      --accent: #1D7874;
+      --accent-light: #ede9fd;
+      --accent-mid: #9b7ef8;
+      --radius: 14px;
+      --shadow: 0 2px 12px rgba(108,69,224,0.07);
+      --shadow-card: 0 4px 24px rgba(108,69,224,0.10);
+    }
 /* GLOBAL */
 .dashboard-shell {
   display: flex;
@@ -65,10 +79,7 @@
   font-weight: bold;
 }
 
-.page-date {
-  font-size: 13px;
-  color: gray;
-}
+.page-date { display:block; font-size:13px; color:var(--text-muted); margin-top:4px; text-transform:capitalize; }
 
 .topbar-actions {
   display: flex;

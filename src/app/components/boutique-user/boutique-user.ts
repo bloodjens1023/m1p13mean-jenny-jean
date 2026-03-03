@@ -16,7 +16,7 @@ import { RechercheService } from '@/services/recherche';
   styleUrl: './boutique-user.css',
 })
 export class BoutiqueUser implements OnInit  {
-
+  loading : boolean = false;
   boutiques: any[] = [];
   categorie: any[] = [];
 
@@ -34,12 +34,14 @@ export class BoutiqueUser implements OnInit  {
   }
 
   boutiqueDetail(): void {
+    this.loading = true
     this.boutiqueService.getBoutique().subscribe({
       next: (res: any[]) => {
         this.boutiques = res;
       },
       error: (err) => {
         console.error('Erreur lors de la récupération des boutiques :', err);
+         this.loading = false
       }
     });
     this.categorieService.getCategorie().subscribe({
@@ -48,8 +50,10 @@ export class BoutiqueUser implements OnInit  {
       },
         error: (err) => {
         console.error('Erreur lors de la récupération des boutiques :', err);
+         this.loading = false
       }
     })
+      this.loading = false
   }
   boutique_clique(id: string): void {
     console.log("Boutique cliquée avec l'ID :", id);

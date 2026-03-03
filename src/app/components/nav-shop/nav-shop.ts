@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AuthService } from '@/services/auth';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -8,5 +9,8 @@ import { RouterLink } from '@angular/router';
   styleUrl: './nav-shop.css',
 })
 export class NavShop {
-
+   auth = inject(AuthService);
+    logout(){
+    this.auth.logout();
+  }
 }
