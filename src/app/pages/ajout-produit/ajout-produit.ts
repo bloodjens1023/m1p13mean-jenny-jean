@@ -6,6 +6,7 @@ import { NavShop } from "@/components/nav-shop/nav-shop";
 import { BoutiqueService } from '@/services/boutique';
 import { ProduitService } from '@/services/produit';
 import { AuthService } from '@/services/auth';
+import { toast } from 'ngx-sonner';
 
 
 
@@ -171,41 +172,44 @@ export class AjoutProduit implements OnInit {
 
 
       if (!this.produitForm._id) {
-    console.error('ID manquant');
-    return;
-  }
+        console.error('ID manquant');
+        return;
+      }
 
-  // Créer FormData au lieu d'envoyer l'objet brut
-  const formData = new FormData();
+    // Créer FormData au lieu d'envoyer l'objet brut
+    const formData = new FormData();
 
-  // Ajouter les champs texte
-  formData.append('nom', this.produitForm.nom || '');
-  formData.append('prix', String(this.produitForm.prix || 0));
-  formData.append('stock', String(this.produitForm.stock || 0));
-  formData.append('description', this.produitForm.description || '');
-  // ... autres champs
+    // Ajouter les champs texte
+    formData.append('nom', this.produitForm.nom || '');
+    formData.append('prix', String(this.produitForm.prix || 0));
+    formData.append('stock', String(this.produitForm.stock || 0));
+    formData.append('description', this.produitForm.description || '');
+    // ... autres champs
 
-  // Ajouter l'image SI sélectionnée
-  if (this.selectedFile) {
-    formData.append('image', this.selectedFile, this.selectedFile.name);
-  }
-
-  // Envoyer FormData au lieu de produitForm
-  this.produitService.updateProduit(
-    this.produitForm._id.toString(),
-    formData
-  ).subscribe({
-    next: (updatedProduit) => {
-      const index = this.produits.findIndex(p => p._id === updatedProduit._id);
-      if (index !== -1) this.produits[index] = updatedProduit;
-
-      this.produitForm = {} as Produit;
-      this.selectedFile = null;
-    },
-    error: (err) => {
-      console.error('Erreur mise à jour produit', err);
+    // Ajouter l'image SI sélectionnée
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile, this.selectedFile.name);
     }
-  });
+
+    // Envoyer FormData au lieu de produitForm
+    this.produitService.updateProduit(
+      this.produitForm._id.toString(),
+      formData
+    ).subscribe({
+      next: (updatedProduit) => {
+        const index = this.produits.findIndex(p => p._id === updatedProduit._id);
+        if (index !== -1) this.produits[index] = updatedProduit;
+
+        this.produitForm = {} as Produit;
+        this.selectedFile = null;
+         toast.success('Modification Réussite', {
+                    description: 'Modification à été un succes.'
+                  });
+      },
+      error: (err) => {
+        console.error('Erreur mise à jour produit', err);
+      }
+    });
     } else {
       // Ajout
       const formData = new FormData();
@@ -223,12 +227,16 @@ export class AjoutProduit implements OnInit {
       this.produitService.addProduit(formData).subscribe({
         next: () => {
           this.fermerModal();
+            toast.success('Insertion Réussite', {
+                    description: 'Insertion à été un succes.'
+                  });
         },
         error: err => console.error(err)
       });
     }
 
-
+    this.selectedFile = null
+    this.imagePreview = null
     this.fermerModal();
   }
 
