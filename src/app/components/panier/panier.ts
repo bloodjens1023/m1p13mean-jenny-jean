@@ -178,7 +178,7 @@ export class Panier {
 
     this.commandeService.passerCommande(commande).subscribe({
       next: () => {
-        alert('Commande envoyée ✅');
+        alert('Commande envoyée');
         this.cartService.viderPanier();
         this.router.navigate(['/commande/suivi']);
       },
