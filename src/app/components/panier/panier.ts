@@ -183,4 +183,7 @@ export class Panier {
       }
     });
   }
+  getImageUrl(image: string) {
+    return 'https://m1p13mean-jenny-jean-backend-1.onrender.com/uploads/' + image;
+  }
 }

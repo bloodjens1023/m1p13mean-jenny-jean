@@ -10,7 +10,7 @@
       <div *ngFor="let p of produits" class="md:flex items-strech py-8 md:py-10 lg:py-8 border-t border-gray-50">
 
         <div class="md:w-4/12 2xl:w-1/4 w-full">
-          <img [src]="p.image || 'https://via.placeholder.com/150'"
+          <img [src]="getImageUrl(p.image || 'https://via.placeholder.com/150')"
               class="h-full object-center object-cover md:block hidden" />
         </div>
 
