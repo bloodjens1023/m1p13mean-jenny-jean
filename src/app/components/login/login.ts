@@ -15,8 +15,8 @@ export class Login {
   showModal = false;
   message = "";
   loginData = {
-    email: '',
-    password: ''
+    email: 'name@gmail.com',
+    password: 'name'
   };
   loading = false;
 

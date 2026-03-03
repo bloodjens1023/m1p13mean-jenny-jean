@@ -15,8 +15,8 @@ export class LoginBoutique {
   showModal = false;
   message = "";
   loginData = {
-    email: '',
-    password: ''
+    email: 'shop01@gmail.com',
+    password: 'shop01'
   };
   loading = false;
 
